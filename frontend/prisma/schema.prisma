@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model IP {
+  id Int @id @default(autoincrement())
+  ip String
+  ora_data DateTime
+  user    User?    @relation(fields: [userID], references: [id])
+  userID  Int?
+}
+
+model Locatie {
+  id Int @id @default(autoincrement())
+  ip String
+  lat String
+  lng String
+  acc String
+  viteza String
+  directie String
+  ora_data DateTime
+  user    User?    @relation(fields: [userID], references: [id])
+  userID  Int?
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String  @unique
+  sid String @unique @default(cuid())
+  nume  String?
+  telefon String?
+  data_nasterii DateTime?
+  grad Grad @default(NEAPROBAT)
+  departament Departament @default(NEREPARTIZAT)
+  ips IP[]
+  locatii Locatie[]
+  incredere Int @default(0)
+
+  primaLogare DateTime @default(now())
+  ultimaActiune DateTime @default(now())
+}
+
+enum Grad {
+  NEAPROBAT
+  VOLUNTAR
+  SPONSOR
+  MEMBRU
+  PARTENER
+  MENTOR
+  BOARD
+  TEAM_LEADER_TEHNIC
+  TEAM_LEADER_NON_TEHNIC
+  TEAM_LEADER
+  MINA
+}
+
+enum Departament {
+  NEREPARTIZAT
+  MECANICA
+  PROGRAMARE
+  DESIGN
+  MEDIA
+}
+
+
+model Jucator{
+  id            Int    @id @default(autoincrement())
+  sid           String @unique @default(cuid())
+  nume          String?
+  creator       String
+  start         Muzeu
+  telefon       String?
+  viteza        Float @default(0)
+  muzee         Json
+  indicii       IndiciuMeta[]
+}
+
+model IndiciuMeta{
+  id           Int       @id @default(autoincrement())
+
+  timp         DateTime?
+  timpRezolvat DateTime?
+
+  rezolvat     Boolean @default(false)
+  sarit        Boolean @default(false)
+
+  jucator      Jucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  indiciu      Indiciu?  @relation(fields: [indiciuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  jucatorId    Int?
+  indiciuId    Int?
+}
+
+model Indiciu{
+  id Int @id @default(autoincrement())
+  creator String
+  intrebare String
+  raspuns String
+  poza String @db.LongText
+  arataPoza Boolean @default(false)
+
+  lat String
+  lng String
+  acc String
+
+  etaj      Etaj?  @relation(fields: [etajID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  etajID    Int?
+
+  jucatori IndiciuMeta[]
+}
+
+model Etaj {
+  id Int @id @default(autoincrement())
+
+  muzeu Muzeu
+  etaj String
+
+  indiciI Indiciu[]
+}
+
+enum Muzeu {
+  AVRAMIDE
+  ACVARIU
+  ARTA
+  ISTORIE
+}
