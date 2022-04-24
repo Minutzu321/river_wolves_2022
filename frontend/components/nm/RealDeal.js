@@ -122,6 +122,7 @@ export default function RealDeal({user, fetchUser, snack}) {
                     setIdat(udat);
                     if(!udat.next && !udat.terminat){
                       setAlege(false);
+                      
                       setIndiciu(udat.indiciu);
                       setStats(udat.total-udat.ramase+"/"+udat.total);
                       setArataPoza(udat.arataPoza);
