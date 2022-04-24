@@ -122,7 +122,7 @@ export default function RealDeal({user, fetchUser, snack}) {
                     setIdat(udat);
                     if(!udat.next && !udat.terminat){
                       setAlege(false);
-                      //TODO trebuie sa alegem!
+                      //TODO am ales
                       setIndiciu(udat.indiciu);
                       setStats(udat.total-udat.ramase+"/"+udat.total);
                       setArataPoza(udat.arataPoza);
