@@ -9,7 +9,7 @@ import Cookies from 'universal-cookie';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Avatar, Chip } from '@mui/material';
+import { Avatar, Chip, CircularProgress } from '@mui/material';
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -23,11 +23,13 @@ import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlin
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import MuseumOutlinedIcon from '@mui/icons-material/MuseumOutlined';
 import WaterOutlinedIcon from '@mui/icons-material/WaterOutlined';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 
 import PropTypes from 'prop-types';
 import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Ranking from './Ranking';
 
 function LinearProgressWithLabel(props) {
   return (
@@ -71,7 +73,7 @@ function translat(str){
     }
 }
 
-export default function RealDeal({user, fetchUser, snack}) {
+export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii}) {
 
     const [indiciu, setIndiciu] = useState("");
     const [stats, setStats] = useState("");
@@ -87,6 +89,8 @@ export default function RealDeal({user, fetchUser, snack}) {
     const [sari, setSari] = useState(false);
 
     const [alege, setAlege] = useState(false);
+
+    const [ranking, setRanking] = useState(false);
 
     const cookies = new Cookies();
   
@@ -119,6 +123,7 @@ export default function RealDeal({user, fetchUser, snack}) {
           }).then((raspuns) => {
             if(raspuns.ok){
                 raspuns.json().then((udat) =>{
+                    fetchDonatii();
                     setIdat(udat);
                     if(!udat.next && !udat.terminat){
                       setAlege(false);
@@ -132,6 +137,7 @@ export default function RealDeal({user, fetchUser, snack}) {
                       setAlege(true);
                     }else{
                       setIndiciu(false);
+                      setRanking(true);
                     }
                   })
             }else{
@@ -156,8 +162,15 @@ export default function RealDeal({user, fetchUser, snack}) {
 
     const trimite = async () => {
       setTitlu("Se verifică răspunsul..");
-      setMesaj("Se încarcă..");
+      setMesaj(<CircularProgress color="secondary"/>);
       setOpen(true);
+
+      if(!rasp || rasp.length < 3){
+        setTitlu("Răspuns greșit!");
+        setMesaj(<Chip style={{margin: 'auto'}} label="Răspunsul este greșit!" color="error" />);
+        setOpen(true);
+        return;
+      }
      
       const response = await fetch("/api/th/raspuns_api", {
         method: "POST",
@@ -246,7 +259,9 @@ export default function RealDeal({user, fetchUser, snack}) {
             </div>
             <div className="card-body">
                 {!indiciu?<>
-                  {alege?<Alege user={user} nextSel={nextSel}/>:<h2 className="card-title">Se incarcă..</h2>}
+                  {alege?<Alege user={user} nextSel={nextSel}/>:<>
+                    {ranking?<Ranking snack={snack}/>:<CircularProgress color="secondary"/>}
+                  </>}
                 </>:
                 <>
                   <h4 className="card-title">{indiciu}</h4>
@@ -280,6 +295,9 @@ export default function RealDeal({user, fetchUser, snack}) {
             <div className="card-footer text-muted mb-2 text-danger">
               <p className='text-danger'>Vă rugăm nu atingeți exponatele!</p>
             </div>
+            {donatii && <div className="card-footer text-muted mb-2">
+              Donații strânse: <VolunteerActivismIcon/> {donatii} lei
+            </div>}
         </>}
     </div>
     </>

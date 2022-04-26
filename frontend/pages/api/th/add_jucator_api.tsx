@@ -62,7 +62,6 @@ export default async (req, res) => {
             let indicii_pe_etaj = (Math.floor(numar_indicii_total/10))+Math.min(3,numar_indicii_total);
             let pas = Math.ceil(numar_indicii_total / indicii_pe_etaj);
             let incepe = jucator.id%pas;
-            console.log("total",numar_indicii_total,"etaj",indicii_pe_etaj,"pas",pas,"incepe",incepe);
             for(let i=incepe;i<numar_indicii_total;i+=pas){
                 INDICII_FINALE.push({jucatorId: jucator.id, indiciuId: et[etaj][i].id})
             }

@@ -50,6 +50,14 @@ export default function Stand({userData}) {
     }
 
   const trimiteJucator = () => {
+    if(!etajID){
+        setMesaj("TREBUIE SA SELECTEZI MUZEUL")
+        setTitlu("ALO")
+        setOpenRez(true)
+      return;
+    }
+
+
     const trimite = {
       muzeu: etajID,
     }
@@ -164,7 +172,7 @@ export default function Stand({userData}) {
           <DialogContent>
             <br/>
             <DialogContentText id="alert-dialog-description">
-            <QRCode value={mesaj} level='M'/>
+            {(mesaj.startsWith("http") || mesaj.length==25)?<QRCode value={mesaj} level='M'/>:<>{mesaj}</>}
             </DialogContentText>
           </DialogContent>
           <DialogActions>

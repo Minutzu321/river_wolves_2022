@@ -24,10 +24,7 @@ export default async (req, res) => {
       start: true,
    }
   })
-
-  console.log("TRASP",user);
   
-
   res.status(200).json({rez: user})
   
   

@@ -6,19 +6,10 @@ export default async (req, res) => {
         return
     }
 
-  const body = JSON.parse(req.body);
-
   const prisma = DBClient.instance;
-  await prisma.indiciuMeta.update({
-      where: {
-          id: body.id,
-      },
-      data:{
-        sarit: true,
-      }
-  });
+  const jucatori = await prisma.jucator.count();
   
-    res.status(200).json({succes: true});
+  res.status(200).json({donatii: (jucatori*5)});
   
 
   res.end();
