@@ -21,7 +21,7 @@ export default async (req, res) => {
 
   if(body.poza && body.poza.length > 10){
     writeFile('public/th/'+pozauid+'.png', body.poza.split(';base64,').pop(), {encoding: 'base64'}, function(err) {
-        console.log('File created');
+        console.log('Poza adaugata');
       });
 
     await prisma.indiciu.update({

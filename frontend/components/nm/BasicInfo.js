@@ -3,8 +3,9 @@ import { QrReader } from 'react-qr-reader';
 
 import Button from '@mui/material/Button';
 import { Avatar, Chip } from '@mui/material';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 
-export default function BasicInfo({scan, setScan, user, handleResult}) {
+export default function BasicInfo({scan, setScan, user, handleResult, fetchDonatii, donatii}) {
   return (
     <div className="card text-center">
         <div className="card-header mt-2">
@@ -29,6 +30,9 @@ export default function BasicInfo({scan, setScan, user, handleResult}) {
         <div className="card-footer text-muted mb-2 text-danger">
             Donație minimă: 5 lei
         </div>
+        {!!donatii && <div className="card-footer text-muted mb-2">
+            Donații strânse: <VolunteerActivismIcon/> {donatii} lei
+        </div>}
         <div className="card-footer text-muted mb-2 text-danger">
             Toate donațiile for fi trimise către UNICEF în scopul sprijinirii combaterii crizei umanitare actuale.
         </div>

@@ -10,7 +10,8 @@ import Webcam from "react-webcam";
 
 export default function AdminIndicii() {
 
-    const [indicii, setIndicii]= useState([]);
+    const [indicii, setIndicii] = useState([]);
+    const [findicii, setFIndicii] = useState([]);
 
     const [openImagine, setOpenImagine] = useState(false);
     const [vizImg, setVizImg] = useState("");
@@ -130,7 +131,7 @@ export default function AdminIndicii() {
           method: 'POST',
           body: JSON.stringify({})
         }).then((raspuns) => {
-          raspuns.json().then((rasp)=> {setIndicii(rasp); console.log(rasp);})
+          raspuns.json().then((rasp)=> {setIndicii(rasp); setFIndicii(rasp); console.log(rasp);})
         });
       }
 
@@ -158,10 +159,30 @@ export default function AdminIndicii() {
 
     const label = { inputProps: { 'aria-label': 'Arata poza jucatorului' } };
 
+    const handleSearch = (event) => {
+        let value = event.target.value.toLowerCase().trim();
+        let result = [];
+        const verif = (str) => {
+            return str.trim().toLowerCase().search(value) != -1;
+        }
+
+        result = indicii.filter((data) => {
+            if(verif(data.creator) || verif(data.intrebare) || verif(data.raspuns) || verif(data.etaj.muzeu) || verif(data.etaj.etaj)){
+                return true;
+            }else{
+                return false;
+            }
+        });
+        setFIndicii(result);
+    }
+
     return (
         <>
             <h2>Administrare indicii</h2>
             <h5>{indicii.length} indicii</h5>
+            <br/>
+            <TextField id="outlined-basic" label="Cauta indicii" variant="outlined" onChange={(event) =>handleSearch(event)} />
+            <br/>
             <button className='btn btn-primary btn-round' onClick={()=>{fetchIndicii(); snack("Indicii reincarcate!");}}>
                 <i className='now-ui-icons arrows-1_refresh-69'></i>
                 Refresh
@@ -316,7 +337,7 @@ export default function AdminIndicii() {
 
             <div className="row">
                 {
-                    indicii.map((indiciu, index) => (
+                    findicii.map((indiciu, index) => (
                         <div className='col-md-6 ml-auto col-xl-3 mr-auto' key={index}>
                             <div className="card">
                                 <div className="card-header mt-2">

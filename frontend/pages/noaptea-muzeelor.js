@@ -32,12 +32,30 @@ function Nm() {
   const [user, setUser] = useState(false);
 
   const [scan, setScan] = useState(false);
+
+  const [donatii, setDonatii] = useState(false);
   
   const router = useRouter()
   const { cod } = router.query
 
   const cookies = new Cookies();
-  const c = cookies.get("riverwolves_cod_noaptea_muzeelor")
+  const c = cookies.get("riverwolves_cod_noaptea_muzeelor");
+
+
+  const fetchDonatii = () => {
+    fetch('/api/th/donatii_api', {
+      method: 'POST',
+    }).then((raspuns) => {
+      if(raspuns.ok){
+        raspuns.json().then((rdon) =>{
+          setDonatii(rdon.donatii)
+        })
+      }else{
+        snack("Eroare la server! Incercati mai tarziu!")
+      }
+
+    });
+}
 
   const fetchUser = () => {
       fetch('/api/th/get_jucator_api', {
@@ -46,8 +64,9 @@ function Nm() {
       }).then((raspuns) => {
         if(raspuns.ok){
           raspuns.json().then((udat) =>{
+            fetchDonatii();
             if(!!udat.rez){
-              setUser(udat.rez)
+              setUser(udat.rez);
             }else{
               snack("Te rugam sa nu scanezi alte coduri..")
             }
@@ -57,13 +76,11 @@ function Nm() {
         }
 
       });
-    
   }
 
 
       useEffect(()=>{
-        
-        
+        fetchDonatii();
         if(!!cod){
           if(c===cod){
             fetchUser();
@@ -138,7 +155,7 @@ function Nm() {
         <div className="wrapper">
           {(!user && !c) && <Welcome/>}
           <div className="main section container text-center">
-            {user ? <RealDeal snack={snack} user={user} fetchUser={fetchUser}/>:<BasicInfo scan={scan} setScan={setScan} user={user} handleResult={handleResult}/>}
+            {user ? <RealDeal snack={snack} user={user} fetchUser={fetchUser} fetchDonatii={fetchDonatii} donatii={donatii}/>:<BasicInfo scan={scan} setScan={setScan} user={user} handleResult={handleResult}  fetchDonatii={fetchDonatii} donatii={donatii}/>}
           </div>
         </div>
         <PageFooter/>
