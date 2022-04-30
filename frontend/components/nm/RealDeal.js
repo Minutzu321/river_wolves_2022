@@ -255,6 +255,8 @@ export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii}
                 Indicii rezolvate: {stats}
                 <br/>
                 {translat(user.start)}
+                <br/>
+                {idat&&<Chip label={idat.etaj} color="warning" variant="outlined"/>}
                 </>}
             </div>
             <div className="card-body">

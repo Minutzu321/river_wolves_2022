@@ -217,6 +217,7 @@ export default function AdminIndicii() {
                     <br/>
                     <DialogContentText id="alert-dialog-description">
                         <strong>Sigur vrei sa stergi indiciul?</strong>
+                        <strong>Acțiunea poate duce la stricarea traseului!</strong>
                         <hr/>
                     Intrebare: <strong>{target.intrebare}</strong>
                     <br/>
@@ -362,6 +363,7 @@ export default function AdminIndicii() {
                                     <h5 className="card-title">Intrebare: <b>{indiciu.intrebare}</b></h5>
                                     <h5 className="card-title">Raspuns: <b>{indiciu.raspuns}</b></h5>
                                     <h5 className="card-title">Arata poza: <b>{indiciu.arataPoza?"da":"nu"}</b></h5>
+                                    <h5 className="card-title">Arata forma: <b>{indiciu.arataForma?"da":"nu"}</b></h5>
                                     <h5 className="card-title">Locatie: <b>{indiciu.lat+", "+indiciu.lng}</b></h5>
                                     <h5 className="card-title">Acuratete: <b>{indiciu.acc+" metri"}</b></h5>
                                     <h5 className="card-title">Etaj: <b>{indiciu.etaj.muzeu+" - "+indiciu.etaj.etaj}</b></h5>

@@ -35,6 +35,7 @@ export default async (req, res) => {
                 arataForma: true,
                 raspuns: true,
                 poza: true,
+                etaj: true,
             }
         },
         jucator:{
@@ -79,6 +80,7 @@ export default async (req, res) => {
         ramase: ramase,
         total: total,
         next: false,
+        etaj: indiciu.indiciu.etaj.etaj,
         terminat: false
     };
     res.status(200).json(fin);
