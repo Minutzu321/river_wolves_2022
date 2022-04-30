@@ -178,6 +178,7 @@ export default function AdminJucatori({userData}) {
                   defaultCollapseIcon={<MinusSquare />}
                   defaultExpandIcon={<PlusSquare />}
                   defaultEndIcon={<CloseSquare />}
+                  key={index}
                   sx={{ height: 'auto', flexGrow: 1, width: '100%', overflowY: 'auto', margin: 'auto' }}
                 >
                   {renderTree(jucatorData)}
