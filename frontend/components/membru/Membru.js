@@ -8,6 +8,9 @@ import AdminUseri from "./AdminUseri";
 import Profil from "./Profil";
 import AdminIndicii from "./AdminIndicii";
 import Stand from "./Stand";
+import Ranks from "./Ranks";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import AdminJucatori from "./AdminJucatori";
 
 const Membru = ({userData, refData}) => {
 
@@ -72,13 +75,19 @@ const Membru = ({userData, refData}) => {
             comp: <Profil refData={refData}/>,
           },
         ])
-    }else{
+      }else{
       setTabs([
         {
           perm: 20,
           tag: 'adauga',
           icon: 'sport_user-run',
           comp: <Adauga userData={userData.data}/>,
+        },
+        {
+          perm: 20,
+          tag: 'rankuri',
+          icon: 'design_bullet-list-67',
+          comp: <Ranks userData={userData.data}/>,
         },
         {
           perm: 30,
@@ -97,6 +106,12 @@ const Membru = ({userData, refData}) => {
           tag: 'admin_useri',
           icon: 'ui-1_lock-circle-open',
           comp: <AdminUseri userData={userData.data}/>,
+        },
+        {
+          perm: 60,
+          tag: 'admin_jucatori',
+          icon: 'objects_globe',
+          comp: <AdminJucatori userData={userData.data}/>,
         },
       ])
     }

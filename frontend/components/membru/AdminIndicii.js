@@ -20,6 +20,7 @@ export default function AdminIndicii() {
     const [intrebare, setIntrebare] = useState('');
     const [raspuns, setRaspuns] = useState('');
     const [arataPoza, setArataPoza] = useState(true);
+    const [arataForma, setArataForma] = useState(true);
     const [etajID, setEtajID] = useState("");
 
     const [poza, setPoza] = useState("");
@@ -57,11 +58,6 @@ export default function AdminIndicii() {
             snack("Nu s-a salvat. Trebuie sa pui o intrebare valida.")
             return;
         }
-    
-        if(!raspuns || raspuns.length < 3){
-            snack("Nu s-a salvat. Trebuie sa pui un raspuns valid.")
-            return;
-        }
 
 
         const trimite = {
@@ -70,10 +66,9 @@ export default function AdminIndicii() {
             intrebare: intrebare,
             raspuns: raspuns,
             arataPoza: arataPoza,
+            arataForma: arataForma,
             etajID: etajID,
         }
-        console.log(trimite);
-
         fetch('/api/th/edit_indiciu_api', {
             method: 'POST',
             body: JSON.stringify(trimite)
@@ -94,6 +89,7 @@ export default function AdminIndicii() {
         setIntrebare(indiciu.intrebare)
         setRaspuns(indiciu.raspuns)
         setArataPoza(indiciu.arataPoza)
+        setArataForma(indiciu.arataForma)
         setCam(false);
         setPoza("")
         setOpenRez(true);
@@ -131,7 +127,7 @@ export default function AdminIndicii() {
           method: 'POST',
           body: JSON.stringify({})
         }).then((raspuns) => {
-          raspuns.json().then((rasp)=> {setIndicii(rasp); setFIndicii(rasp); console.log(rasp);})
+          raspuns.json().then((rasp)=> {setIndicii(rasp); setFIndicii(rasp);})
         });
       }
 
@@ -158,6 +154,7 @@ export default function AdminIndicii() {
       );
 
     const label = { inputProps: { 'aria-label': 'Arata poza jucatorului' } };
+    const label1 = { inputProps: { 'aria-label': 'Arata forma indiciului' } };
 
     const handleSearch = (event) => {
         let value = event.target.value.toLowerCase().trim();
@@ -179,7 +176,7 @@ export default function AdminIndicii() {
     return (
         <>
             <h2>Administrare indicii</h2>
-            <h5>{indicii.length} indicii</h5>
+            <h5>{findicii.length} indicii</h5>
             <br/>
             <TextField id="outlined-basic" label="Cauta indicii" variant="outlined" onChange={(event) =>handleSearch(event)} />
             <br/>
@@ -250,7 +247,7 @@ export default function AdminIndicii() {
                     <br/>
                     <DialogContentText id="alert-dialog-description">
                     <div className="form-group">
-                        <TextField id="intrebare" label="Intrebare" variant="outlined" value={intrebare} onChange={e => setIntrebare(e.target.value)}/>
+                        <TextField id="intrebare" label="Intrebare" multiline maxRows={10} variant="outlined" value={intrebare} onChange={e => setIntrebare(e.target.value)}/>
                     </div>
                     <div className="form-group">
                         <TextField id="raspuns" label="Raspuns" variant="outlined" value={raspuns} onChange={e => setRaspuns(e.target.value)}/>
@@ -294,6 +291,24 @@ export default function AdminIndicii() {
                             />
                             }
                             label="Arata poza jucatorilor"
+                        />
+                        <br/>
+                        <FormControlLabel
+                            control={
+                            <Checkbox
+                                
+                                {...label1}
+                                checked={arataForma}
+                                onChange={() => setArataForma(!arataForma)}
+                                sx={{
+                                color: pink[800],
+                                '&.Mui-checked': {
+                                    color: pink[600],
+                                },
+                                }}
+                            />
+                            }
+                            label="Arata forma indiciului"
                         />
                         <br/>
                         <button className='btn btn-info' onClick={()=> setCam(!cam)}>Inlocuieste poza</button>

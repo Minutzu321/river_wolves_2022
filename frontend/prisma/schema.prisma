@@ -81,6 +81,7 @@ model Jucator{
   viteza        Float @default(0)
   muzee         Json
   indicii       IndiciuMeta[]
+  feedback      Int @default(-1)
 }
 
 model IndiciuMeta{
@@ -105,7 +106,7 @@ model Indiciu{
   raspuns String
   poza String @db.LongText
   arataPoza Boolean @default(false)
-
+  arataForma Boolean @default(false)
   lat String
   lng String
   acc String

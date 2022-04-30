@@ -267,6 +267,8 @@ export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii}
                   <h4 className="card-title">{indiciu}</h4>
                   {(idat.total===idat.ramase) && <p>Introduceți răspunsul în câmpul de sub poză</p>}
                   {arataPoza&&<img src={poza} alt="Indiciu"  style={{maxWidth: '300px'}}/>}
+                  <br/>
+                  {!!idat.forma&&<p>Forma răspunsului: <strong>{idat.forma}</strong></p>}
                   <hr/>
                   <Stack
                   component="form"

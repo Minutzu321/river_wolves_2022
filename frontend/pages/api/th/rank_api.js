@@ -16,6 +16,8 @@ export default async (req, res) => {
       }
   });
 
+  
+
   var compara = function(a,b){
     if(a.ir < b.ir){
         return 1;
@@ -23,10 +25,10 @@ export default async (req, res) => {
     if(a.ir > b.ir){
         return -1;
     }
-    if(a.v < b.v){
+    if(a.v < b.v && a.v != 0){
         return 1;
     }
-    if(a.v > b.v){
+    if(a.v > b.v || a.v == 0){
         return -1;
     }
     return 0;
@@ -47,6 +49,9 @@ export default async (req, res) => {
 
     let medie = suma/juc.indicii.length;
     let proc = parseInt((rez/juc.indicii.length)*100);
+    medie = medie || 0
+    proc = proc || 0
+    console.log(juc.id, medie, proc);
     jmod.push({nume: juc.nume, ir: proc, v: medie})
   }
 

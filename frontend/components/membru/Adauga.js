@@ -33,6 +33,7 @@ export default function Adauga({userData}) {
     const [raspuns, setRaspuns] = useState('');
     const [arataPoza, setArataPoza] = useState(true);
     const [etajID, setEtajID] = useState("");
+    const [arataForma, setArataForma] = useState(true);
 
     const [openRez, setOpenRez] = useState(false);
     const [titlu, setTitlu] = useState("");
@@ -47,6 +48,7 @@ export default function Adauga({userData}) {
     const [vizImg, setVizImg] = useState("");
 
     const label = { inputProps: { 'aria-label': 'Arata poza jucatorului' } };
+    const label1 = { inputProps: { 'aria-label': 'Arata forma indiciului' } };
 
 
     const imagine = (url) => {
@@ -125,6 +127,7 @@ export default function Adauga({userData}) {
       intrebare: intrebare,
       raspuns: raspuns,
       arataPoza: arataPoza,
+      arataForma: arataForma,
       etajID: etajID,
     }
 
@@ -149,12 +152,12 @@ export default function Adauga({userData}) {
       return;
     }
 
-    if(!raspuns || raspuns.length < 3){
-      setTitlu("Eroare");
-      setMesaj("Trebuie sa pui un raspuns valid!")
-      setOpenRez(true);
-      return;
-    }
+    // if(!raspuns || raspuns.length < 3){
+    //   setTitlu("Eroare");
+    //   setMesaj("Trebuie sa pui un raspuns valid!")
+    //   setOpenRez(true);
+    //   return;
+    // }
 
     if(!poza){
       setTitlu("Eroare");
@@ -276,7 +279,7 @@ export default function Adauga({userData}) {
 
     <h2>Adauga indicii</h2>
     <div className="form-group">
-      <TextField id="intrebare" label="Intrebare" variant="outlined" value={intrebare} onChange={e => setIntrebare(e.target.value)}/>
+      <TextField id="intrebare" label="Intrebare" variant="outlined" multiline maxRows={10} value={intrebare} onChange={e => setIntrebare(e.target.value)}/>
     </div>
     <div className="form-group">
       <TextField id="raspuns" label="Raspuns" variant="outlined" value={raspuns} onChange={e => setRaspuns(e.target.value)}/>
@@ -320,6 +323,24 @@ export default function Adauga({userData}) {
                 />
               }
               label="Arata poza jucatorilor"
+            />
+            <br/>
+      <FormControlLabel
+              control={
+                <Checkbox
+                  
+                  {...label1}
+                  checked={arataForma}
+                  onChange={() => setArataForma(!arataForma)}
+                  sx={{
+                    color: pink[800],
+                    '&.Mui-checked': {
+                      color: pink[600],
+                    },
+                  }}
+                />
+              }
+              label="Arată forma răspunsului"
             />
     
     </div>
