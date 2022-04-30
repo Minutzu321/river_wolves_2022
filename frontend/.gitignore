@@ -14,6 +14,7 @@
 
 #
 /public/th/
+/certs/
 
 # production
 /build
