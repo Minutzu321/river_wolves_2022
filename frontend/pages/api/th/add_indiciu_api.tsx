@@ -33,6 +33,7 @@ export default async (req, res) => {
         lng: body.locatie.lng.toString(),
         acc: body.locatie.acc.toString(),
         arataPoza: body.arataPoza,
+        arataForma: body.arataForma,
         etajID: body.etajID,
       }
   })

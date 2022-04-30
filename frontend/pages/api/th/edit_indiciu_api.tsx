@@ -33,6 +33,7 @@ export default async (req, res) => {
           raspuns: body.raspuns,
           poza: "/th/"+pozauid+".png",
           arataPoza: body.arataPoza,
+          arataForma: body.arataForma,
           etajID: body.etajID,
         }
     })
@@ -45,6 +46,7 @@ export default async (req, res) => {
           intrebare: body.intrebare,
           raspuns: body.raspuns,
           arataPoza: body.arataPoza,
+          arataForma: body.arataForma,
           etajID: body.etajID,
         }
     })

@@ -37,6 +37,8 @@ function getPerm(grad){
 
 function sort_membri(a, b){
   if(getPerm(a.grad) > getPerm(b.grad))
+      return -1;
+  if(getPerm(a.grad) < getPerm(b.grad))
       return 1;
   return 0;
 }

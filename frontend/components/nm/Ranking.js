@@ -57,23 +57,25 @@ const columns = [
     {
       field: 'nume',
       headerName: 'Nume',
-      width: 150,
+      // width: 170,
       editable: false,
     },
     {
       field: 'ir',
-      headerName: 'Indicii rezolvate',
+      headerName: 'Indicii rezolvate',  
+      // width: 150,
       editable: false,
       valueFormatter: (params) => {
         if (params.value == null) {
           return '';
         }
-        return `${params.value} %`;
+        return `${params.value}%`;
       },
     },
     {
       field: 'v',
-      headerName: 'Viteza rezolvare',
+      headerName: 'Medie viteza raspuns',
+      // width: 150,
       type: 'number',
       editable: false,
       valueFormatter: (params) => {
@@ -114,7 +116,6 @@ export default function Ranking({snack}) {
     <div style={{ height: 400, width: '100%' }}>
       <div style={{ display: 'flex', height: '100%' }}>
         {(juc.length > 0)?<DataGrid
-          style={{ flexGrow: 1 }}
           rows={juc}
           columns={columns}
           pageSize={100}
