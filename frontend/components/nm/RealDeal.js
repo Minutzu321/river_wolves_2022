@@ -165,7 +165,7 @@ export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii}
       setMesaj(<CircularProgress color="secondary"/>);
       setOpen(true);
 
-      if(!rasp || rasp.length < 3){
+      if(!rasp || rasp.length < 1){
         setTitlu("Răspuns greșit!");
         setMesaj(<Chip style={{margin: 'auto'}} label="Răspunsul este greșit!" color="error" />);
         setOpen(true);
