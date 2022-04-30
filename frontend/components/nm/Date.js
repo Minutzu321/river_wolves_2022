@@ -12,21 +12,21 @@ export default function Date({fetchUser, snack}) {
     const [nume, setNume] = useState("");
     const [tel, setTel] = useState("");
 
-    const salveaza = () => {
-        if(!nume || nume.length < 3){
-            snack("Trebuie sa pui numele complet.")
+    const salveaza = async () => {
+        if(!nume.trim() || nume.trim().length < 3 || nume.trim().split(" ").length < 2 || nume.trim().split(" ")[0].length < 2 || nume.trim().split(" ")[1].length < 2){
+            snack("Trebuie să pui numele complet.")
             return;
         }
 
-        if(!tel || tel.match(/\d/g).length!=10){
-            snack("Numele de telefon nu este valid.")
+        if(!tel.trim() || tel.trim().match(/\d/g).length!=10 || !tel.trim().startsWith("07")){
+            snack("Numărul de telefon nu este valid.")
             return;
           }
 
         const trimite = {
             c: cookies.get('riverwolves_cod_noaptea_muzeelor'),
-            nume: nume,
-            tel: tel,
+            nume: nume.trim(),
+            tel: tel.trim()
         }
 
         fetch('/api/th/salveaza_profil_api', {
@@ -34,9 +34,15 @@ export default function Date({fetchUser, snack}) {
             body: JSON.stringify(trimite)
           }).then((raspuns) => {
             if(raspuns.ok){
-              fetchUser();
+              let rj = raspuns.json().then((rj) => {
+                if(rj.succes){
+                  fetchUser();
+                }else{
+                  snack("Deja există cineva înregistrat cu acest nume!")
+                }
+              });
             }else{
-              snack("Eroare la server! Verificati conexiunea!")
+              snack("Eroare la server! Verificati conexiunea!");
             }
         });
         
