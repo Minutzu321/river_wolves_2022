@@ -54,6 +54,11 @@ export default async (req, res) => {
   const MUZEE = ["AVRAMIDE","ARTA","ACVARIU","ISTORIE"]
   const gmuzee = gMuzeu(indicii);
   let INDICII_FINALE = [];
+
+  //14 mai
+  //donatie minima: 5 lei
+  //toate donatiile vor fi trimise catre UNICEF
+
   for(let muzeu of MUZEE){
     if(!!gmuzee[muzeu]){
         let et = gEtaj(gmuzee[muzeu])

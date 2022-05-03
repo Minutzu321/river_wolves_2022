@@ -23,7 +23,7 @@ export default function BasicInfo({scan, setScan, user, handleResult, fetchDonat
                 onResult={(result)=>{handleResult(result)}}
                 containerStyle={{ maxWidth: "500px", margin: "auto"}}
             />}
-                <Button variant="contained" color="success" onClick={() => setScan(!scan)}>
+                <Button variant="contained" color="secondary" onClick={() => setScan(!scan)}>
                     Scanați codul
                 </Button>
         </div>

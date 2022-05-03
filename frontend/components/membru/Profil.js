@@ -57,7 +57,6 @@ export default function Profil({data, refData}) {
       setMesaj("Nu poți să ai "+calculateAge()+" ani")
       return;
     }
-    console.log(dataNaterii);
     const raspuns = await fetch('/api/membri/profil_api', {
       method: 'POST',
       body: JSON.stringify({

@@ -147,7 +147,7 @@ export default function Stand({userData}) {
         {
           jucatori.map((jucator, index) => (
               <div key={index}>
-                <ListItem button onClick={()=>{setMesaj(jucator.sid);setTitlu("Codul jucatorului "+jucator.nume);setOpenRez(true);}}>
+                <ListItem button onClick={()=>{setMesaj("https://ro049.com/noaptea-muzeelor/?cod="+jucator.sid);setTitlu("Codul jucatorului "+jucator.nume);setOpenRez(true);}}>
                   <ListItemText primary="Nume" secondary={jucator.nume} />
                   <ListItemText primary="Telefon" secondary={jucator.telefon} />
                 </ListItem>

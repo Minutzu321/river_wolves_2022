@@ -178,7 +178,7 @@ export default function AdminIndicii() {
             <h2>Administrare indicii</h2>
             <h5>{findicii.length} indicii</h5>
             <br/>
-            <TextField id="outlined-basic" label="Cauta indicii" variant="outlined" onChange={(event) =>handleSearch(event)} />
+            <TextField id="outlined-basic" label="Cauta indicii" variant="outlined" onChange={(event) =>handleSearch(event)} autoComplete="off"/>
             <br/>
             <button className='btn btn-primary btn-round' onClick={()=>{fetchIndicii(); snack("Indicii reincarcate!");}}>
                 <i className='now-ui-icons arrows-1_refresh-69'></i>
@@ -248,10 +248,10 @@ export default function AdminIndicii() {
                     <br/>
                     <DialogContentText id="alert-dialog-description">
                     <div className="form-group">
-                        <TextField id="intrebare" label="Intrebare" multiline maxRows={10} variant="outlined" value={intrebare} onChange={e => setIntrebare(e.target.value)}/>
+                        <TextField id="intrebare" label="Intrebare" multiline maxRows={10} variant="outlined" value={intrebare} onChange={e => setIntrebare(e.target.value)} autoComplete="off"/>
                     </div>
                     <div className="form-group">
-                        <TextField id="raspuns" label="Raspuns" variant="outlined" value={raspuns} onChange={e => setRaspuns(e.target.value)}/>
+                        <TextField id="raspuns" label="Raspuns" variant="outlined" value={raspuns} onChange={e => setRaspuns(e.target.value)} autoComplete="off"/>
                     </div>
 
                     <FormControl sx={{ m: 1, minWidth: 80 }}>

@@ -99,12 +99,10 @@ export default function Adauga({userData}) {
                     setLocStat(<span className="badge badge-danger">INUTILIZABILA</span>);
                 }
                 setLocatie(data);
-                console.log(position.coords);
             
         },
         (error) => {
           setLocStat(<span className="badge badge-danger">Eroare la locatie - {error.message}</span>)
-          console.log(error.code, error.message);
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000, forceRequestLocation: true, distanceFilter: 10}
     );
@@ -279,10 +277,10 @@ export default function Adauga({userData}) {
 
     <h2>Adauga indicii</h2>
     <div className="form-group">
-      <TextField id="intrebare" label="Intrebare" variant="outlined" multiline maxRows={10} value={intrebare} onChange={e => setIntrebare(e.target.value)}/>
+      <TextField id="intrebare" label="Intrebare" variant="outlined" multiline maxRows={10} value={intrebare} onChange={e => setIntrebare(e.target.value)} autoComplete="off"/>
     </div>
     <div className="form-group">
-      <TextField id="raspuns" label="Raspuns" variant="outlined" value={raspuns} onChange={e => setRaspuns(e.target.value)}/>
+      <TextField id="raspuns" label="Raspuns" variant="outlined" value={raspuns} onChange={e => setRaspuns(e.target.value)} autoComplete="off"/>
     </div>
 
     <FormControl sx={{ m: 1, minWidth: 80 }}>

@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import React, { useState, useEffect } from 'react';
 
+import Image from 'next/image'
 
 import dynamic from "next/dynamic";
 
@@ -154,7 +155,9 @@ function Nm() {
         <Navbar/>
         <div className="wrapper">
           {(!user && !c) && <Welcome/>}
+          {/* {(!!user || !!c) && <Image src="/pisica-nm.jpg" width={4805} height={3383}/>} */}
           <div className="main section container text-center">
+            {/* {(!!user || !!c) && <img src="/pisica-nm.jpg"/>} */}
             {user ? <RealDeal snack={snack} user={user} fetchUser={fetchUser} fetchDonatii={fetchDonatii} donatii={donatii}/>:<BasicInfo scan={scan} setScan={setScan} user={user} handleResult={handleResult}  fetchDonatii={fetchDonatii} donatii={donatii}/>}
           </div>
         </div>

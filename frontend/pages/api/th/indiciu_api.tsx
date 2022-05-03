@@ -1,10 +1,5 @@
 import DBClient from '../../../libs/prismadb'
 import { Prisma } from '@prisma/client';
-import raspuns_api from './raspuns_api';
-
-function normalizeaza(str){
-  return str.trim().toLowerCase().normalize('NFKD').replace(/[^\w]/g, '');
-}
 
 export default async (req, res) => {
     if (req.method !== 'POST') {
@@ -76,7 +71,7 @@ export default async (req, res) => {
         indiciu: indiciu.indiciu.intrebare,
         arataPoza: indiciu.indiciu.arataPoza,
         poza: indiciu.indiciu.arataPoza?indiciu.indiciu.poza:"",
-        forma: indiciu.indiciu.arataForma?indiciu.indiciu.raspuns.replace(/[^-,\s/_]/g, '*'):false,
+        forma: indiciu.indiciu.arataForma?indiciu.indiciu.raspuns.replace(/[^-,\s/_.]/g, '*'):false,
         ramase: ramase,
         total: total,
         next: false,

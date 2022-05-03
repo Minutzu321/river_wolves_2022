@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { Typography } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { TextField, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
 
@@ -22,106 +28,167 @@ const L3 = withStyles({
   }
 })(Typography);
 
-const columns = [
-    { field: 'id',
-      headerName: 'Rank',
-      width: 90,
-      renderCell: (params) => {
-        if(params.value==1) {
-          return (
-            <L1 variant="h4" color="warning">
-              #{params.value}
-            </L1>
-          )
-          }else if(params.value==2){
-            return (
-              <L2 variant="h5">
-                #{params.value}
-              </L2>
-            )
-        }else if(params.value==3){
-          return (
-            <L3 variant="h6">
-              #{params.value}
-            </L3>
-          )
-        }else{
-          return (
-            <Typography variant="subtitle2">
-              #{params.value}
-            </Typography>
-          )
-        }
-      },
-    },
-    {
-      field: 'nume',
-      headerName: 'Nume',
-      // width: 170,
-      editable: false,
-    },
-    {
-      field: 'ir',
-      headerName: 'Indicii rezolvate',  
-      // width: 150,
-      editable: false,
-      valueFormatter: (params) => {
-        if (params.value == null) {
-          return '';
-        }
-        return `${params.value}%`;
-      },
-    },
-    {
-      field: 'v',
-      headerName: 'Medie viteza raspuns',
-      // width: 150,
-      type: 'number',
-      editable: false,
-      valueFormatter: (params) => {
-        if (params.value == null) {
-          return '';
-        }
-        let m = parseInt(params.value / (1000 * 60) % 60);
-        let s = parseInt(params.value / (1000) % 60);
-        let t = s+" sec";
-        if(m>0){
-          t = m+" min "+s+" sec";
-        }
+const formCol = (rand, c) => {
+  if(rand.id==1) {
+    return (
+      <L1 variant="h4">
+        {c}
+      </L1>
+    )
+    }else if(rand.id==2){
+      return (
+        <L2 variant="h5">
+          {c}
+        </L2>
+      )
+  }else if(rand.id==3){
+    return (
+      <L3 variant="h6">
+        {c}
+      </L3>
+    )
+  }else{
+    return (
+      <Typography variant="subtitle2">
+        {c}
+      </Typography>
+    )
+  }
+}
 
-        return t;
-      },
-    },
-  ];
+const formTimp = (val) => {
+  let m = parseInt(val / (1000 * 60) % 60);
+  let s = parseInt(val / (1000) % 60);
+  let t = s+" sec";
+  if(m>0){
+    t = m+" min "+s+" sec";
+  }
+
+  return t;
+}
+
+// const columns = [
+//     { field: 'id',
+//       headerName: 'Rank',
+//       width: 90,
+//       renderCell: (params) => {
+        
+//       },
+//     },
+//     {
+//       field: 'nume',
+//       headerName: 'Nume',
+//       // width: 170,
+//       editable: false,
+//     },
+//     {
+//       field: 'ir',
+//       headerName: 'Indicii rezolvate',  
+//       // width: 150,
+//       editable: false,
+//       valueFormatter: (params) => {
+//         if (params.value == null) {
+//           return '';
+//         }
+//         return `${params.value}%`;
+//       },
+//     },
+//     {
+//       field: 'v',
+//       headerName: 'Medie viteza raspuns',
+//       // width: 150,
+//       type: 'number',
+//       editable: false,
+//       valueFormatter: (params) => {
+        
+//       },
+//     },
+//   ];
 
 export default function Ranking({snack}) {
 
   const [juc, setJuc] = React.useState([]);
+  const [fjuc, setFJuc] = React.useState([]);
 
-  React.useEffect(() => {
+  const fetchJuc = () => {
     fetch('/api/th/rank_api', {
       method: 'POST',
     }).then((raspuns) => {
       if(raspuns.ok){
           raspuns.json().then((rdat) =>{
               setJuc(rdat);
+              setFJuc(rdat);
             })
       }else{
         snack("Eroare la server! Incercati mai tarziu!")
       }
   });
-  }, [])
+  }
+
+  React.useEffect(() => {
+    fetchJuc();
+  }, []);
+
+  const handleSearch = (event) => {
+    let value = event.target.value.toLowerCase().trim();
+    let result = [];
+    const verif = (str) => {
+        return str.trim().toLowerCase().search(value) != -1;
+    }
+
+    result = juc.filter((data) => {
+        if(verif(data.nume) || verif(""+data.id)){
+            return true;
+        }else{
+            return false;
+        }
+    });
+    setFJuc(result);
+}
 
   return (
+    <>
+    <br/>
+      <TextField id="outlined-basic" label="Cauta jucatori" variant="outlined" onChange={(event) =>handleSearch(event)} autoComplete="off"/>
+    <br/>
+    <button className='btn btn-primary btn-round' onClick={()=>{fetchJuc(); snack("Jucatori reincarcati!");}}>
+          <i className='now-ui-icons arrows-1_refresh-69'></i>
+          Refresh
+    </button>
+    <br/>
     <div style={{ height: 400, width: '100%' }}>
       <div style={{ display: 'flex', height: '100%' }}>
-        {(juc.length > 0)?<DataGrid
-          rows={juc}
-          columns={columns}
-          pageSize={100}
-          rowsPerPageOptions={[100]}
-        />:<CircularProgress style={{margin: 'auto'}} color="secondary"/>}
+        {(juc.length > 0)?<>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="Ranking jucatori">
+            <TableHead>
+              <TableRow>
+                <TableCell>Rank</TableCell>
+                <TableCell align="left">Nume</TableCell>
+                <TableCell align="left">Indicii rezolvate</TableCell>
+                <TableCell align="left">Viteza medie de rezolvare</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {fjuc.map((rand) => (
+                <TableRow
+                  key={rand.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {formCol(rand, "#"+rand.id)}
+                  </TableCell>
+                  <TableCell align="left">{rand.nume}</TableCell>
+                  <TableCell align="left">{rand.ir}%</TableCell>
+                  <TableCell align="left">{formTimp(rand.v)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        </>:<CircularProgress style={{margin: 'auto'}} color="secondary"/>}
       </div>
     </div>
+    </>
   )
 }

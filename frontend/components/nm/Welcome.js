@@ -151,16 +151,16 @@ export default function Welcome() {
     }else{
 	    return <>
         <div className="page-header clear-filter" id="rw_header">
-        <div className="page-header-image" data-parallax="true" style={{backgroundImage: 'url("/noaptea_muzeelor.png")'}}/>
+        <div className="page-header-image" data-parallax="true" style={{backgroundImage: 'url("/nmup.jpg")'}}/>
             <div className="container">
                 <div className="content-center brand">
                     <img className="rvw-logo" src="rw.png" alt=""/>
-                    <h1 className="h1-seo">Noaptea Muzeelor</h1>
                     <h3>Căutare de comori</h3>
                     <h5>Echipa de robotică River Wolves în parteneriat cu Institutul de Cercetări Eco-Muzeale Gavrilă Simion Tulcea</h5>
                     
                     
                 </div>
+                <img className="nm-logo" src="nmp.png" alt=""/>
                 
             </div>
         </div>

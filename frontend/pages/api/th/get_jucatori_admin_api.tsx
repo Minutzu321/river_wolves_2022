@@ -46,9 +46,15 @@ export default async (req, res) => {
   const MUZEE = ["AVRAMIDE","ARTA","ACVARIU","ISTORIE"]
   const gnume = gNume(indicii);
   
+  
   let c = 0;
   let FIN = [];
   for(let nume of Object.keys(gnume)){
+    if(!nume || nume === "null"){
+      continue;
+    }
+    console.log(gnume[nume][0].jucator.creator, gnume[nume][0].jucator.telefon);
+    
     let C_NUME = [];
     const gmuzee = gMuzeu(gnume[nume]);
     for(let muzeu of MUZEE){
@@ -92,6 +98,8 @@ export default async (req, res) => {
     FIN.push({
         id: 'root',
         name: nume, 
+        creator: gnume[nume][0].jucator.creator,
+        telefon: gnume[nume][0].jucator.telefon,
         children: C_NUME
     })
   }

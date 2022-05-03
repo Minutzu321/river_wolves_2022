@@ -36,6 +36,9 @@ export default async (req, res) => {
 
   let jmod = []
   for(let juc of jucatori){
+    if(!juc.nume){
+      continue;
+    }
     let suma = 0;
     let rez = 0;
     for(let indiciu of juc.indicii){
