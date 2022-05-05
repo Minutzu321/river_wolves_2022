@@ -63,6 +63,12 @@ export default async (req, res) => {
     if(!!gmuzee[muzeu]){
         let et = gEtaj(gmuzee[muzeu])
         for(let etaj of Object.keys(et)){
+          if(muzeu === "AVRAMIDE" && etaj === "PARTER"){
+            let d = new Date();
+            if(d.getHours() < 19 || (d.getHours() == 19 && d.getMinutes() < 45)){
+              continue;
+            }
+          }
             let numar_indicii_total = et[etaj].length;
             let indicii_pe_etaj = (Math.floor(numar_indicii_total/10))+Math.min(3,numar_indicii_total);
             let pas = Math.ceil(numar_indicii_total / indicii_pe_etaj);

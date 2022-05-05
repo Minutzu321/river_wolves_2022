@@ -142,7 +142,7 @@ function Nm() {
       <>
       <Snackbar
                 open={snackOpen}
-                autoHideDuration={6000}
+                autoHideDuration={5000}
                 onClose={handleCloseSnack}
                 message={snackMessage}
                 action={action}

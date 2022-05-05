@@ -54,7 +54,6 @@ export default async (req, res) => {
     let proc = parseInt((rez/juc.indicii.length)*100);
     medie = medie || 0
     proc = proc || 0
-    console.log(juc.id, medie, proc);
     jmod.push({nume: juc.nume, ir: proc, v: medie})
   }
 

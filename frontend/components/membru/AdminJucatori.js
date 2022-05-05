@@ -15,6 +15,7 @@ export default function AdminJucatori({userData}) {
 
   const [jucatori, setJucatori]= useState([]);
   const [fjucatori, setFJucatori]= useState([]);
+  const [non, setNon]= useState(0);
 
 
   const [snackOpen, setSnackOpen] = useState(false);
@@ -27,6 +28,7 @@ export default function AdminJucatori({userData}) {
       raspuns.json().then((rasp)=> {
         setJucatori(rasp.jucatori);
         setFJucatori(rasp.jucatori);
+        setNon(rasp.non);
       })
     });
   }
@@ -147,7 +149,7 @@ export default function AdminJucatori({userData}) {
     }
 
     result = jucatori.filter((data) => {
-        if(verif(data.name)){
+        if(verif(data.name) || verif(data.telefon) || verif(data.creator)){
             return true;
         }else{
             return false;
@@ -160,6 +162,7 @@ export default function AdminJucatori({userData}) {
     <>
       <h2>Admin jucatori</h2>
       <h5>{jucatori.length} persoane</h5>
+      <h5>{non} care nu au completat profilul</h5>
       <br/>
       <TextField id="outlined-basic" label="Cauta jucatori" variant="outlined" onChange={(event) =>handleSearch(event)} autoComplete="off"/>
       <br/>
@@ -179,19 +182,19 @@ export default function AdminJucatori({userData}) {
       <div className="row">
             {
                 fjucatori.map((jucatorData, index) => (
-                <>
+                <div className='card card-body' key={index}>
+                  <p>Creator: <b>{jucatorData.creator}</b></p>
+                  <p>Telefon: <b>{jucatorData.telefon}</b></p>
                   <TreeView
                     aria-label="jucatori"
                     defaultCollapseIcon={<MinusSquare />}
                     defaultExpandIcon={<PlusSquare />}
                     defaultEndIcon={<CloseSquare />}
-                    key={index}
                     sx={{ height: 'auto', flexGrow: 1, width: '100%', overflowY: 'auto', margin: 'auto' }}
                   >
                     {renderTree(jucatorData)}
                   </TreeView>
-                  <hr key={jucatorData.name}/>
-                </>
+                </div>
                 ))
             }
         </div>

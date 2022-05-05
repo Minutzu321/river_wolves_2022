@@ -5,6 +5,9 @@ import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import React, { useEffect, useState } from 'react'
 import { pink } from '@mui/material/colors';
+import Grid from '@mui/material/Grid';
+import Fab from '@mui/material/Fab';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 import Webcam from "react-webcam";
 
@@ -173,6 +176,29 @@ export default function AdminIndicii() {
         setFIndicii(result);
     }
 
+    const onImageChange = async (event) => {
+        if (event.target.files && event.target.files[0]) {
+          let img = event.target.files[0];
+
+          const convertBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+              const fileReader = new FileReader();
+              fileReader.readAsDataURL(file)
+              fileReader.onload = () => {
+                resolve(fileReader.result);
+              }
+              fileReader.onerror = (error) => {
+                reject(error);
+              }
+            })
+          }
+
+          const base64 = await convertBase64(img)
+          setPoza(base64);
+          setCam(false);
+        }
+      };
+
     return (
         <>
             <h2>Administrare indicii</h2>
@@ -314,6 +340,30 @@ export default function AdminIndicii() {
                         <br/>
                         <button className='btn btn-info' onClick={()=> setCam(!cam)}>Inlocuieste poza</button>
                         <br/>
+                        <div className="form-group">
+                        <FormControlLabel
+                            control={
+                                <Grid container justify="center" alignItems="center">
+                            <input
+                            accept="image/*"
+                            id="contained-button-file"
+                            multiple
+                            type="file"
+                            onChange={onImageChange}
+                            />
+                            <label htmlFor="contained-button-file">
+                            <Fab component="span">
+                                <AddPhotoAlternateIcon />
+                            </Fab>
+                            </label>
+                        </Grid>
+                            }
+                            label="Inlocuieste poza"
+                        />
+                        </div>
+                        
+                        
+                        <br/>
                         {cam?<Webcam
                                 width={640}
                                 height={320}
@@ -327,7 +377,7 @@ export default function AdminIndicii() {
                                 <button
                                     className='btn btn-warning'
                                     onClick={() => {
-                                    const imageSrc = getScreenshot()
+                                    const imageSrc = getScreenshot();
                                     setPoza(imageSrc);
                                     setCam(false);
                                     }}

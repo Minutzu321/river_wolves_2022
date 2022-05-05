@@ -48,12 +48,14 @@ export default async (req, res) => {
   
   
   let c = 0;
+  let non = 0;
   let FIN = [];
   for(let nume of Object.keys(gnume)){
     if(!nume || nume === "null"){
+      non++;
       continue;
     }
-    console.log(gnume[nume][0].jucator.creator, gnume[nume][0].jucator.telefon);
+    // console.log(gnume[nume][0].jucator.creator, gnume[nume][0].jucator.telefon);
     
     let C_NUME = [];
     const gmuzee = gMuzeu(gnume[nume]);
@@ -95,6 +97,7 @@ export default async (req, res) => {
       });
       c++;
     }
+    
     FIN.push({
         id: 'root',
         name: nume, 
@@ -104,7 +107,7 @@ export default async (req, res) => {
     })
   }
 
-  res.status(200).json({jucatori: FIN})
+  res.status(200).json({jucatori: FIN, non: non})
   
   
   res.end()
