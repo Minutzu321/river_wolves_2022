@@ -26,10 +26,10 @@ export default async (req, res) => {
         return -1;
     }
     if(a.v < b.v && a.v != 0){
-        return 1;
+        return -1;
     }
     if(a.v > b.v || a.v == 0){
-        return -1;
+        return 1;
     }
     return 0;
 }
