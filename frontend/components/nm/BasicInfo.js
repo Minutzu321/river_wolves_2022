@@ -14,6 +14,11 @@ export default function BasicInfo({scan, setScan, user, handleResult, fetchDonat
         <div className="card-header mt-2">
                 Căutare de comori în Noaptea Muzeelor
         </div>
+        <div className="card-header mt-2">
+                <Chip color="success" avatar={<Avatar src="/sponsori/bolt.png" />} label="Curse gratuite Bolt pentru câștigătorii de pe locul 1"/>
+                <br/>
+                <Chip avatar={<Avatar src="/sponsori/ss.jpg" />} label="Vouchere Sabina's Sweets pentru câștigătorii de pe locurile 1,2 și 3"/>
+        </div>
         <div className="card-body">
             <h4 className="card-title">Bine ați venit la Noaptea Muzeelor!</h4>
             <p className="card-text">Pentru a începe căutarea de comori, vă rugăm să găsiți cea mai apropiată stație de voluntari(la intrarea oricărui muzeu) și să scanați codul oferit de aceștia.</p>
