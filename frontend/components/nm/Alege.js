@@ -17,12 +17,14 @@ const Harta = dynamic(() => import("./Harta"), {
   ssr: false
 });
 
-export default function Alege({user, nextSel}) {
+export default function Alege({user, nextSel, t}) {
 
   const [sel, setSel] = React.useState(-1);
   const [coords, setCoords] = React.useState([0,0]);
 
-  
+  const dt = new Date(t);
+
+  const avr = dt.getHours() >= 19 && dt.getMinutes() >= 45;
 
   function translat(str){
     switch(str) {
@@ -72,11 +74,12 @@ export default function Alege({user, nextSel}) {
         <br/><br/>
         <hr/>
       </>}
+      {!avr && <h6 style={{color: 'red'}}>Indiciile de la Casa Avramide vor fi disponibile după ora 19:45. Până atunci vă invităm să parcurgeți celelalte indicii sau să vă bucurați de concertul de la Casa Avramide.</h6>}
         <ButtonGroup size="large" color="secondary" orientation="vertical" aria-label="large button group">
-            <Button disabled={user.muzee.ISTORIE || user.start==="ISTORIE"} onClick={()=>{if(!user.muzee.ISTORIE){setSel(0); setCoords([45.186007, 28.815076])}}}><AccountBalanceOutlinedIcon/>Muzeul de Istorie<AccountBalanceOutlinedIcon/></Button>
-            <Button disabled={user.muzee.ARTA || user.start==="ARTA"} onClick={()=>{if(!user.muzee.ARTA){setSel(1); setCoords([45.180155, 28.804791])}}}><ColorLensOutlinedIcon/>Muzeul de Artă<ColorLensOutlinedIcon/></Button>
-            <Button disabled={user.muzee.AVRAMIDE || user.start==="AVRAMIDE"} onClick={()=>{if(!user.muzee.AVRAMIDE){setSel(2); setCoords([45.177021, 28.801707])}}}><MuseumOutlinedIcon/>Casa Avramide<MuseumOutlinedIcon/></Button>
-            <Button disabled={user.muzee.ACVARIU || user.start==="ACVARIU"} onClick={()=>{if(!user.muzee.ACVARIU){setSel(3); setCoords([45.179829, 28.805809])}}}><WaterOutlinedIcon/>Muzeul Delta-Dunării<WaterOutlinedIcon/></Button>
+            <Button disabled={user.muzee.ISTORIE || user.start==="ISTORIE"} onClick={()=>{if(!user.muzee.ISTORIE && user.start !== "ISTORIE"){setSel(0); setCoords([45.186007, 28.815076])}}}><AccountBalanceOutlinedIcon/>Muzeul de Istorie<AccountBalanceOutlinedIcon/></Button>
+            <Button disabled={user.muzee.ARTA || user.start==="ARTA"} onClick={()=>{if(!user.muzee.ARTA && user.start !== "ARTA"){setSel(1); setCoords([45.180155, 28.804791])}}}><ColorLensOutlinedIcon/>Muzeul de Artă<ColorLensOutlinedIcon/></Button>
+            <Button disabled={user.muzee.AVRAMIDE || user.start==="AVRAMIDE" || !avr} onClick={()=>{if(!user.muzee.AVRAMIDE && user.start !== "AVRAMIDE" && avr){setSel(2); setCoords([45.177021, 28.801707])}}}><MuseumOutlinedIcon/>Casa Avramide<MuseumOutlinedIcon/></Button>
+            <Button disabled={user.muzee.ACVARIU || user.start==="ACVARIU"} onClick={()=>{if(!user.muzee.ACVARIU && user.start!=="ACVARIU"){setSel(3); setCoords([45.179829, 28.805809])}}}><WaterOutlinedIcon/>Muzeul Delta-Dunării<WaterOutlinedIcon/></Button>
         </ButtonGroup>
       </>
   );

@@ -31,6 +31,7 @@ function Nm() {
   const [snackOpen, setSnackOpen] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [user, setUser] = useState(false);
+  const [timp, setTimp] = useState(false);
 
   const [scan, setScan] = useState(false);
 
@@ -68,6 +69,7 @@ function Nm() {
             fetchDonatii();
             if(!!udat.rez){
               setUser(udat.rez);
+              setTimp(udat.t);
             }else{
               snack("Te rugam sa nu scanezi alte coduri..")
             }
@@ -158,7 +160,7 @@ function Nm() {
           {/* {(!!user || !!c) && <Image src="/pisica-nm.jpg" width={4805} height={3383}/>} */}
           <div className="main section container text-center">
             {/* {(!!user || !!c) && <img src="/pisica-nm.jpg"/>} */}
-            {user ? <RealDeal snack={snack} user={user} fetchUser={fetchUser} fetchDonatii={fetchDonatii} donatii={donatii}/>:<BasicInfo scan={scan} setScan={setScan} user={user} handleResult={handleResult}  fetchDonatii={fetchDonatii} donatii={donatii}/>}
+            {user ? <RealDeal snack={snack} user={user} fetchUser={fetchUser} fetchDonatii={fetchDonatii} donatii={donatii} t={timp}/>:<BasicInfo scan={scan} setScan={setScan} user={user} handleResult={handleResult}  fetchDonatii={fetchDonatii} donatii={donatii}/>}
           </div>
         </div>
         <PageFooter/>

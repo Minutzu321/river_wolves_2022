@@ -73,9 +73,10 @@ function translat(str){
     }
 }
 
-export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii}) {
+export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii, t}) {
 
     const [indiciu, setIndiciu] = useState("");
+    const [praji, setPraji] = useState(false);
     const [stats, setStats] = useState("");
     const [arataPoza, setArataPoza] = useState(false);
     const [poza, setPoza] = useState("");
@@ -129,6 +130,7 @@ export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii}
                       setAlege(false);
                       //TODO NU MAI TREBUIE
                       setIndiciu(udat.indiciu);
+                      setPraji(udat.prajitura);
                       setStats(udat.total-udat.ramase+"/"+udat.total);
                       setArataPoza(udat.arataPoza);
                       setPoza(udat.poza);
@@ -261,14 +263,18 @@ export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii}
             </div>
             <div className="card-body">
                 {!indiciu?<>
-                  {alege?<Alege user={user} nextSel={nextSel}/>:<>
+                  {alege?<Alege user={user} nextSel={nextSel} t={t}/>:<>
                     {ranking?<Ranking snack={snack}/>:<CircularProgress color="secondary"/>}
                   </>}
                 </>:
                 <>
+                  {praji && <>
+                    <Image src="/sponsori/ss.jpg" width={100} height={100}/>
+                    <h3 style={{color: 'red'}}>Sabina's Sweets vă oferă o surpiză dulce! Veniți la demisolul Casei Avramide cu echipa ca să o primiți!</h3>
+                  </>}
                   <h4 className="card-title">{indiciu}</h4>
                   {(idat.total===idat.ramase) && <p>Introduceți răspunsul în câmpul de sub poză</p>}
-                  {arataPoza&&<img src={poza} alt="Indiciu"  style={{maxWidth: '300px'}}/>}
+                  {arataPoza&&<img src={poza} alt="Indiciu" style={{maxWidth: '300px'}}/>}
                   <hr/>
                   {!!idat.forma&&<p>Forma răspunsului: <strong>{idat.forma}</strong></p>}
                   <br/>

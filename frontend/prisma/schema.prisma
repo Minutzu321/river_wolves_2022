@@ -126,6 +126,13 @@ model Etaj {
   indiciI Indiciu[]
 }
 
+model Prajitura {
+  id Int @id @default(autoincrement())
+  jucatorID Int @unique
+  nume String
+  acceptat Boolean @default(false)
+}
+
 enum Muzeu {
   AVRAMIDE
   ACVARIU

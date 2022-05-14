@@ -158,6 +158,22 @@ export default function AdminJucatori({userData}) {
     setFJucatori(result);
 }
 
+
+  const daSurpriza = () => {
+    fetch('/api/th/add_prajitura', {
+      method: 'POST',
+    }).then((raspuns) => {
+      raspuns.json().then((rasp)=> {
+        if(rasp.succes){
+          snack("Prajitura lui "+ rasp.nume)
+        }else{
+          snack("Nu sunt persoane valabile pentru prajitura");
+        }
+        
+      })
+    });
+  }
+
   return (
     <>
       <h2>Admin jucatori</h2>
@@ -180,6 +196,9 @@ export default function AdminJucatori({userData}) {
 
 
       <div className="row">
+      <button className='btn btn-danger btn-round' onClick={()=>{daSurpriza()}}>
+          DA O PRAJITUA
+      </button>
             {
                 fjucatori.map((jucatorData, index) => (
                 <div className='card card-body' key={index}>

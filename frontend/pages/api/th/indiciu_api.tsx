@@ -9,7 +9,7 @@ export default async (req, res) => {
 
   const body = JSON.parse(req.body);
   const prisma = DBClient.instance;
-  const [indiciu, ramase, total] = await prisma.$transaction([prisma.indiciuMeta.findFirst({
+  const [indiciu, ramase, total, prajitura] = await prisma.$transaction([prisma.indiciuMeta.findFirst({
       where: {
           jucatorId: body.user.id,
           rezolvat: false,
@@ -52,6 +52,12 @@ export default async (req, res) => {
         jucatorId: body.user.id,
     },
   }),
+  prisma.prajitura.findFirst({
+    where: {
+      jucatorID: body.user.id,
+      acceptat: false,
+    },
+  }),
   ])
 
   if(!!indiciu && !indiciu.timp){
@@ -71,11 +77,12 @@ export default async (req, res) => {
         indiciu: indiciu.indiciu.intrebare,
         arataPoza: indiciu.indiciu.arataPoza,
         poza: indiciu.indiciu.arataPoza?indiciu.indiciu.poza:"",
-        forma: indiciu.indiciu.arataForma?indiciu.indiciu.raspuns.replace(/[^-,\s/_.]/g, '*'):false,
+        forma: indiciu.indiciu.arataForma?indiciu.indiciu.raspuns.replace(/[^-,\s/_.()]/g, '*'):false,
         ramase: ramase,
         total: total,
         next: false,
         etaj: indiciu.indiciu.etaj.etaj,
+        prajitura: !!prajitura,
         terminat: false
     };
     res.status(200).json(fin);

@@ -25,7 +25,7 @@ export default async (req, res) => {
    }
   })
   
-  res.status(200).json({rez: user})
+  res.status(200).json({rez: user, t: new Date().toISOString()})
   
   
   res.end()
