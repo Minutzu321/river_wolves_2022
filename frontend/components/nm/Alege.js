@@ -24,7 +24,7 @@ export default function Alege({user, nextSel, t}) {
 
   const dt = new Date(t);
 
-  const avr = dt.getHours() >= 19 && dt.getMinutes() >= 45;
+  const avr = true;
 
   function translat(str){
     switch(str) {
