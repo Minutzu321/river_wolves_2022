@@ -41,7 +41,7 @@ const PageHeader = ({ titlu, subtitlu, subsubtitlu }) => {
 
 PageHeader.defaultProps = {
     titlu: 'River Wolves',
-    subtitlu: 'We howl. We work. We succeed. Together.',
+    subtitlu: 'We work. We howl. We succeed. Together.',
     subsubtitlu: 'Romanian FTC Robotics team',
 }
 
