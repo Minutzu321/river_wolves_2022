@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { TextField, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
+import useEffectOnce from '../../libs/useonce';
 
 const L1 = withStyles({
   root: {
@@ -125,9 +126,9 @@ export default function Ranking({snack}) {
   });
   }
 
-  React.useEffect(() => {
+  useEffectOnce(() => {
     fetchJuc();
-  }, []);
+  });
 
   const handleSearch = (event) => {
     let value = event.target.value.toLowerCase().trim();

@@ -43,12 +43,14 @@
     "react-slick": "^0.28.1",
     "react-spring": "^9.4.4",
     "react-swipeable-views": "^0.14.0",
+    "react-tsparticles": "^2.1.0",
     "react-visibility-sensor": "5.1.1",
     "react-webcam": "^7.0.1",
     "sass": "^1.50.0",
     "sharp": "^0.30.3",
     "slick-carousel": "^1.8.1",
     "string-similarity": "^4.0.4",
+    "tsparticles": "^2.1.0",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {

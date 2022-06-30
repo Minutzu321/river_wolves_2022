@@ -1,11 +1,25 @@
 import React  from 'react';
 import { Sponsori } from './Sponsori';
+import dynamic from 'next/dynamic'
+
+const Parti = dynamic(
+  () => import('../components/Particule'),
+  { ssr: false }
+)
+
 const PageHeader = ({ titlu, subtitlu, subsubtitlu }) => {
+    
+    
+
     return (
         <div className="page-header clear-filter" filter-color="orange">
-            <div className="page-header-image" data-parallax="true" style={{backgroundImage: 'url("/header.jpg")'}}/>
+            
+            <div className="page-header-image" data-parallax="true"/>
+            
             <div className="container">
+                
                 <div className="content-center brand">
+                
                     <img className="rvw-logo" src="rw.png" alt=""/>
                     <h1 className="h1-seo">{titlu}</h1>
                     <h3>{subtitlu}</h3>
@@ -20,6 +34,7 @@ const PageHeader = ({ titlu, subtitlu, subsubtitlu }) => {
                 </div>
                 
             </div>
+            <Parti/>
         </div>
     )
 }

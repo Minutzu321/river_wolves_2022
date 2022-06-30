@@ -99,9 +99,9 @@ export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii,
       setOpen(false);
     };
 
-    useEffect(()=>{
+    useEffectOnce(()=>{
       fetchIndiciu();
-    },[user])
+    })
 
     const nextSel = async (muzeu) => {
       const response = await fetch("/api/th/alege_api", {
