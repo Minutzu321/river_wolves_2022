@@ -56,6 +56,7 @@ const options = {
     async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token
+        console.log("at",token.accessToken);
       }
       // setDB(token.email, token.accessToken);
       return token

@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react"
+import { useEffect,useState,useCallback } from "react"
 import PageHeader from '../PageHeader'
 import PageFooter from '../PageFooter'
 import classnames from 'classnames';
@@ -14,7 +14,22 @@ import AdminJucatori from "./AdminJucatori";
 
 const Membru = ({userData, refData}) => {
 
+  const isBrowser = typeof window !== "undefined";
+
   const [perm, setPerm] = useState(0);
+  const [wsInstance, setWsInstance] = useState(null);
+
+  const updateWs = useCallback((url) => {
+    if(!browser) return setWsInstance(null);
+    
+    // Close the old connection
+    if(wsInstance?.readyState !== 3)
+      wsInstance.close();
+ 
+    // Create a new connection
+    const newWs = new WebSocket(url);
+    setWsInstance(newWs);
+ }, [wsInstance])
 
   const [tabs, setTabs] = useState([
     {
@@ -66,6 +81,16 @@ const Membru = ({userData, refData}) => {
         arata = 0;
     }
     if(arata==1){
+      
+      if(isBrowser) { 
+        const ws = new WebSocket("wss://live.ro049.com/user");
+        ws.addEventListener('open', (event) => {
+          ws.send('SALUU!');
+        });
+        setWsInstance(ws);
+      }
+     
+      
       if(!user.nume || !user.telefon || !user.data_nasterii){
         setTabs([
           {
@@ -125,6 +150,11 @@ const Membru = ({userData, refData}) => {
         },
       ])
     }
+
+    return () => {
+      if(ws?.readyState !== 3) 
+       ws.close();
+     }
   }, [])
   
   return (
