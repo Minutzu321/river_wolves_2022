@@ -3,8 +3,23 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/nm',
-        destination: '/noaptea-muzeelor',
+        source: '/h',
+        destination: '/halloween',
+        permanent: true,
+      },
+      {
+        source: '/a',
+        destination: '/halloween/admin',
+        permanent: true,
+      },
+      {
+        source: '/v',
+        destination: '/halloween/voluntar',
+        permanent: true,
+      },
+      {
+        source: '/l',
+        destination: '/halloween/login',
         permanent: true,
       },
       {
