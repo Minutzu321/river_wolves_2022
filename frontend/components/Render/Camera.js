@@ -4,7 +4,7 @@ import { TextureLoader, RepeatWrapping, MirroredRepeatWrapping } from "three";
 
 function getMaterial(textura){
 
-  const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = getTextures(textura)
+  const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useTextures(textura)
 
   return <meshStandardMaterial
           map={colorMap}
@@ -15,7 +15,7 @@ function getMaterial(textura){
           />
 }
 
-function getTextures(textura){
+function useTextures(textura){
   const texturi = setMapping(useLoader(TextureLoader, [
     '/texturi/'+textura+'/color.jpg',
     '/texturi/'+textura+'/displacement.jpg',

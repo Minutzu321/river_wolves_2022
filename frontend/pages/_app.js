@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import styles from "./styles/now-ui-kit.scss"
-import "./dash/scss/app.scss"
+// import "./styles/dash/app.scss"
 import { SessionProvider } from "next-auth/react"
 
 import Head from "next/head";
