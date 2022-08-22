@@ -1,13 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import styles from "./styles/now-ui-kit.scss"
+import "/styles/scss/nextjs-material-kit.scss?v=1.2.0";
 // import "./styles/dash/app.scss"
 import { SessionProvider } from "next-auth/react"
 
 import Head from "next/head";
 import Script from 'next/script';
+import { useEffect } from 'react';
+
 
 
 const RiverWolvesApp = ({Component, session, ...pageProps }) => {
+    useEffect(() => {
+        const jssStyles = document.querySelector('#jss-server-side');
+        if (jssStyles) {
+            jssStyles.parentElement.removeChild(jssStyles);
+        }
+    }, []);
+
     return <>
         <SessionProvider session={session}>
             <Head>
