@@ -11,11 +11,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/a',
-        destination: '/halloween/admin',
-        permanent: true,
-      },
-      {
         source: '/v',
         destination: '/halloween/voluntar',
         permanent: true,

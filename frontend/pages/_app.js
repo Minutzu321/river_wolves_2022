@@ -1,12 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import styles from "./styles/now-ui-kit.scss"
-import "/styles/scss/nextjs-material-kit.scss?v=1.2.0";
-// import "./styles/dash/app.scss"
 import { SessionProvider } from "next-auth/react"
 
 import Head from "next/head";
 import Script from 'next/script';
 import { useEffect } from 'react';
+
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 
 
@@ -36,6 +36,7 @@ const RiverWolvesApp = ({Component, session, ...pageProps }) => {
             </Head>
 
             <Component {...pageProps} />
+
 
             <Script src="js/core/jquery.min.js" strategy='beforeInteractive'/>
             <Script src="js/core/popper.min.js" strategy='beforeInteractive'/>
