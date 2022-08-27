@@ -12,21 +12,73 @@ export default async (req, res) => {
   if (!sesiune) return
 
   const prisma = DBClient.instance
-  const useri = await prisma.user.findMany({
-    select: {
-        email:true,
-        nume: true,
-        telefon: true,
-        data_nasterii: true,
-        grad: true,
-        departament: true,
-        sid: true,
-        acceptat: true,
 
-     }
-  })
+  let user;
   
-  res.status(200).json({useri: useri})
+  try {
+    user = await prisma.user.findUnique({
+      where: {
+        email: sesiune.user.email
+      },
+      select: {
+          email:true,
+          nume: true,
+          telefon: true,
+          data_nasterii: true,
+          grad: true,
+          departament: true,
+          sid: true,
+          acceptat: true,
+          poza: true,
+          incredere: true,
+          feedback: true,
+          feedbackEchipa: true,
+          feedbackSedinte: true,
+      }
+    })
+  }catch{
+    res.status(200).json({err:true})
+  }
+
+  let infos = true, autorizat = false, taskuri = [], sedinte = [];
+
+  if(!!user){
+    if(user.acceptat){
+      autorizat = true;
+      if(!!user.nume && !!user.telefon && !!user.data_nasterii){
+        infos = false;
+        const [gtaskuri, gsedinte, upd] = await prisma.$transaction([
+          prisma.task.findMany(),
+          prisma.sedinta.findMany(),
+          prisma.user.update({
+            where: {
+              email: sesiune.user.email,
+            },
+            data: {
+              ultimaActiune: new Date(),
+            },
+          })
+        ])
+        taskuri = gtaskuri;
+        sedinte = gsedinte;
+      }
+    }
+  }else{
+    await prisma.user.create({
+      data: {
+        email: sesiune.user.email
+      }
+    })
+  }
+  
+  res.status(200).json({
+    err: false,
+    inf: infos,
+    aut: autorizat,
+    user: (infos || !autorizat) ? undefined : user,
+    taskuri: taskuri,
+    sedinte: sedinte
+  })
 
 
 

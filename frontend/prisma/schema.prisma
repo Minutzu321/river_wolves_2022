@@ -42,14 +42,109 @@ model User {
   nume          String?
   telefon       String?
   data_nasterii DateTime?
+  poza          String?
+
   grad          Grad @default(NEAPROBAT)
   departament   Departament @default(NEREPARTIZAT)
+
   ips           IP[]
   locatii       Locatie[]
+
   incredere     Int @default(0)
+  acceptat      Boolean @default(false)
+
+  participari Participare[]
+
+  feedback Feedback?
+
+  feedbackSedinte FeedbackSedinta[]
+  feedbackEchipa  FeedbackEchipa[]
+
+
   primaLogare   DateTime @default(now())
   ultimaActiune DateTime @default(now())
 }
+
+model Sedinta {
+  id Int @id @default(autoincrement())
+  titlu String
+  desc String?
+  data_ora DateTime
+  durata Float
+  departament Departament
+
+
+  participari Participare[]
+}
+
+model Participare {
+  id Int @id @default(autoincrement())
+
+  data_ora DateTime @default(now())
+
+  prezent Boolean @default(false)
+
+  sedinta   Sedinta @relation(fields: [sedintaId], references: [id])
+  sedintaId Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+
+  titlu String
+  desc String?
+
+  rezolvatDe String?
+  rezolvat Boolean @default(false)
+
+  departament Departament
+}
+
+
+model Feedback{
+  id      Int @id @default(autoincrement())
+
+  user    User @relation(fields: [userId], references: [id])
+  userId  Int @unique
+
+  by      String
+
+  fSkill  Int //cat de bun e pe departament
+  fMuncit Int //cat de muncitor este
+  fComuni Int //cat de bine comunica
+  fSerios Int //cat de serios este
+  fPersis Int //cat de persistent e
+}
+
+model FeedbackSedinta{
+  id      Int @id @default(autoincrement())
+
+  user    User @relation(fields: [userId], references: [id])
+  userId  Int @unique
+
+  fAscult Int //ascultat
+  fMuncit Int //muncit
+  fInvat  Int //invatat
+  fSimt   Int //simtit bine
+  fAltele String? //altele
+}
+
+model FeedbackEchipa{
+  id      Int @id @default(autoincrement())
+
+  user    User @relation(fields: [userId], references: [id])
+  userId  Int @unique
+
+  fComunic  Int //boardul a comunicat
+  fEficient Int //simt ca echipa este eficienta, nu este haos
+  fActivit  Int //activitati constante(nu numai sedinte de departament)
+  fComunit  Int //imi place comunitatea
+  fAltele   String? //altele
+}
+
 
 enum Grad {
   NEAPROBAT
@@ -59,8 +154,6 @@ enum Grad {
   PARTENER
   MENTOR
   BOARD
-  TEAM_LEADER_TEHNIC
-  TEAM_LEADER_NON_TEHNIC
   TEAM_LEADER
   MINA
 }
