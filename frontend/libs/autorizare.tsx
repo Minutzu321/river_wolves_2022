@@ -12,8 +12,6 @@ export default async function autorizeaza(req, res) {
 
 function getPerm(user){
   switch(user.grad){
-    case "IGNORAT":
-      return 0;
     case "NEAPROBAT":
       return 0;
     case "VOLUNTAR":
@@ -54,8 +52,6 @@ export async function useAuth(req, res){
 
     return [null, null, prisma, 0] as const
   }
-
-  
 
   try {
     

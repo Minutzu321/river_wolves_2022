@@ -9,10 +9,23 @@ export default async (req, res) => {
             NOT : {
                 email: user.email,
             }
+        },
+        select:{
+            email: true,
+            nume: true,
+            telefon: true,
+            data_nasterii: true,
+            poza: true,
+
+            grad: true,
+            departament: true,
+
+            participari: true
         }
     });
     
-    console.log(membri);
-    
+    res.status(200).json({
+        membri: membri,
+    })
 
 }

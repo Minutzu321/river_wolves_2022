@@ -7,9 +7,6 @@ import { useEffectOnce } from 'usehooks-ts'
 import { useSession, signIn, getSession} from "next-auth/react"
 import { useEffect, useState } from 'react';
 
-import { serv } from '../../utils/server';
-
-
 import FeedbackSedinta from '../../components/dashboard/FeedbackSedinta';
 import Firmituri from '../../components/dashboard/Firmituri';
 import Login from '../../components/dashboard/Login';

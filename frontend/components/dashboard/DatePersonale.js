@@ -70,7 +70,7 @@ export default function DatePersonale() {
       return "";
     
     if(telef.length != 10 || !numaiNumere(telef) || !(telef.startsWith("07") || telef.startsWith("02"))){
-      return "Numarul de telefon nu este valid"
+      return "Numarul de telefon nu este valid."
     }
 
     return ""
@@ -119,7 +119,12 @@ export default function DatePersonale() {
       dat: dataNaterii,
     })
       .then(res => {
+        const data = res.data
+        if(!data.succes){
+          alert("Numarul de telefon deja este folosit");
+        }
         publish('doneInfos');
+        
       })
   }
 

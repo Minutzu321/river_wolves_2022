@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useInterval } from 'usehooks-ts'
 
-import { saptziluna } from '../../utils/data';
+import { saptziluna } from '../../libs/data';
 
 export default function Rezumat() {
 

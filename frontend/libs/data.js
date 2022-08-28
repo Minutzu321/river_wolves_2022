@@ -7,3 +7,9 @@ export const saptziluna = (azi) => {
 
     return zisapt+", "+azi.getDate()+" "+luna
 }
+
+export const zilunaan = (azi) => {
+    let luna = luni[ azi.getMonth() ];
+
+    return azi.getDate()+" "+luna+" "+azi.getFullYear()
+}
