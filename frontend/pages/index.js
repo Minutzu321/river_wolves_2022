@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Script from 'next/script'
 import Aplica from '../components/acasa/Aplica'
 import Despre from '../components/acasa/Despre'
 import Imagini from '../components/acasa/Imagini'

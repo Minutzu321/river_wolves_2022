@@ -32,9 +32,9 @@ const Navbar = ({butoane, laMembru}) => {
             <p>Delogheaza-te</p>
         </button>
       ) : (
-        <Link href="/membru">
+        <Link href="/dashboard">
             <a className="nav-link btn btn-neutral">
-                <p>Membru</p>
+                <p>Dashboard</p>
             </a>
         </Link>
       )}

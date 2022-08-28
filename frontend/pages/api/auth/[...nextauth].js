@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import FacebookProvider from "next-auth/providers/facebook";
 
 const options = {
   theme: {
@@ -67,11 +68,11 @@ const options = {
     }
   },
   session: {
-    maxAge: 24 * 60 * 60, // 1 zi
+    maxAge: 24 * 60 * 60 * 31 * 10, // 10 luni
   },
   jwt: {
     secret: process.env.JWT_SECRET,
-    maxAge: 24 * 60 * 60, // 1 zi,
+    maxAge: 24 * 60 * 60 * 31 * 10, // 10 luni
     encryption: true
   },
   providers: [

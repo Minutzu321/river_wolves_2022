@@ -1,10 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    esmExternals: false,
+  },  
   async redirects() {
     return [
       {
-        source: '/nm',
-        destination: '/noaptea-muzeelor',
+        source: '/h',
+        destination: '/halloween',
+        permanent: true,
+      },
+      {
+        source: '/v',
+        destination: '/halloween/voluntar',
+        permanent: true,
+      },
+      {
+        source: '/l',
+        destination: '/halloween/login',
         permanent: true,
       },
       {
@@ -15,9 +28,7 @@ const nextConfig = {
     ]
   },
   reactStrictMode: true,
-  experimental: {
-    outputStandalone: true,
-  },
 }
 
 module.exports = nextConfig
+

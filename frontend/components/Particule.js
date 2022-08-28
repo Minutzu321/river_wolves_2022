@@ -5,23 +5,17 @@ import { loadFull } from "tsparticles";
 export default function Particule() {
 
     const particlesInit = async (main) => {
-        console.log(main);
-    
         // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
         // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
         // starting from v2 you can add only the features you need reducing the bundle size
         await loadFull(main);
       };
     
-      const particlesLoaded = (container) => {
-        console.log(container);
-      };
 
   return (
     <>
     <Particles id="stele"
     init={particlesInit} 
-    loaded={particlesLoaded} 
     options={{
       "autoPlay": true,
       "background": {
@@ -431,7 +425,6 @@ export default function Particule() {
     }}/>
     <Particles id="planetute" 
             init={particlesInit} 
-            loaded={particlesLoaded} 
             options={
                 {
                     "autoPlay": true,

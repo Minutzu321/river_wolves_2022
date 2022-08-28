@@ -4,9 +4,20 @@ import { SessionProvider } from "next-auth/react"
 
 import Head from "next/head";
 import Script from 'next/script';
+import { useEffect } from 'react';
+
+import 'react-perfect-scrollbar/dist/css/styles.css'
+
 
 
 const RiverWolvesApp = ({Component, session, ...pageProps }) => {
+    useEffect(() => {
+        const jssStyles = document.querySelector('#jss-server-side');
+        if (jssStyles) {
+            jssStyles.parentElement.removeChild(jssStyles);
+        }
+    }, []);
+
     return <>
         <SessionProvider session={session}>
             <Head>
@@ -19,16 +30,13 @@ const RiverWolvesApp = ({Component, session, ...pageProps }) => {
                 />
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
                 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200&display=optional" rel="stylesheet" />
-                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossOrigin="anonymous"/>
-                <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons&display=optional" />
-                <link
-                href="https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css"
-                rel="stylesheet"
-                />
+                {/* <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossOrigin="anonymous"/>
+                <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons&display=optional" /> */}
                 <title>River Wolves</title>
             </Head>
 
             <Component {...pageProps} />
+
 
             <Script src="js/core/jquery.min.js" strategy='beforeInteractive'/>
             <Script src="js/core/popper.min.js" strategy='beforeInteractive'/>

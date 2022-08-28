@@ -46,11 +46,11 @@ $default-color:              #888888 !default;
 $default-states-color:       lighten($default-color, 6%) !default;
 $default-color-opacity:      rgba(182, 182, 182, .6) !default;
 
-$primary-color:              #640d53 !default;
+$primary-color:              #563d9c !default;
 $primary-states-color:       lighten($primary-color, 6%) !default;
 $primary-color-opacity:      rgba(249, 99, 50, .3) !default;
 $primary-color-alert:        rgba(249, 50, 110, 0.8) !default;
-
+    
 $success-color:              #18ce0f !default;
 $success-states-color:       lighten($success-color, 6%) !default;
 $success-color-opacity:      rgba(24, 206, 15, .3) !default;
@@ -125,8 +125,8 @@ $margin-base-horizontal:       15px !default;
 $margin-bottom:                 10px        !default;
 $border:                        1px solid   !default;
 $border-radius-extra-small:     0.125rem    !default;
-$border-radius-small:           0.1875rem   !default;
-$border-radius-large:           0.25rem     !default;
+$border-radius-small:           0.50rem   !default;
+$border-radius-large:           0.6rem     !default;
 $border-radius-extreme:         0.875rem    !default;
 
 $border-radius-large-top:      $border-radius-large $border-radius-large 0 0 !default;
