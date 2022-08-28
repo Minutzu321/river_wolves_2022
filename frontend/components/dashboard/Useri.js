@@ -74,12 +74,12 @@ export default function Useri({user}) {
     })
       .then(res => {
         alert("Salvat cu succes!")
-        useMembri();
+        fetchMembri();
       })
   };
   
 
-  function useMembri(){
+  function fetchMembri(){
     axios.post('api/dash/membri')
       .then(res => {
         const data = res.data
@@ -96,7 +96,7 @@ export default function Useri({user}) {
   }
 
   useEffect(() => {
-    useMembri();
+    fetchMembri();
   }, [])
 
   const open = Boolean(anchorEl);

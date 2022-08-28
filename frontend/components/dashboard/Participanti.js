@@ -1,3 +1,5 @@
+import { List, Avatar, ListItem, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, ListItemButton, ListItemAvatar, ListItemText, Slide } from '@mui/material';
+
 function ListaMembri({deschis}) {
     const [checked, setChecked] = React.useState([1]);
 

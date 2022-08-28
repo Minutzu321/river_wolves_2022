@@ -2,7 +2,7 @@ import { useLoader } from "@react-three/fiber";
 import React from "react";
 import { TextureLoader, RepeatWrapping, MirroredRepeatWrapping } from "three";
 
-function getMaterial(textura){
+function useMaterial(textura){
 
   const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useTextures(textura)
 
@@ -37,8 +37,8 @@ function setMapping(textures){
 
 function Camera(props) {
     
-  const matPerete = getMaterial("perete_piatra");
-  const matJos = getMaterial("podea_piatra");
+  const matPerete = useMaterial("perete_piatra");
+  const matJos = useMaterial("podea_piatra");
     
   return (
     <group>

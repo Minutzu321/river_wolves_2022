@@ -30,7 +30,7 @@ export default function Dash() {
   const [sedinte, setSedinte] = useState([])
   const [taskuri, setTaskuri] = useState([])
 
-  function useAutorizare(){
+  function autorizeaza(){
     axios.post('api/dash/auth')
       .then(res => {
         const data = res.data
@@ -47,10 +47,10 @@ export default function Dash() {
   }
 
   useEffect(() => {
-    useAutorizare();
+    autorizeaza();
 
     subscribe("doneInfos", () => {
-      useAutorizare();
+      autorizeaza();
     })
 
     subscribe("loading", () => {
