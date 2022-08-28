@@ -16,15 +16,17 @@ const sockets = []
 server.on('connection', function (socket, req) {
   sockets.push(socket)
   let path = req.url;
-  socket.on('message', onMessage)
+  console.log("Conexiune",path);
+  socket.on('message', onMessage);
   socket.on('close', function () {
+
     sockets.splice(sockets.indexOf(socket), 1)
   })
 
   function onMessage (message) {
     console.log(new Buffer.from(message).toString());
     sockets
-      .filter(s => s !== socket)
-      .forEach(socket => socket.send(message))
+       .filter(s => s !== socket)
+      .forEach(sockets => socket.send(message))
   }
 })
