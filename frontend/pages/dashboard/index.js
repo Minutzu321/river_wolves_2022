@@ -68,7 +68,7 @@ export default function Dash() {
       <br/>
       <FeedbackSedinta/>
       <br/>
-      <Useri/>
+      <Useri user={user}/>
     </>}/>
   )
   }else{

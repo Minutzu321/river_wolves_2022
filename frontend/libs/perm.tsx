@@ -1,21 +1,24 @@
-export function getPerm(grad){
+export function getPerm(grad, incredere){
+    incredere = Math.min(incredere, 9)
     switch(grad){
         case "NEAPROBAT":
           return 0;
         case "VOLUNTAR":
-          return 10;
+          return 10+incredere;
         case "SPONSOR":
-          return 20;
+          return 20+incredere;
         case "MEMBRU":
-          return 30;
+          return 30+incredere;
         case "PARTENER":
-          return 30;
+          return 30+incredere;
+        case "ALUMNI":
+          return 30+incredere;
         case "MENTOR":
-          return 40;
+          return 40+incredere;
         case "BOARD":
-          return 50;
+          return 50+incredere;
         case "TEAM_LEADER":
-          return 60;
+          return 60+incredere;
         case "MINA":
           return 100;
       }

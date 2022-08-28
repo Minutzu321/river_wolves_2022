@@ -1,4 +1,5 @@
 import { getSession } from "next-auth/react"
+import { getPerm } from "./perm";
 import DBClient from "./prismadb";
 
 export default async function autorizeaza(req, res) {
@@ -8,29 +9,6 @@ export default async function autorizeaza(req, res) {
     res.end()
   }
   return session;
-}
-
-function getPerm(user){
-  switch(user.grad){
-    case "NEAPROBAT":
-      return 0;
-    case "VOLUNTAR":
-      return 10;
-    case "SPONSOR":
-      return 20;
-    case "MEMBRU":
-      return 30;
-    case "PARTENER":
-      return 30;
-    case "MENTOR":
-      return 40;
-    case "BOARD":
-      return 50;
-    case "TEAM_LEADER":
-      return 60;
-    case "MINA":
-      return 100;
-  }
 }
 
 export async function useAuth(req, res){
@@ -75,7 +53,7 @@ export async function useAuth(req, res){
       }
     })
 
-    return [user, sesiune, prisma, getPerm(user)] as const
+    return [user, sesiune, prisma, getPerm(user.grad, user.incredere)] as const
   }catch{
     res.status(200).json({err:true})
     res.end()

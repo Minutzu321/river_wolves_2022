@@ -11,48 +11,139 @@ datasource db {
 }
 
 model IP {
-  id Int @id @default(autoincrement())
-  ip String
+  id       Int @id @default(autoincrement())
+  ip       String
   ora_data DateTime
-  user    User?    @relation(fields: [userID], references: [id])
-  userID  Int?
+  user     User?    @relation(fields: [userID], references: [id])
+  userID   Int?
 }
 
 model Locatie {
-  id Int @id @default(autoincrement())
-  ip String
-  lat String
-  lng String
-  acc String
-  viteza String
+  id       Int @id @default(autoincrement())
+  ip       String
+  lat      String
+  lng      String
+  acc      String
+  viteza   String
   directie String
   ora_data DateTime
-  user    User?    @relation(fields: [userID], references: [id])
-  userID  Int? @unique
-
+  user     User?    @relation(fields: [userID], references: [id])
+  userID   Int? @unique
   thjuc    THJucator?    @relation(fields: [thjucID], references: [id])
   thjucID  Int? @unique
-
-  ind    THIndiciu?    @relation(fields: [indID], references: [id])
-  indID  Int? @unique
+  ind      THIndiciu?    @relation(fields: [indID], references: [id])
+  indID    Int? @unique
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String  @unique
-  sid String @unique @default(cuid())
-  nume  String?
-  telefon String?
+  id            Int @id @default(autoincrement())
+  email         String  @unique
+  sid           String @unique @default(cuid())
+  nume          String?
+  telefon       String? @unique
   data_nasterii DateTime?
-  grad Grad @default(NEAPROBAT)
-  departament Departament @default(NEREPARTIZAT)
-  ips IP[]
-  locatii Locatie[]
-  incredere Int @default(0)
+  poza          String?
 
-  primaLogare DateTime @default(now())
+  grad          Grad @default(NEAPROBAT)
+  departament   Departament @default(NEREPARTIZAT)
+
+  ips           IP[]
+  locatii       Locatie[]
+
+  incredere     Int @default(0)
+
+  participari Participare[]
+
+  feedback Feedback?
+
+  feedbackSedinte FeedbackSedinta[]
+  feedbackEchipa  FeedbackEchipa[]
+
+
+  primaLogare   DateTime @default(now())
   ultimaActiune DateTime @default(now())
 }
+
+model Sedinta {
+  id Int @id @default(autoincrement())
+  titlu String
+  desc String?
+  data_ora DateTime
+  durata Float
+  departament Departament
+
+
+  participari Participare[]
+}
+
+model Participare {
+  id Int @id @default(autoincrement())
+
+  data_ora DateTime @default(now())
+
+  prezent Boolean @default(false)
+
+  sedinta   Sedinta @relation(fields: [sedintaId], references: [id])
+  sedintaId Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+
+  titlu String
+  desc String?
+
+  rezolvatDe String?
+  rezolvat Boolean @default(false)
+
+  departament Departament
+}
+
+
+model Feedback{
+  id      Int @id @default(autoincrement())
+
+  user    User @relation(fields: [userId], references: [id])
+  userId  Int @unique
+
+  by      String
+
+  fSkill  Int //cat de bun e pe departament
+  fMuncit Int //cat de muncitor este
+  fComuni Int //cat de bine comunica
+  fSerios Int //cat de serios este
+  fPersis Int //cat de persistent e
+}
+
+model FeedbackSedinta{
+  id      Int @id @default(autoincrement())
+
+  user    User @relation(fields: [userId], references: [id])
+  userId  Int @unique
+
+  fAscult Int //ascultat
+  fMuncit Int //muncit
+  fInvat  Int //invatat
+  fSimt   Int //simtit bine
+  fAltele String? //altele
+}
+
+model FeedbackEchipa{
+  id      Int @id @default(autoincrement())
+
+  user    User @relation(fields: [userId], references: [id])
+  userId  Int @unique
+
+  fComunic  Int //boardul a comunicat
+  fEficient Int //simt ca echipa este eficienta, nu este haos
+  fActivit  Int //activitati constante(nu numai sedinte de departament)
+  fComunit  Int //imi place comunitatea
+  fAltele   String? //altele
+}
+
 
 enum Grad {
   NEAPROBAT
@@ -60,10 +151,9 @@ enum Grad {
   SPONSOR
   MEMBRU
   PARTENER
+  ALUMNI
   MENTOR
   BOARD
-  TEAM_LEADER_TEHNIC
-  TEAM_LEADER_NON_TEHNIC
   TEAM_LEADER
   MINA
 }
@@ -82,56 +172,44 @@ model Device{
   id            Int    @id @default(autoincrement())
   userAgent     String?
   ultimaActiune DateTime @default(now())
-
-  seIncarca Boolean @default(false)
-  nivelBaterie Int @default(-1)
-
-  online Boolean @default(false)
-
-  jucator      THJucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  jucatorId    Int?
+  seIncarca     Boolean @default(false)
+  nivelBaterie  Int @default(-1)
+  online        Boolean @default(false)
+  jucator       THJucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  jucatorId     Int?
 }
 
 model THJucator{
-  id            Int    @id @default(autoincrement())
-  sid           String @unique @default(cuid())
-  cod           String
-  capitan       String?
-  nrJucatori    Int
-  nrTelefon     String?
-  locatii     Locatie[]
-  metas       THIndiciuMeta[]
-  deviceuri Device[]
-  carti THCarteMeta[]
-
-  feedback Int @default(-1)
+  id         Int    @id @default(autoincrement())
+  sid        String @unique @default(cuid())
+  cod        String
+  capitan    String?
+  nrJucatori Int
+  nrTelefon  String?
+  locatii    Locatie[]
+  metas      THIndiciuMeta[]
+  deviceuri  Device[]
+  carti      THCarteMeta[]
+  feedback   Int @default(-1)
 }
 
 model THCarteMeta{
-  id Int @id @default(autoincrement())
-
-  jucator      THJucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  jucatorId    Int?
-
-  carte      THCarte?  @relation(fields: [carteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  carteId    Int?
+  id        Int @id @default(autoincrement())
+  jucator   THJucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  jucatorId Int?
+  carte     THCarte?  @relation(fields: [carteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  carteId   Int?
 }
 
 model THCarte{
-  id Int @id @default(autoincrement())
-
-  raritate Int
-
+  id        Int @id @default(autoincrement())
+  raritate  Int
   minPutere Int
   maxPutere Int
-
-  minVieti Int
-  maxVieti Int
-
-  entitate Entitate
-  extra Extra @default(NIMIC)
-
-  metas THCarteMeta[]
+  minVieti  Int
+  maxVieti  Int
+  entitate  Entitate
+  metas     THCarteMeta[]
 }
 
 enum Entitate {
@@ -139,40 +217,40 @@ enum Entitate {
   VARCOLAC
 }
 
-enum Extra {
-  NIMIC
-  OGLINDA
-  SCUT
-}
-
 model THIndiciu{
-  id Int @id @default(autoincrement())
-  creator String
-  intrebare String
-  raspuns String
-  poza String
-  arataPoza Boolean @default(false)
+  id         Int @id @default(autoincrement())
+  creator    String
+  intrebare  String
+  raspuns    String
+  poza       String
+  arataPoza  Boolean @default(false)
   arataForma Boolean @default(false)
-  locatie Locatie?
-
-  metas THIndiciuMeta[]
+  locatie    Locatie?
+  metas      THIndiciuMeta[]
 }
 
 model THIndiciuMeta{
   id           Int       @id @default(autoincrement())
-
   timp         DateTime?
   timpRezolvat DateTime?
-
   rezolvat     Boolean @default(false)
   sarit        Boolean @default(false)
-
   jucator      THJucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   indiciu      THIndiciu?  @relation(fields: [indiciuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   jucatorId    Int?
   indiciuId    Int?
 }
-// ---TREASUREHUNT---
+
+
+
+
+
+
+
+
+
+
+// ---TREASUREHUNT VECHI---
 
 model Jucator{
   id            Int    @id @default(autoincrement())
@@ -189,13 +267,10 @@ model Jucator{
 
 model IndiciuMeta{
   id           Int       @id @default(autoincrement())
-
   timp         DateTime?
   timpRezolvat DateTime?
-
   rezolvat     Boolean @default(false)
   sarit        Boolean @default(false)
-
   jucator      Jucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   indiciu      Indiciu?  @relation(fields: [indiciuId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   jucatorId    Int?
@@ -213,19 +288,15 @@ model Indiciu{
   lat String
   lng String
   acc String
-
   etaj      Etaj?  @relation(fields: [etajID], references: [id], onUpdate: Cascade, onDelete: Cascade)
   etajID    Int?
-
   jucatori IndiciuMeta[]
 }
 
 model Etaj {
   id Int @id @default(autoincrement())
-
   muzeu Muzeu
   etaj String
-
   indiciI Indiciu[]
 }
 

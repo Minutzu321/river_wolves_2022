@@ -16,6 +16,7 @@ export default async (req, res) => {
             telefon: true,
             data_nasterii: true,
             poza: true,
+            incredere: true,
 
             grad: true,
             departament: true,
