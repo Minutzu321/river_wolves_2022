@@ -51,7 +51,6 @@ model User {
   locatii       Locatie[]
 
   incredere     Int @default(0)
-  acceptat      Boolean @default(false)
 
   participari Participare[]
 
@@ -147,6 +146,7 @@ model FeedbackEchipa{
 
 
 enum Grad {
+  IGNORAT
   NEAPROBAT
   VOLUNTAR
   SPONSOR

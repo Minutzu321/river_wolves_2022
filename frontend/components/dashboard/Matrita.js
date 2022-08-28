@@ -16,7 +16,7 @@ export default function Matrita({load, infos, autorizat, comp, err}) {
       <Head>
         <title>RiverBoard</title>
       </Head> 
-      <Navbar/>
+      <Navbar laMembru={true}/>
       <div className="wrapper">
         <PageHeader titlu={"RiverBoard"}
           subtitlu={"Sistem de management al echipei"}
@@ -26,7 +26,7 @@ export default function Matrita({load, infos, autorizat, comp, err}) {
             <br/>
 
             {err?<Eroare/>:load?<Loading/>:infos?<DatePersonale/>:autorizat?
-              {comp}
+              <>{comp}</>
             :<Neautorizat/>}
             
 

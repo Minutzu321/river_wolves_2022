@@ -28,7 +28,6 @@ export default async (req, res) => {
           grad: true,
           departament: true,
           sid: true,
-          acceptat: true,
           poza: true,
           incredere: true,
           feedback: true,
@@ -39,11 +38,12 @@ export default async (req, res) => {
   }catch{
     res.status(200).json({err:true})
   }
+  
 
   let infos = true, autorizat = false, taskuri = [], sedinte = [];
 
   if(!!user){
-    if(user.acceptat){
+    if(user.grad !== "NEAPROBAT"){
       autorizat = true;
       if(!!user.nume && !!user.telefon && !!user.data_nasterii){
         infos = false;
@@ -61,6 +61,10 @@ export default async (req, res) => {
         ])
         taskuri = gtaskuri;
         sedinte = gsedinte;
+      }
+    }else{
+      if(!!user.nume && !!user.telefon && !!user.data_nasterii){
+        infos = false;
       }
     }
   }else{

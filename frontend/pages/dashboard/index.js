@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { useEffectOnce } from 'usehooks-ts'
 import { useSession, signIn, getSession} from "next-auth/react"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { serv } from '../../utils/server';
 
@@ -15,6 +15,8 @@ import Firmituri from '../../components/dashboard/Firmituri';
 import Login from '../../components/dashboard/Login';
 import Rezumat from '../../components/dashboard/Rezumat';
 import Matrita from '../../components/dashboard/Matrita';
+import { subscribe } from '../../libs/events';
+import Useri from '../../components/dashboard/Useri';
 
 
 export default function Dash() {
@@ -47,9 +49,17 @@ export default function Dash() {
       })
   }
 
-  useEffectOnce(() => {
+  useEffect(() => {
     useAutorizare();
-  })
+
+    subscribe("doneInfos", () => {
+      useAutorizare();
+    })
+
+    subscribe("loading", () => {
+      setLoad(true)
+    })
+  }, [])
 
   
   
@@ -60,6 +70,8 @@ export default function Dash() {
       <Rezumat/>
       <br/>
       <FeedbackSedinta/>
+      <br/>
+      <Useri/>
     </>}/>
   )
   }else{

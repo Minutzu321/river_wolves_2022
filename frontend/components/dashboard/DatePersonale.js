@@ -11,6 +11,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
 
+import { publish } from '../../libs/events';
+
 var scrisNume = false;
 var scrisTel = false;
 var scrisDat = false;
@@ -110,13 +112,14 @@ export default function DatePersonale() {
   }
 
   function handleGata(){
+    publish('loading');
     axios.post('api/dash/datepers', {
       nume: nume,
       tel: tel,
       dat: dataNaterii,
     })
       .then(res => {
-        
+        publish('doneInfos');
       })
   }
 

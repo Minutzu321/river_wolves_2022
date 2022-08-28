@@ -15,12 +15,12 @@ export default async (req, res) => {
 
   const body = req.body
 
-  const user = await prisma.user.update({
+  await prisma.user.update({
     where:{
       email: sesiune.user.email
     },
     data:{
-      nume: body.nume,
+      nume: body.nume.trim(),
       telefon: body.tel,
       data_nasterii: new Date(body.dat),
       ultimaActiune: new Date(),
@@ -28,10 +28,7 @@ export default async (req, res) => {
   })
   
 
-  res.status(200).json({
-    acceptat: user.acceptat,
-  })
+  res.status(200)
 
-  console.log(new Date(req.body.dat));
   
 }

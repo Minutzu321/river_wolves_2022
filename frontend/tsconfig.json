@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "pages/api/dash/membri.js", "libs/autorizare.js"  ],
   "exclude": [
     "node_modules"
   ]
