@@ -51,7 +51,8 @@
     "slick-carousel": "^1.8.1",
     "string-similarity": "^4.0.4",
     "tsparticles": "^2.1.0",
-    "universal-cookie": "^4.0.4"
+    "universal-cookie": "^4.0.4",
+    "usehooks-ts": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.24",
