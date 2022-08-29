@@ -31,8 +31,10 @@ server.on('connection', function (socket, req) {
   function onMessage (message) {
     let mesaj = new Buffer.from(message).toString();
     console.log(mesaj);
-    sockets
-       .filter(s => s === socket)
-      .forEach(so => so.send(mesaj))
+    sockets.filter(s => s !== socket)
+      .forEach(so => {
+        console.log("se trimite", sockets.indexOf(so));
+        so.send(mesaj);
+      })
   }
 })
