@@ -12,8 +12,10 @@ import Firmituri from '../../components/dashboard/Firmituri';
 import Login from '../../components/dashboard/Login';
 import Rezumat from '../../components/dashboard/Rezumat';
 import Matrita from '../../components/dashboard/Matrita';
-import { subscribe } from '../../libs/events';
+import { subscribe, unsubscribe, publish, NUME_EVENT } from '../../libs/events';
 import Useri from '../../components/dashboard/Useri';
+
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 
 export default function Dash() {
@@ -29,6 +31,41 @@ export default function Dash() {
   const [user, setUser] = useState({})
   const [sedinte, setSedinte] = useState([])
   const [taskuri, setTaskuri] = useState([])
+
+  //INITIALIZEAZA SOCKET
+  const { sendMessage, lastMessage, readyState } = useWebSocket(
+    'wss://live.ro049.com',
+    {
+      shouldReconnect: (closeEvent) => {
+        return true;
+      },
+      
+      reconnectAttempts: 100,
+      reconnectInterval: 3000,
+    }
+    );
+
+    //INITIALIZEAZA EVENT PROPAGATION
+    useEffect(() => {
+      const handleUpdateMembri = () => sendMessage(NUME_EVENT.UPDATE_MEMBRI);
+      if (readyState === 0) {
+        subscribe(NUME_EVENT.UPDATE_MEMBRI, handleUpdateMembri)
+      }else{
+        unsubscribe(NUME_EVENT.UPDATE_MEMBRI, handleUpdateMembri)
+      }
+    }, [readyState]);
+
+
+    //INITIALIZEAZA EVENT LISTENER
+    useEffect(() => {
+      if (lastMessage !== null) {
+        console.log(lastMessage);
+        switch(lastMessage){
+          case NUME_EVENT.UPDATE_MEMBRI:
+            autorizeaza();
+        }
+      }
+    }, [lastMessage]);
 
   function autorizeaza(){
     axios.post('api/dash/auth')

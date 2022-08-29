@@ -11,4 +11,8 @@ function publish(eventName, data) {
     document.dispatchEvent(event);
 }
 
-export { publish, subscribe, unsubscribe};
+const NUME_EVENT = {
+    UPDATE_MEMBRI: 'update_membri',
+  };
+
+export { publish, subscribe, unsubscribe, NUME_EVENT};

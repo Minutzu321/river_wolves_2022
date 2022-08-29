@@ -7,6 +7,9 @@ import {zilunaan} from '../../libs/data';
 import {getPerm} from '../../libs/perm';
 import {badgeColor, badgeImg, badgeLabel} from '../../libs/badge';
 import axios from 'axios';
+import { NUME_EVENT } from '../../libs/events';
+
+
 
 export default function Useri({user}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,6 +25,9 @@ export default function Useri({user}) {
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertMsg, setAlertMsg] = React.useState("");
+
+
+  
 
 
   const alert = (msg) => {
@@ -75,6 +81,18 @@ export default function Useri({user}) {
       .then(res => {
         alert("Salvat cu succes!")
         fetchMembri();
+        console.log(NUME_EVENT.UPDATE_MEMBRI);
+      })
+  };
+
+  const delUser = () => {
+    handleStergeClose();
+    axios.post('api/dash/deluser', {
+      target: target.email,
+    })
+      .then(res => {
+        alert("User sters cu succes!")
+        fetchMembri();
       })
   };
   
@@ -94,6 +112,10 @@ export default function Useri({user}) {
         }
       })
   }
+
+  // const handleClickSendMessage = React.useCallback(() => {sendMessage('Hello');}, []);
+
+  
 
   useEffect(() => {
     fetchMembri();
@@ -189,7 +211,7 @@ export default function Useri({user}) {
                 </>}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleStergeClose} color="error">Sterge</Button>
+                <Button onClick={delUser} color="error">Sterge</Button>
                 <Button onClick={handleStergeClose} color="success">Anuleaza</Button>
             </DialogActions>
       </Dialog>
