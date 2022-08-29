@@ -1,6 +1,8 @@
 const ws = require('ws')
 const Prisma = require('prisma/prisma-client');
 
+const {getUseri} = require('./useri.cjs');
+
 const server = new ws.Server({
   port: 8192
 });
@@ -8,6 +10,10 @@ console.log("Server pornit..")
 
 const prisma = new Prisma.PrismaClient()
 console.log("Conectat la baza de date..")
+
+getUseri(prisma).then((rez)=>{
+  console.log(rez);
+});
 
 
 
@@ -19,14 +25,14 @@ server.on('connection', function (socket, req) {
   console.log("Conexiune",path);
   socket.on('message', onMessage);
   socket.on('close', function () {
-
     sockets.splice(sockets.indexOf(socket), 1)
   })
 
   function onMessage (message) {
-    console.log(new Buffer.from(message).toString());
+    let mesaj = new Buffer.from(message).toString();
+    console.log(mesaj);
     sockets
-       .filter(s => s !== socket)
-      .forEach(sockets => socket.send(message))
+       .filter(s => s === socket)
+      .forEach(so => so.send(mesaj))
   }
 })
