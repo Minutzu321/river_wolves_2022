@@ -3,7 +3,7 @@ function subscribe(eventName, listener) {
 }
 
 function unsubscribe(eventName, listener) {
-    document.removeEventListener(eventName, listener);
+    document.removeEventListener(eventName, listener, false);
 }
 
 function publish(eventName, data) {

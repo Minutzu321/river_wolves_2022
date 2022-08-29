@@ -7,7 +7,7 @@ import {zilunaan} from '../../libs/data';
 import {getPerm} from '../../libs/perm';
 import {badgeColor, badgeImg, badgeLabel} from '../../libs/badge';
 import axios from 'axios';
-import { NUME_EVENT } from '../../libs/events';
+import { NUME_EVENT, publish } from '../../libs/events';
 
 
 
@@ -82,6 +82,7 @@ export default function Useri({user}) {
         alert("Salvat cu succes!")
         fetchMembri();
         console.log(NUME_EVENT.UPDATE_MEMBRI);
+        publish(NUME_EVENT.UPDATE_MEMBRI)
       })
   };
 

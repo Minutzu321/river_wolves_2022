@@ -32,7 +32,18 @@ export default function Dash() {
   const [sedinte, setSedinte] = useState([])
   const [taskuri, setTaskuri] = useState([])
 
+  if(typeof window !== 'undefined'){
+    subscribe("doneInfos", () => {
+      autorizeaza();
+    })
+
+    subscribe("loading", () => {
+      setLoad(true)
+    })
+  }
+
   //INITIALIZEAZA SOCKET
+  
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     'wss://live.ro049.com',
     {
@@ -47,11 +58,14 @@ export default function Dash() {
 
     //INITIALIZEAZA EVENT PROPAGATION
     useEffect(() => {
-      const handleUpdateMembri = () => sendMessage(NUME_EVENT.UPDATE_MEMBRI);
+      const handleUpdateMembri = () => {
+        console.log("trimi");
+        sendMessage(NUME_EVENT.UPDATE_MEMBRI)
+      };
+      unsubscribe(NUME_EVENT.UPDATE_MEMBRI, () => sendMessage(NUME_EVENT.UPDATE_MEMBRI))
       if (readyState === 0) {
-        subscribe(NUME_EVENT.UPDATE_MEMBRI, handleUpdateMembri)
-      }else{
-        unsubscribe(NUME_EVENT.UPDATE_MEMBRI, handleUpdateMembri)
+        console.log("SUBBED");
+        subscribe(NUME_EVENT.UPDATE_MEMBRI, () => sendMessage(NUME_EVENT.UPDATE_MEMBRI))
       }
     }, [readyState]);
 
@@ -59,8 +73,8 @@ export default function Dash() {
     //INITIALIZEAZA EVENT LISTENER
     useEffect(() => {
       if (lastMessage !== null) {
-        console.log(lastMessage);
-        switch(lastMessage){
+        console.log("DATA",lastMessage.data);
+        switch(lastMessage.data){
           case NUME_EVENT.UPDATE_MEMBRI:
             autorizeaza();
         }
@@ -68,6 +82,7 @@ export default function Dash() {
     }, [lastMessage]);
 
   function autorizeaza(){
+    console.log("auth");
     axios.post('api/dash/auth')
       .then(res => {
         const data = res.data
@@ -85,14 +100,6 @@ export default function Dash() {
 
   useEffect(() => {
     autorizeaza();
-
-    subscribe("doneInfos", () => {
-      autorizeaza();
-    })
-
-    subscribe("loading", () => {
-      setLoad(true)
-    })
   }, [])
 
   
