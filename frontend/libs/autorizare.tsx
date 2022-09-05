@@ -60,6 +60,43 @@ export async function useAuth(req, res){
 
     return [null, null, prisma, -1] as const
   }
+}
   
+
+  export async function useAuthProps(context){
+    const prisma = DBClient.instance;
+    const sesiune = await getSession(context)
+
+    if(!sesiune){
+      return [null, null, 0] as const
+    }
+  
+    //user,sesiune,acces
+      
+      const user = await prisma.user.findUnique({
+        where: {
+          email: sesiune.user.email
+        },
+        select: {
+            email: true,
+            nume: true,
+            telefon: true,
+            data_nasterii: true,
+            grad: true,
+            departament: true,
+            sid: true,
+            poza: true,
+            incredere: true,
+            feedback: true,
+            feedbackEchipa: true,
+            feedbackSedinte: true,
+        }
+      })
+  
+      if(!!user){
+        return [user, sesiune, getPerm(user.grad, user.incredere)] as const
+      }else{
+        return [null, sesiune, 0] as const
+      }
   
 }
