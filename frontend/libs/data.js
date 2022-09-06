@@ -25,3 +25,7 @@ export const addZile = (numOfDays, date = new Date()) => {
   
     return date;
 }
+
+export const intreDate =(start, end, date = new Date()) =>{
+    return date > start && date < end
+}

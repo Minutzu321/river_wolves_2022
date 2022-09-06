@@ -38,6 +38,7 @@ export async function useAuth(req, res){
         email: sesiune.user.email
       },
       select: {
+          id: true,
           email: true,
           nume: true,
           telefon: true,

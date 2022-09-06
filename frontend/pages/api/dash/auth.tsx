@@ -51,7 +51,11 @@ export default async (req, res) => {
           prisma.task.findMany(),
           prisma.sedinta.findMany({
             include:{
-              participari: true
+              participari: {
+                include:{
+                  user: true
+                }
+              }
             }
           }),
           prisma.user.update({

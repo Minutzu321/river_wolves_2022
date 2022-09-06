@@ -22,7 +22,7 @@ import Badge from '@mui/material/Badge';
 
 import { styled } from '@mui/material/styles';
 
-import { addOre, saptziluna } from '../../libs/data'
+import { addOre, intreDate, saptziluna } from '../../libs/data'
 
 import {badgeColor, badgeImg, badgeLabel} from '../../libs/badge';
 
@@ -31,6 +31,8 @@ import {getPerm} from '../../libs/perm';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddIcon from '@mui/icons-material/Add';
 import PersonIcon from '@mui/icons-material/Person';
+import CheckIcon from '@mui/icons-material/Check';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import { Box, Chip, IconButton, Menu, MenuItem, FormControl, InputLabel, Select, Grid, Typography, Snackbar, Alert, FormControlLabel, FormHelperText } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -39,6 +41,9 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import axios from 'axios';
 import { NUME_EVENT, publish } from '../../libs/events';
+import { ADMIN_PERM } from '../../libs/config';
+import Cancel from '@mui/icons-material/Cancel';
+import { getParticipanti, participa, prezent } from '../../libs/participari';
 
 
 
@@ -66,16 +71,20 @@ function Sedinte({user, sedinte}) {
   const [checked, setChecked] = React.useState([]);
   const [openMembri, setOpenMembri] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
 
   const [addDep, setAddDep] = React.useState(curentDep);
   const [dataOra, setDataOra] = React.useState(new Date());
   const [durata, setDurata] = React.useState(1);
   const [titlu, setTitlu] = React.useState('');
   const [desc, setDesc] = React.useState('');
+  const [recurent, setRecurent] = React.useState(false);
+
+  const [target, setTarget] = React.useState(undefined)
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertMsg, setAlertMsg] = React.useState("");
-  const [recurent, setRecurent] = React.useState(false);
+
 
   console.log(sedinte);
 
@@ -128,9 +137,29 @@ function Sedinte({user, sedinte}) {
     setDep(event.target.value);
   };
 
-  //add
+    //edit open
+    const handleEditOpen = () => {
+      setAddDep(target.departament);
+      setDataOra(new Date(target.data_ora));
+      setDurata(target.durata);
+      setTitlu(target.titlu);
+      setDesc(target.desc);
+      setOpenEdit(true);
+    };
+
+  //add open
   const handleAddOpen = () => {
+    setAddDep(curentDep);
+    setDataOra(new Date());
+    setDurata(1);
+    setTitlu('');
+    setDesc('');
+    setRecurent(false);
     setOpenAdd(true);
+  };
+
+  const handleEditClose = () => {
+    setOpenEdit(false);
   };
 
   const handleAddClose = () => {
@@ -149,6 +178,41 @@ function Sedinte({user, sedinte}) {
     })
       .then(res => {
         alert("Adaugat cu succes!")
+        publish(NUME_EVENT.UPDATE_SEDINTE)
+      })
+  };
+
+  //prezenta
+  const handlePrezenta = (sedinta) => {
+
+    let anulat  = false,
+        prezent = false;
+    
+    if(intreDate(new Date(sedinta.data_ora), addOre(sedinta.durata,new Date(sedinta.data_ora)))){
+      if(prezent(user.nume, sedinta.participari)){
+        prezent = false;
+        anulat = true;
+      }else{
+        prezent = true;
+        anulat = false;
+      }
+    }else{
+      if(participa(user.nume, sedinta.participari)){
+        prezent = false;
+        anulat = true;
+      }else{
+        prezent = false;
+        anulat = false;
+      }
+    }
+
+    axios.post('api/dash/participasedinta', {
+      id: sedinta.id,
+      anulat: anulat,
+      prezent: prezent,
+    })
+      .then(res => {
+        alert("Salvat cu succes!")
         publish(NUME_EVENT.UPDATE_SEDINTE)
       })
   };
@@ -200,32 +264,35 @@ function Sedinte({user, sedinte}) {
       aria-describedby="alert-dialog-slide-description"
     >
       
-      <DialogTitle>{"Lista participanti"}</DialogTitle>
+      <DialogTitle>{"Lista participanti "}{!!target && target.participari.length}</DialogTitle>
       <DialogContent>
           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {["aurel", "mani", "tani", "veni"].map((value) => {
-              const labelId = `checkbox-list-secondary-label-${value}`;
+              {!!target && target.participari.map((parti) => {
+              const labelId = `checkbox-list-secondary-label-${parti.user.nume}`;
               return (
                   <ListItem
-                  key={value}
+                  key={parti.user.nume}
                   secondaryAction={
-                      <Checkbox
+                    <>
+                      {(perm >= ADMIN_PERM)?<Checkbox
                       edge="end"
-                      onChange={handleToggle(value)}
-                      checked={checked.indexOf(value) !== -1}
+                      onChange={handleToggle(parti.user.nume)}
+                      checked={checked.indexOf(parti.user.nume) !== -1}
                       inputProps={{ 'aria-labelledby': labelId }}
-                      />
+                      />:checked.indexOf(parti.user.nume) !== -1?<CheckIcon color="success"/>:<CancelIcon color="error"/>
+                      }
+                    </>
                   }
                   disablePadding
                   >
                   <ListItemButton>
                       <ListItemAvatar>
                       <Avatar
-                          alt={`Avatar n°${value + 1}`}
-                          src={`https://mui.com/static/images/avatar/1.jpg`}
+                          alt={parti.user.nume}
+                          src={badgeImg(parti.user.departament)}
                       />
                       </ListItemAvatar>
-                      <ListItemText id={labelId} primary={value} />
+                      <ListItemText id={labelId} primary={parti.user.nume} />
                   </ListItemButton>
                   </ListItem>
               );
@@ -287,9 +354,9 @@ function Sedinte({user, sedinte}) {
           <FormHelperText>Pana in luna iulie</FormHelperText>
           <br/>
           <Typography id="input-slider" gutterBottom>
-            Durata(ore): {durata}
+            Pana la: {addOre(durata, new Date(dataOra)).toTimeString().substring(0, 5)}
           </Typography>
-          <Slider min={1} step={0.25} max={12} defaultValue={1} value={durata} 
+          <Slider min={0.25} step={0.25} max={12} defaultValue={1} value={durata} 
               onChange={(newValue) => {
                 setDurata(newValue.target.value)
               }} aria-label="Durata" valueLabelDisplay="auto" />
@@ -307,6 +374,68 @@ function Sedinte({user, sedinte}) {
       </DialogActions>
     </Dialog>
 
+    <Dialog
+      open={openEdit}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleEditClose}
+      aria-describedby="alert-dialog-slide-description"
+    >
+      
+      <DialogTitle>{"Adauga sedinta"}</DialogTitle>
+      <DialogContent>
+        <br/>
+        <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="select-dep">Departament</InputLabel>
+            <Select
+              labelId="select-dep"
+              id="sel-dep"
+              value={addDep}
+              label="Departament"
+              onChange={handleAddDep}
+            >
+              <MenuItem value={"TOATE"}>TOATE</MenuItem>
+              <MenuItem value={"MEDIA"}>MEDIA</MenuItem>
+              <MenuItem value={"MECANICA"}>MECANICA</MenuItem>
+              <MenuItem value={"DESIGN"}>DESIGN</MenuItem>
+              <MenuItem value={"PROGRAMARE"}>PROGRAMARE</MenuItem>
+            </Select>
+          </FormControl>
+          <br/><br/>
+          <LocalizationProvider dateAdapter={AdapterLuxon} locale="ro">
+            <DateTimePicker
+              label="Data si ora"
+              renderInput={(params) => <TextField {...params} />}
+              value={dataOra}
+              onChange={(newValue) => {
+                setDataOra(newValue);
+              }}
+              
+            />
+          </LocalizationProvider>
+          <br/><br/>
+          <Typography id="input-slider" gutterBottom>
+            Pana la: {addOre(durata, new Date(dataOra)).toTimeString().substring(0, 5)}
+          </Typography>
+          <Slider min={0.25} step={0.25} max={12} defaultValue={1} value={durata} 
+              onChange={(newValue) => {
+                setDurata(newValue.target.value)
+              }} aria-label="Durata" valueLabelDisplay="auto" />
+          <br/><br/>
+          <TextField id="titlu" label="Titlu" variant="outlined" value={titlu} onChange={handleTitlu}/>
+          <br/><br/>
+          <TextField id="desc" label="Descriere" variant="outlined" value={desc} onChange={handleDesc}/>
+          
+          
+        </Box>
+      </DialogContent>
+      <DialogActions>
+          <Button onClick={handleEditClose} color="success">Salveaza</Button>
+          <Button onClick={handleEditClose} color="error">Inchide</Button>
+      </DialogActions>
+    </Dialog>
+
     <Menu
       id="basic-menu"
       anchorEl={anchorEl}
@@ -317,7 +446,7 @@ function Sedinte({user, sedinte}) {
       }}
     >
       <MenuItem onClick={()=>{handleClose(); handleMembriOpen()}}>Participanti</MenuItem>
-      <MenuItem onClick={handleClose}>Editeaza</MenuItem>
+      <MenuItem onClick={()=>{handleClose(); handleEditOpen()}}>Editeaza</MenuItem>
       <MenuItem onClick={handleClose}>Sterge</MenuItem>
     </Menu>
     
@@ -351,7 +480,9 @@ function Sedinte({user, sedinte}) {
     <br/>
     
     <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 2 , sm: 8, md: 12 }}>
-    {sedinte.filter(sed => sed.departament === "TOATE"?true:dep==="TOATE"?true:dep===sed.departament).map((sedinta, index) => (
+    {sedinte.filter(sed => sed.departament === "TOATE"?true:dep==="TOATE"?true:dep===sed.departament).sort(function(a,b){
+        return new Date(a.data_ora) - new Date(b.data_ora);
+      }).map((sedinta, index) => (
       <Grid item xs={2} sm={4} md={4} key={index}>
         <div className="card">
           <Box
@@ -368,25 +499,24 @@ function Sedinte({user, sedinte}) {
                 aria-controls={open ? 'edit-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
-                onClick={(event)=>{handleClick(event)}}
+                onClick={(event)=>{setTarget(sedinta); handleClick(event)}}
             >
                 <MoreVertIcon color="secondary"/>
             </IconButton>}
           </Box>
             <div className="card-body text-center">
-                <h3 className="card-title">{sedinta.titlu}</h3>
-                <p className="card-title">{saptziluna(new Date(sedinta.data_ora))}</p>
-                <p className="card-text"></p>
+                <h3 className="card-title text-wrap">{sedinta.titlu}</h3>
+                <p className="card-title text-wrap">{saptziluna(new Date(sedinta.data_ora))}</p>
                 
-                <p className="card-text">{sedinta.desc}</p>
+                <p className="card-text text-wrap">{sedinta.desc}</p>
                 
                 <hr/>
-                <IconButton aria-label="cart">
+                <IconButton aria-label="participanti" onClick={()=>{setTarget(sedinta); handleMembriOpen()}}>
                   <StyledBadge badgeContent={sedinta.participari.length} color="secondary">
                     <PersonIcon />
                   </StyledBadge>
                 </IconButton>
-                <Button variant="outlined" color="secondary">Participa</Button>
+                <Button variant="outlined" color="secondary" onClick={()=>{handlePrezenta(sedinta)}}>{intreDate(new Date(sedinta.data_ora), addOre(sedinta.durata,new Date(sedinta.data_ora)))?"Prezent":"Participa"}</Button>
             </div>
             <div className="card-footer text-muted text-center">
             {new Date(sedinta.data_ora).toTimeString().substring(0, 5)}-{addOre(sedinta.durata,new Date(sedinta.data_ora)).toTimeString().substring(0, 5)}
