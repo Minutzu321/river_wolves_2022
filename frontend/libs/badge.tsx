@@ -5,8 +5,6 @@ export function badgeLabel(label) {
 
 export function badgeColor(label) {
     switch(label){
-        case "NEREPARTIZAT":
-          return "secondary";
         case "MECANICA":
           return "info";
         case "PROGRAMARE":
@@ -15,13 +13,13 @@ export function badgeColor(label) {
           return "error";
         case "MEDIA":
           return "warning";
+        default:
+          return "secondary"
       }
 }
 
 export function badgeImg(label) {
     switch(label){
-        case "NEREPARTIZAT":
-          return "/planetute/rw-unk.png";
         case "MECANICA":
           return "/planetute/mecanica.png";
         case "PROGRAMARE":
@@ -30,5 +28,7 @@ export function badgeImg(label) {
           return "/planetute/design.png";
         case "MEDIA":
           return "/planetute/media.png";
+        default:
+          return "/planetute/rw-unk.png";
       }
 }

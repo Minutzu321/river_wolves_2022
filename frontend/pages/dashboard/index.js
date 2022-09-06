@@ -15,6 +15,7 @@ import Matrita from '../../components/dashboard/Matrita';
 import { subscribe, unsubscribe, publish, NUME_EVENT } from '../../libs/events';
 import {useAuthProps } from '../../libs/autorizare';
 import Useri from '../../components/dashboard/Useri';
+import Sedinte from '../../components/dashboard/Sedinte';
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -156,7 +157,7 @@ export default function Dash({pageProps}) {
           </TabList>
         </Box>
         <TabPanel value="1">
-          
+          <Sedinte user={user}/>
         </TabPanel>
         <TabPanel value="2">
 
