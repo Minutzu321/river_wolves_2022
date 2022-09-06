@@ -86,8 +86,8 @@ model Participare {
   anulat    Boolean @default(false)
   prezent   Boolean @default(false)
 
-  sedinta   Sedinta? @relation(fields: [sedintaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  sedintaId Int?
+  sedinta   Sedinta? @relation(fields: [sedintaaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  sedintaaId Int?
 
   user      User? @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userId    Int?
