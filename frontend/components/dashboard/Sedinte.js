@@ -149,7 +149,7 @@ function Sedinte({user, sedinte}) {
     })
       .then(res => {
         alert("Adaugat cu succes!")
-        publish(NUME_EVENT.UPDATE_MEMBRI)
+        publish(NUME_EVENT.UPDATE_SEDINTE)
       })
   };
 
@@ -374,9 +374,10 @@ function Sedinte({user, sedinte}) {
             </IconButton>}
           </Box>
             <div className="card-body text-center">
-                <h4 className="card-title">{saptziluna(new Date(sedinta.data_ora))}</h4>
+                <h3 className="card-title">{sedinta.titlu}</h3>
+                <p className="card-title">{saptziluna(new Date(sedinta.data_ora))}</p>
                 <p className="card-text"></p>
-                <p className="card-text">{sedinta.titlu}</p>
+                
                 <p className="card-text">{sedinta.desc}</p>
                 
                 <hr/>

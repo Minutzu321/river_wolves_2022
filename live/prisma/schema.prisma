@@ -72,6 +72,7 @@ model Sedinta {
   durata      Float
   departament Departament
   ref         Int @default(-1)
+  recurenta   Boolean @default(false)
 
 
   participari Participare[]
