@@ -1,5 +1,5 @@
 import { Alert, Avatar, Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, Select, Slide, Snackbar } from '@mui/material';
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
@@ -7,13 +7,15 @@ import {zilunaan} from '../../libs/data';
 import {getPerm} from '../../libs/perm';
 import {badgeColor, badgeImg, badgeLabel} from '../../libs/badge';
 import axios from 'axios';
-import { NUME_EVENT } from '../../libs/events';
+import { NUME_EVENT, publish } from '../../libs/events';
+
+import { SPONSOR_PERM, MEMBRU_PERM, ALUMNI_PERM, PARTENER_PERM, MENTOR_PERM, BOARD_PERM, TEAM_LEADER_PERM } from '../../libs/config';
 
 
 
-export default function Useri({user}) {
+export default function Useri({user, membri}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [membri, setMembri] = React.useState([]);
+  
 
   const [target, setTarget] = React.useState(undefined);
 
@@ -80,8 +82,7 @@ export default function Useri({user}) {
     })
       .then(res => {
         alert("Salvat cu succes!")
-        fetchMembri();
-        console.log(NUME_EVENT.UPDATE_MEMBRI);
+        publish(NUME_EVENT.UPDATE_MEMBRI)
       })
   };
 
@@ -92,34 +93,9 @@ export default function Useri({user}) {
     })
       .then(res => {
         alert("User sters cu succes!")
-        fetchMembri();
+        publish(NUME_EVENT.UPDATE_MEMBRI)
       })
   };
-  
-
-  function fetchMembri(){
-    axios.post('api/dash/membri')
-      .then(res => {
-        const data = res.data
-        if(!data.err){
-          setMembri(data.membri);
-          // setLoad(false);
-          // setInfos(data.inf)
-          // setAutorizat(data.aut)
-          // setSedinte(data.sedinte)
-          // setTaskuri(data.taskuri)
-          // setUser(data.user)
-        }
-      })
-  }
-
-  // const handleClickSendMessage = React.useCallback(() => {sendMessage('Hello');}, []);
-
-  
-
-  useEffect(() => {
-    fetchMembri();
-  }, [])
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -162,13 +138,13 @@ export default function Useri({user}) {
                     >
                       <MenuItem value={"NEAPROBAT"} component="span" disable>NEAPROBAT</MenuItem>
                       <MenuItem value={"VOLUNTAR"} component="span">VOLUNTAR</MenuItem>
-                      {(perm > 20) &&<MenuItem value={"SPONSOR"} component="span">SPONSOR</MenuItem>}
-                      {(perm > 30) &&<MenuItem value={"MEMBRU"} component="span">MEMBRU</MenuItem>}
-                      {(perm > 30) &&<MenuItem value={"ALUMNI"} component="span">ALUMNI</MenuItem>}
-                      {(perm > 30) &&<MenuItem value={"PARTENER"} component="span">PARTENER</MenuItem>}
-                      {(perm > 40) &&<MenuItem value={"MENTOR"} component="span">MENTOR</MenuItem>}
-                      {(perm > 50) &&<MenuItem value={"BOARD"} component="span">BOARD</MenuItem>}
-                      {(perm >= 60) &&<MenuItem value={"TEAM_LEADER"} component="span">TEAM LEADER</MenuItem>}
+                      {(perm > SPONSOR_PERM) &&<MenuItem value={"SPONSOR"} component="span">SPONSOR</MenuItem>}
+                      {(perm > MEMBRU_PERM) &&<MenuItem value={"MEMBRU"} component="span">MEMBRU</MenuItem>}
+                      {(perm > ALUMNI_PERM) &&<MenuItem value={"ALUMNI"} component="span">ALUMNI</MenuItem>}
+                      {(perm > PARTENER_PERM) &&<MenuItem value={"PARTENER"} component="span">PARTENER</MenuItem>}
+                      {(perm > MENTOR_PERM) &&<MenuItem value={"MENTOR"} component="span">MENTOR</MenuItem>}
+                      {(perm > BOARD_PERM) &&<MenuItem value={"BOARD"} component="span">BOARD</MenuItem>}
+                      {(perm >= TEAM_LEADER_PERM) &&<MenuItem value={"TEAM_LEADER"} component="span">TEAM LEADER</MenuItem>}
                     </Select>
                     <hr/>
                     </FormControl>
@@ -241,7 +217,7 @@ export default function Useri({user}) {
               sx={100}
             >
               <Chip variant="outlined" color={badgeColor(membru.departament)} label={badgeLabel(membru.grad)} avatar={<Avatar src={badgeImg(membru.departament)} />} />
-              {((perm > 45)&&(perm > getPerm(membru.grad, membru.incredere)))&&<IconButton
+              {((perm >= 45)&&(perm > getPerm(membru.grad, membru.incredere)))&&<IconButton
                   color="secondary"
                   aria-controls={open ? 'edit-menu' : undefined}
                   aria-haspopup="true"

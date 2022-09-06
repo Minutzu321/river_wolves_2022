@@ -3162,6 +3162,11 @@ react-countup@^6.3.0:
   dependencies:
     countup.js "^2.2.0"
 
+react-custom-events@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-custom-events/-/react-custom-events-1.1.1.tgz#792f126e897043a14b9f27a4c5ab7072ff235ceb"
+  integrity sha512-71iEu3zHsBn3uvF+Sq4Fu5imtRt+cLZO6nG2zqUhdqGVIpZIfeLcl6yieqPghrE+18KFrS5BaHD0NBPP/EZJNw==
+
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"

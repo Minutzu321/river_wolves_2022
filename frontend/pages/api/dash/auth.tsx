@@ -70,7 +70,8 @@ export default async (req, res) => {
   }else{
     await prisma.user.create({
       data: {
-        email: sesiune.user.email
+        email: sesiune.user.email,
+        nume: sesiune.user.name,
       }
     })
   }

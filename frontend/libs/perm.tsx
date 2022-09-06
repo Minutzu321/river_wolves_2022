@@ -1,8 +1,6 @@
 export function getPerm(grad, incredere){
     incredere = Math.min(incredere, 9)
     switch(grad){
-        case "NEAPROBAT":
-          return 0;
         case "VOLUNTAR":
           return 10+incredere;
         case "SPONSOR":
@@ -21,5 +19,7 @@ export function getPerm(grad, incredere){
           return 60+incredere;
         case "MINA":
           return 100;
+        default:
+          return 0;
       }
 }
