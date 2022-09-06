@@ -49,7 +49,11 @@ export default async (req, res) => {
         infos = false;
         const [gtaskuri, gsedinte, upd] = await prisma.$transaction([
           prisma.task.findMany(),
-          prisma.sedinta.findMany(),
+          prisma.sedinta.findMany({
+            include:{
+              participari: true
+            }
+          }),
           prisma.user.update({
             where: {
               email: sesiune.user.email,
