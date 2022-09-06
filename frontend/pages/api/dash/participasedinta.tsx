@@ -10,7 +10,7 @@ export default async (req, res) => {
     let participare = await prisma.participare.findFirst({
         where:{
             userId: user.id,
-            sedintaId: body.id,
+            sedintaaId: body.id,
         },
         
     })
@@ -19,7 +19,7 @@ export default async (req, res) => {
         participare = await prisma.participare.create({
             data:{
                 userId: user.id,
-                sedintaId: body.id,
+                sedintaaId: body.id,
                 anulat: body.anulat,
                 prezent: body.prezent,
             }
