@@ -36,68 +36,70 @@ model Locatie {
 }
 
 model User {
-  id            Int @id @default(autoincrement())
-  email         String  @unique
-  sid           String @unique @default(cuid())
-  nume          String?
-  telefon       String? @unique
-  data_nasterii DateTime?
-  poza          String?
+  id              Int @id @default(autoincrement())
+  email           String  @unique
+  sid             String @unique @default(cuid())
+  nume            String?
+  telefon         String? @unique
+  data_nasterii   DateTime?
+  poza            String?
 
-  grad          Grad @default(NEAPROBAT)
-  departament   Departament @default(NEREPARTIZAT)
+  grad            Grad @default(NEAPROBAT)
+  departament     Departament @default(NEREPARTIZAT)
 
-  ips           IP[]
-  locatii       Locatie[]
+  ips             IP[]
+  locatii         Locatie[]
 
-  incredere     Int @default(0)
+  incredere       Int @default(0)
 
-  participari Participare[]
+  participari     Participare[]
 
-  feedback Feedback?
+  feedback        Feedback?
 
   feedbackSedinte FeedbackSedinta[]
   feedbackEchipa  FeedbackEchipa[]
 
 
-  primaLogare   DateTime @default(now())
-  ultimaActiune DateTime @default(now())
+  primaLogare     DateTime @default(now())
+  ultimaActiune   DateTime @default(now())
 }
 
 model Sedinta {
-  id Int @id @default(autoincrement())
-  titlu String
-  desc String?
-  data_ora DateTime
-  durata Float
+  id          Int @id @default(autoincrement())
+  titlu       String
+  desc        String?
+  data_ora    DateTime
+  durata      Float
   departament Departament
+  ref         Int @default(-1)
 
 
   participari Participare[]
 }
 
 model Participare {
-  id Int @id @default(autoincrement())
+  id        Int @id @default(autoincrement())
 
-  data_ora DateTime @default(now())
+  data_ora  DateTime @default(now())
 
-  prezent Boolean @default(false)
+  anulat    Boolean @default(false)
+  prezent   Boolean @default(false)
 
   sedinta   Sedinta @relation(fields: [sedintaId], references: [id])
   sedintaId Int
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+  user      User @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model Task {
-  id Int @id @default(autoincrement())
+  id          Int @id @default(autoincrement())
 
-  titlu String
-  desc String?
+  titlu       String
+  desc        String?
 
-  rezolvatDe String?
-  rezolvat Boolean @default(false)
+  rezolvatDe  String?
+  rezolvat    Boolean @default(false)
 
   departament Departament
 }
@@ -159,6 +161,7 @@ enum Grad {
 }
 
 enum Departament {
+  TOATE
   NEREPARTIZAT
   MECANICA
   PROGRAMARE
