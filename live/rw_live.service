@@ -1,0 +1,13 @@
+
+[Unit]
+Description=Riverwolves Live Service
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/river_wolves_2022/live
+ExecStart=/usr/bin/node /home/pi/river_wolves_2022/live/server.cjs
+User=pi
+Environment=PORT=8192
+
+[Install]
+WantedBy=multi-user.target
