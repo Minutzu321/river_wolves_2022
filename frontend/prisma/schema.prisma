@@ -71,6 +71,7 @@ model Sedinta {
   data_ora    DateTime
   durata      Float
   departament Departament
+  ref         Int @default(-1)
 
 
   participari Participare[]

@@ -13,3 +13,15 @@ export const zilunaan = (azi) => {
 
     return azi.getDate()+" "+luna+" "+azi.getFullYear()
 }
+
+export const addOre = (numOfHours, date = new Date()) => {
+    date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+  
+    return date;
+}
+
+export const addZile = (numOfDays, date = new Date()) => {
+    date.setTime(date.getTime() + numOfDays * 24 * 60 * 60 * 1000);
+  
+    return date;
+}

@@ -5,6 +5,7 @@ function publish(eventName, data) {
 
 const NUME_EVENT = {
     UPDATE_MEMBRI: 'update_membri',
+    UPDATE_SEDINTE: 'update_sedinte',
   };
 
 export { publish, NUME_EVENT};

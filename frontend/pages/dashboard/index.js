@@ -77,6 +77,10 @@ export default function Dash({pageProps}) {
       sendMessage(NUME_EVENT.UPDATE_MEMBRI);
       fetchMembri();
     })
+    useEventListener(NUME_EVENT.UPDATE_SEDINTE, () => {
+      sendMessage(NUME_EVENT.UPDATE_SEDINTE);
+      autorizeaza();
+    })
 
 
     //INITIALIZEAZA EVENT LISTENER
@@ -85,6 +89,8 @@ export default function Dash({pageProps}) {
         console.log("DATA",lastMessage.data);
         switch(lastMessage.data){
           case NUME_EVENT.UPDATE_MEMBRI:
+            autorizeaza();
+          case NUME_EVENT.UPDATE_SEDINTE:
             autorizeaza();
         }
       }
@@ -157,7 +163,7 @@ export default function Dash({pageProps}) {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <Sedinte user={user}/>
+          <Sedinte user={user} sedinte={sedinte}/>
         </TabPanel>
         <TabPanel value="2">
 
