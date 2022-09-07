@@ -64,7 +64,7 @@ export async function useAuth(req, res){
 }
   
 
-  export async function useAuthProps(context){
+  export async function authProps(context){
     const prisma = DBClient.instance;
     const sesiune = await getSession(context)
 
