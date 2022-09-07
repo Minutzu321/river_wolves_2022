@@ -40,24 +40,15 @@ export default async (req, res) => {
   }
   
 
-  let infos = true, autorizat = false, taskuri = [], sedinte = [];
+  let infos = true, autorizat = false, taskuri = [];
 
   if(!!user){
     if(user.grad !== "NEAPROBAT"){
       autorizat = true;
       if(!!user.nume && !!user.telefon && !!user.data_nasterii){
         infos = false;
-        const [gtaskuri, gsedinte, upd] = await prisma.$transaction([
+        const [gtaskuri, upd] = await prisma.$transaction([
           prisma.task.findMany(),
-          prisma.sedinta.findMany({
-            include:{
-              participari: {
-                include:{
-                  user: true
-                }
-              }
-            }
-          }),
           prisma.user.update({
             where: {
               email: sesiune.user.email,
@@ -68,7 +59,6 @@ export default async (req, res) => {
           })
         ])
         taskuri = gtaskuri;
-        sedinte = gsedinte;
       }
     }else{
       if(!!user.nume && !!user.telefon && !!user.data_nasterii){
@@ -90,7 +80,6 @@ export default async (req, res) => {
     aut: autorizat,
     user: (infos || !autorizat) ? undefined : user,
     taskuri: taskuri,
-    sedinte: sedinte
   })
 
 

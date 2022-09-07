@@ -72,6 +72,7 @@ function Sedinte({user, sedinte}) {
   const [openMembri, setOpenMembri] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [delSed, setDelSed] = React.useState(false);
 
   const [addDep, setAddDep] = React.useState(curentDep);
   const [dataOra, setDataOra] = React.useState(new Date());
@@ -190,14 +191,45 @@ function Sedinte({user, sedinte}) {
       })
   };
 
+  const handleEditSedintaSave = () => {
+    handleEditClose();
+    axios.post('api/dash/editsedinta', {
+      id: target.id,
+      dep: addDep,
+      dataOra: dataOra,
+      durata: durata,
+      titlu: titlu,
+      desc: desc,
+    })
+      .then(res => {
+        alert("Salvat cu succes!")
+        publish(NUME_EVENT.UPDATE_SEDINTE)
+      })
+  };
+
   const handlePrezenteSave = () => {
-    handleAddClose();
+    handleMembriClose()
     axios.post('api/dash/prezsedinta', {
       prez: checked,
       id: target.id,
     })
       .then(res => {
         alert("Salvat cu succes!")
+        publish(NUME_EVENT.UPDATE_SEDINTE)
+      })
+  };
+
+  const handleDelSedinta = () => {
+    handleDelSedClose();
+    axios.post('api/dash/delsedinta', {
+      id: target.id,
+      rec: target.recurenta,
+      delrec: recurent,
+      data_ora: target.data_ora,
+      ref: target.ref
+    })
+      .then(res => {
+        alert("Sters cu succes!")
         publish(NUME_EVENT.UPDATE_SEDINTE)
       })
   };
@@ -235,6 +267,17 @@ function Sedinte({user, sedinte}) {
         alert("Salvat cu succes!")
         publish(NUME_EVENT.UPDATE_SEDINTE)
       })
+  };
+
+  //participanti
+  const handleDelSedOpen = () => {
+    setDelSed(true);
+  };
+
+  //participanti
+  const handleDelSedClose = () => {
+    setRecurent(false);
+    setDelSed(false);
   };
 
   //participanti
@@ -327,6 +370,31 @@ function Sedinte({user, sedinte}) {
     </Dialog>
 
     <Dialog
+      open={delSed}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleDelSedClose}
+      aria-describedby="alert-dialog-slide-description"
+    >
+      
+      <DialogTitle>{"Sterge sedinta"}</DialogTitle>
+      <DialogContent>
+        <h5>Participanti: {!!target && getParticipanti(target.participari).length}</h5>
+        {(!!target && !!target.recurenta) && <FormControlLabel
+            control={
+              <Switch checked={recurent} onChange={handleCheck} name="recurenta" color="error" />
+            }
+            label="STERGE SEDINTELE RECURENTE"
+          />}
+          {recurent&&<Typography className="text-wrap" color='error'>ATENTIE! Se vor sterge toate sedintele recurente care urmeaza dupa sedinta aceasta!</Typography>}
+      </DialogContent>
+      <DialogActions>
+          <Button onClick={handleDelSedinta} color="error">Sterge</Button>
+          <Button onClick={handleDelSedClose} color="success">Inchide</Button>
+      </DialogActions>
+    </Dialog>
+
+    <Dialog
       open={openAdd}
       TransitionComponent={Transition}
       keepMounted
@@ -404,7 +472,7 @@ function Sedinte({user, sedinte}) {
       aria-describedby="alert-dialog-slide-description"
     >
       
-      <DialogTitle>{"Adauga sedinta"}</DialogTitle>
+      <DialogTitle>{"Editeaza sedinta"}</DialogTitle>
       <DialogContent>
         <br/>
         <Box sx={{ minWidth: 120 }}>
@@ -453,7 +521,7 @@ function Sedinte({user, sedinte}) {
         </Box>
       </DialogContent>
       <DialogActions>
-          <Button onClick={handleEditClose} color="success">Salveaza</Button>
+          <Button onClick={handleEditSedintaSave} color="success">Salveaza</Button>
           <Button onClick={handleEditClose} color="error">Inchide</Button>
       </DialogActions>
     </Dialog>
@@ -468,7 +536,7 @@ function Sedinte({user, sedinte}) {
       }}
     >
       <MenuItem onClick={()=>{handleClose(); handleEditOpen()}}>Editeaza</MenuItem>
-      <MenuItem onClick={handleClose}>Sterge</MenuItem>
+      <MenuItem onClick={()=>{handleClose(); handleDelSedOpen()}}>Sterge</MenuItem>
     </Menu>
     
 
@@ -482,12 +550,12 @@ function Sedinte({user, sedinte}) {
     <br/>
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="select-dep">Departament</InputLabel>
+        <InputLabel id="select-dep">Sedinte</InputLabel>
         <Select
           labelId="select-dep"
           id="sel-dep"
           value={dep}
-          label="Departament"
+          label="Sedinte"
           onChange={handleDep}
         >
           <MenuItem value={"TOATE"}>TOATE</MenuItem>
@@ -495,13 +563,14 @@ function Sedinte({user, sedinte}) {
           <MenuItem value={"MECANICA"}>MECANICA</MenuItem>
           <MenuItem value={"DESIGN"}>DESIGN</MenuItem>
           <MenuItem value={"PROGRAMARE"}>PROGRAMARE</MenuItem>
+          <MenuItem value={"TRECUTE"}>TRECUTE</MenuItem>
         </Select>
       </FormControl>
     </Box>
     <br/>
     
     <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 2 , sm: 8, md: 12 }}>
-    {sedinte.filter(sed => sed.departament === "TOATE"?true:dep==="TOATE"?true:dep===sed.departament).sort(function(a,b){
+    {sedinte.filter(sed => dep === "TRECUTE"?addOre(sed.durata+1,new Date(sed.data_ora))<new Date():addOre(sed.durata+1,new Date(sed.data_ora))>=new Date()).filter(sed => sed.departament === "TOATE"?true:(dep==="TOATE" || dep==="TRECUTE")?true:dep===sed.departament).sort(function(a,b){
         return new Date(a.data_ora) - new Date(b.data_ora);
       }).map((sedinta, index) => (
       <Grid item xs={2} sm={4} md={4} key={index}>

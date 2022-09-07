@@ -78,7 +78,7 @@ export default function Dash({pageProps}) {
     })
     useEventListener(NUME_EVENT.UPDATE_SEDINTE, () => {
       sendMessage(NUME_EVENT.UPDATE_SEDINTE);
-      autorizeaza();
+      fetchSedinte();
     })
 
 
@@ -90,7 +90,7 @@ export default function Dash({pageProps}) {
           case NUME_EVENT.UPDATE_MEMBRI:
             autorizeaza();
           case NUME_EVENT.UPDATE_SEDINTE:
-            autorizeaza();
+            fetchSedinte();
         }
       }
     }, [lastMessage]);
@@ -107,9 +107,18 @@ export default function Dash({pageProps}) {
           setLoad(false);
           setInfos(data.inf)
           setAutorizat(data.aut)
-          setSedinte(data.sedinte)
           setTaskuri(data.taskuri)
           setUser(data.user)
+        }
+      })
+  }
+
+  function fetchSedinte(){
+    axios.post('api/dash/sedinte')
+      .then(res => {
+        const data = res.data
+        if(!data.err){
+          setSedinte(data.sedinte);
         }
       })
   }
@@ -120,12 +129,6 @@ export default function Dash({pageProps}) {
         const data = res.data
         if(!data.err){
           setMembri(data.membri);
-          // setLoad(false);
-          // setInfos(data.inf)
-          // setAutorizat(data.aut)
-          // setSedinte(data.sedinte)
-          // setTaskuri(data.taskuri)
-          // setUser(data.user)
         }
       })
   }
@@ -133,6 +136,7 @@ export default function Dash({pageProps}) {
   useEffect(() => {
     autorizeaza();
     fetchMembri();
+    fetchSedinte();
   }, [])
 
   
@@ -168,7 +172,7 @@ export default function Dash({pageProps}) {
 
         </TabPanel>
         <TabPanel value="3">
-          
+          <p>Va urma</p>
         </TabPanel>
         <TabPanel value="4">
           <Useri user={user} membri={membri}/>
