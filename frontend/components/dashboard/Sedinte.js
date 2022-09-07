@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '@mui/material/Button';
 
 import Dialog from '@mui/material/Dialog';
@@ -43,7 +43,7 @@ import axios from 'axios';
 import { NUME_EVENT, publish } from '../../libs/events';
 import { ADMIN_PERM } from '../../libs/config';
 import Cancel from '@mui/icons-material/Cancel';
-import { getParticipanti, participa, prezent } from '../../libs/participari';
+import { getParticipanti, getPrezenti, participa, prezent } from '../../libs/participari';
 
 
 
@@ -85,8 +85,16 @@ function Sedinte({user, sedinte}) {
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertMsg, setAlertMsg] = React.useState("");
 
-
-  console.log(sedinte);
+  React.useEffect(()=>{
+    if(!!target){
+      sedinte.forEach((s)=>{
+        if(s.id == target.id){
+          setChecked(getPrezenti(s.participari));
+          setTarget(s);
+        }
+      })
+    }
+  }, [sedinte])
 
   
 
@@ -138,14 +146,14 @@ function Sedinte({user, sedinte}) {
   };
 
     //edit open
-    const handleEditOpen = () => {
-      setAddDep(target.departament);
-      setDataOra(new Date(target.data_ora));
-      setDurata(target.durata);
-      setTitlu(target.titlu);
-      setDesc(target.desc);
-      setOpenEdit(true);
-    };
+  const handleEditOpen = () => {
+    setAddDep(target.departament);
+    setDataOra(new Date(target.data_ora));
+    setDurata(target.durata);
+    setTitlu(target.titlu);
+    setDesc(target.desc);
+    setOpenEdit(true);
+  };
 
   //add open
   const handleAddOpen = () => {
@@ -182,26 +190,38 @@ function Sedinte({user, sedinte}) {
       })
   };
 
+  const handlePrezenteSave = () => {
+    handleAddClose();
+    axios.post('api/dash/prezsedinta', {
+      prez: checked,
+      id: target.id,
+    })
+      .then(res => {
+        alert("Salvat cu succes!")
+        publish(NUME_EVENT.UPDATE_SEDINTE)
+      })
+  };
+
   //prezenta
   const handlePrezenta = (sedinta) => {
 
     let anulat  = false,
-        prezent = false;
+        prezenta = false;
     
     if(intreDate(new Date(sedinta.data_ora), addOre(sedinta.durata,new Date(sedinta.data_ora)))){
       if(prezent(user.nume, sedinta.participari)){
-        prezent = false;
+        prezenta = false;
         anulat = true;
       }else{
-        prezent = true;
+        prezenta = true;
         anulat = false;
       }
     }else{
       if(participa(user.nume, sedinta.participari)){
-        prezent = false;
+        prezenta = false;
         anulat = true;
       }else{
-        prezent = false;
+        prezenta = false;
         anulat = false;
       }
     }
@@ -209,7 +229,7 @@ function Sedinte({user, sedinte}) {
     axios.post('api/dash/participasedinta', {
       id: sedinta.id,
       anulat: anulat,
-      prezent: prezent,
+      prezent: prezenta,
     })
       .then(res => {
         alert("Salvat cu succes!")
@@ -264,14 +284,15 @@ function Sedinte({user, sedinte}) {
       aria-describedby="alert-dialog-slide-description"
     >
       
-      <DialogTitle>{"Lista participanti "}{!!target && target.participari.length}</DialogTitle>
+      <DialogTitle>{"Lista participanti"}</DialogTitle>
       <DialogContent>
+        <h5>Participanti: {!!target && getParticipanti(target.participari).length}</h5>
           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {!!target && target.participari.map((parti) => {
+              {!!target && target.participari.filter((part)=>!part.anulat).map((parti, index) => {
               const labelId = `checkbox-list-secondary-label-${parti.user.nume}`;
               return (
                   <ListItem
-                  key={parti.user.nume}
+                  key={index}
                   secondaryAction={
                     <>
                       {(perm >= ADMIN_PERM)?<Checkbox
@@ -300,6 +321,7 @@ function Sedinte({user, sedinte}) {
           </List>
       </DialogContent>
       <DialogActions>
+          {(perm>=ADMIN_PERM)&&<Button onClick={handlePrezenteSave} color="success">Salveaza</Button>}
           <Button onClick={handleMembriClose} color="error">Inchide</Button>
       </DialogActions>
     </Dialog>
@@ -445,7 +467,6 @@ function Sedinte({user, sedinte}) {
         'aria-labelledby': 'basic-button',
       }}
     >
-      <MenuItem onClick={()=>{handleClose(); handleMembriOpen()}}>Participanti</MenuItem>
       <MenuItem onClick={()=>{handleClose(); handleEditOpen()}}>Editeaza</MenuItem>
       <MenuItem onClick={handleClose}>Sterge</MenuItem>
     </Menu>
@@ -511,12 +532,12 @@ function Sedinte({user, sedinte}) {
                 <p className="card-text text-wrap">{sedinta.desc}</p>
                 
                 <hr/>
-                <IconButton aria-label="participanti" onClick={()=>{setTarget(sedinta); handleMembriOpen()}}>
-                  <StyledBadge badgeContent={sedinta.participari.length} color="secondary">
+                <IconButton aria-label="participanti" onClick={()=>{setTarget(sedinta); setChecked(getPrezenti(sedinta.participari)); handleMembriOpen()}}>
+                  <StyledBadge badgeContent={getParticipanti(sedinta.participari).length} color="secondary">
                     <PersonIcon />
                   </StyledBadge>
                 </IconButton>
-                <Button variant="outlined" color="secondary" onClick={()=>{handlePrezenta(sedinta)}}>{intreDate(new Date(sedinta.data_ora), addOre(sedinta.durata,new Date(sedinta.data_ora)))?"Prezent":"Participa"}</Button>
+                <Button variant="outlined" color="secondary" onClick={()=>{handlePrezenta(sedinta)}}>{intreDate(new Date(sedinta.data_ora), addOre(sedinta.durata,new Date(sedinta.data_ora)))?prezent(user.nume, sedinta.participari)?"Anuleaza":"Prezent":participa(user.nume, sedinta.participari)?"Anuleaza":"Participa"}</Button>
             </div>
             <div className="card-footer text-muted text-center">
             {new Date(sedinta.data_ora).toTimeString().substring(0, 5)}-{addOre(sedinta.durata,new Date(sedinta.data_ora)).toTimeString().substring(0, 5)}

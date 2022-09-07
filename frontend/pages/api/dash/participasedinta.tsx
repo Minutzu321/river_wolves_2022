@@ -6,19 +6,21 @@ export default async (req, res) => {
     if(!user) return;
 
     const body = req.body;
+    
 
     let participare = await prisma.participare.findFirst({
         where:{
-            userId: user.id,
+            userrId: user.id,
             sedintaaId: body.id,
         },
         
     })
+    
 
     if(!participare){
         participare = await prisma.participare.create({
             data:{
-                userId: user.id,
+                userrId: user.id,
                 sedintaaId: body.id,
                 anulat: body.anulat,
                 prezent: body.prezent,
