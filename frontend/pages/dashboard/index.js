@@ -13,7 +13,7 @@ import Login from '../../components/dashboard/Login';
 import Rezumat from '../../components/dashboard/Rezumat';
 import Matrita from '../../components/dashboard/Matrita';
 import { subscribe, unsubscribe, publish, NUME_EVENT } from '../../libs/events';
-import {useAuthProps } from '../../libs/autorizare';
+import {authProps } from '../../libs/autorizare';
 import Useri from '../../components/dashboard/Useri';
 import Sedinte from '../../components/dashboard/Sedinte';
 
@@ -48,15 +48,14 @@ export default function Dash({pageProps}) {
     setTab(newValue);
   };
 
-  if(typeof window !== 'undefined'){
-    useEventListener("doneInfos", () => {
-      autorizeaza();
-    })
 
-    useEventListener("loading", () => {
-      setLoad(true)
-    })
-  }
+  useEventListener("doneInfos", () => {
+    autorizeaza();
+  })
+
+  useEventListener("loading", () => {
+    setLoad(true)
+  })
 
   //INITIALIZEAZA SOCKET
   
@@ -190,7 +189,7 @@ export default function Dash({pageProps}) {
 
 export async function getServerSideProps(context) {
 
-  const [user, ses, perm] = await useAuthProps(context);
+  const [user, ses, perm] = await authProps(context);
 
   return {
     props: {
