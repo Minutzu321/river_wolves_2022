@@ -1,7 +1,7 @@
 import React from 'react'
+import { useEffectOnce } from 'usehooks-ts';
 import {init, focus, typeIt, moveIt} from '../components/terminal/in'
 
-import useEffectOnce from '../libs/useonce'
 
 export default function Terminal() {
 

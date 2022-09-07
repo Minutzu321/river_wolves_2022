@@ -30,6 +30,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Ranking from './Ranking';
+import { useEffectOnce } from 'usehooks-ts';
 
 function LinearProgressWithLabel(props) {
   return (
@@ -99,7 +100,7 @@ export default function RealDeal({user, fetchUser, snack, fetchDonatii, donatii,
       setOpen(false);
     };
 
-    useEffectOnce(()=>{
+    useEffectOnce(() => {
       fetchIndiciu();
     })
 
