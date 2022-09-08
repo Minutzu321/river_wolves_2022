@@ -73,7 +73,6 @@ export default function Dash({pageProps}) {
 
     //EVENT PROPAGATION
     useEventListener(NUME_EVENT.UPDATE_MEMBRI, () => {
-      console.log("trimiiiiis");
       sendMessage(NUME_EVENT.UPDATE_MEMBRI);
       fetchMembri();
     })
@@ -87,7 +86,6 @@ export default function Dash({pageProps}) {
     //INITIALIZEAZA EVENT LISTENER
     useEffect(() => {
       if (lastMessage !== null) {
-        console.log("DATA",lastMessage.data);
         switch(lastMessage.data){
           case NUME_EVENT.UPDATE_MEMBRI:
             autorizeaza();
