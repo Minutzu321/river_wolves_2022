@@ -10,10 +10,17 @@ import axios from 'axios';
 import { NUME_EVENT, publish } from '../../libs/events';
 
 import { SPONSOR_PERM, MEMBRU_PERM, ALUMNI_PERM, PARTENER_PERM, MENTOR_PERM, BOARD_PERM, TEAM_LEADER_PERM } from '../../libs/config';
+import { getUserPrezente } from '../../libs/participari';
+
+import CheckIcon from '@mui/icons-material/Check';
+import CancelIcon from '@mui/icons-material/Cancel';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 
 
-export default function Useri({user, membri}) {
+export default function Useri({user, membri, sedinte}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   
 
@@ -168,8 +175,8 @@ export default function Useri({user, membri}) {
                 </>}
             </DialogContent>
             <DialogActions>
-              <Button onClick={saveUser} color="success">Salveaza</Button>
-                <Button onClick={handleEditClose} color="error">Inchide</Button>
+              <Button onClick={saveUser} color="success"><CheckIcon/>Salveaza</Button>
+                <Button onClick={handleEditClose} color="error"><ArrowBackOutlinedIcon/>Inapoi</Button>
             </DialogActions>
       </Dialog>
       <Dialog
@@ -187,8 +194,8 @@ export default function Useri({user, membri}) {
                 </>}
             </DialogContent>
             <DialogActions>
-                <Button onClick={delUser} color="error">Sterge</Button>
-                <Button onClick={handleStergeClose} color="success">Anuleaza</Button>
+                <Button onClick={delUser} color="error"><DeleteForeverOutlinedIcon/>Sterge</Button>
+                <Button onClick={handleStergeClose} color="success"><ArrowBackOutlinedIcon/>Inapoi</Button>
             </DialogActions>
       </Dialog>
       <Menu
@@ -200,11 +207,11 @@ export default function Useri({user, membri}) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={()=>{handleClose(); handleEditOpen();}}>Editeaza</MenuItem>
-        <MenuItem onClick={()=>{handleClose(); handleStergeOpen();}}>Sterge</MenuItem>
+        <MenuItem onClick={()=>{handleClose(); handleEditOpen();}}><EditOutlinedIcon color="info"/>Editeaza</MenuItem>
+        <MenuItem onClick={()=>{handleClose(); handleStergeOpen();}}><DeleteForeverOutlinedIcon color="error"/>Sterge</MenuItem>
       </Menu>
       <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 2 , sm: 8, md: 12 }}>
-        {membri.map((membru, index) => (
+        {membri.sort(function(a,b){return getUserPrezente(b, sedinte)/(getPerm(b.grad, b.incredere)*100)-getUserPrezente(a, sedinte)/(getPerm(a.grad, a.incredere)*100)}).map((membru, index) => (
         <Grid item xs={2} sm={4} md={4} key={index}>
           <div className="card">
             <div className="card-header text-center">
@@ -230,12 +237,11 @@ export default function Useri({user, membri}) {
               
             </div>
             <div className="card-body text-center">
-                <h4 className="card-title">{membru.nume}</h4>
-                <br/>
-                <footer className="blockquote-footer">{zilunaan(new Date(membru.data_nasterii))}</footer>
-                <footer className="blockquote-footer">{membru.email}</footer>
-                <footer className="blockquote-footer">{membru.telefon}</footer>
-                <footer className="blockquote-footer">{membru.participari.length}</footer>
+                <h5 className="card-title">{membru.nume}</h5>
+                <p className="card-title text-wrap">{zilunaan(new Date(membru.data_nasterii))}</p>
+                <p className="card-title text-wrap">{membru.email}</p>
+                <p className="card-title text-wrap">{membru.telefon}</p>
+                <p className="card-title text-wrap">Prezenta: {getUserPrezente(membru, sedinte)}%</p>
             </div>
           </div>
         </Grid>

@@ -2,7 +2,7 @@ import autorizeaza from "../../../libs/autorizare";
 import DBClient from '../../../libs/prismadb'
 
 function cap(str){
-  return str.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+  return str.toUpperCase();
 }
 
 export default async (req, res) => {

@@ -73,12 +73,14 @@ export default function Dash({pageProps}) {
 
     //EVENT PROPAGATION
     useEventListener(NUME_EVENT.UPDATE_MEMBRI, () => {
+      console.log("trimiiiiis");
       sendMessage(NUME_EVENT.UPDATE_MEMBRI);
       fetchMembri();
     })
     useEventListener(NUME_EVENT.UPDATE_SEDINTE, () => {
       sendMessage(NUME_EVENT.UPDATE_SEDINTE);
       fetchSedinte();
+      fetchMembri();
     })
 
 
@@ -89,8 +91,10 @@ export default function Dash({pageProps}) {
         switch(lastMessage.data){
           case NUME_EVENT.UPDATE_MEMBRI:
             autorizeaza();
+            fetchMembri();
           case NUME_EVENT.UPDATE_SEDINTE:
             fetchSedinte();
+            fetchMembri();
         }
       }
     }, [lastMessage]);
@@ -161,7 +165,7 @@ export default function Dash({pageProps}) {
           aria-label="Alege categoria">
             <Tab label="Sedinte" value="1" />
             <Tab label="Taskuri" value="2" />
-            <Tab label="Treasurehunt" value="3" />
+            {/* <Tab label="Treasurehunt" value="3" /> */}
             <Tab label="Membri" value="4" />
           </TabList>
         </Box>
@@ -171,11 +175,11 @@ export default function Dash({pageProps}) {
         <TabPanel value="2">
 
         </TabPanel>
-        <TabPanel value="3">
+        {/* <TabPanel value="3">
           <p>Va urma</p>
-        </TabPanel>
+        </TabPanel> */}
         <TabPanel value="4">
-          <Useri user={user} membri={membri}/>
+          <Useri user={user} membri={membri} sedinte={sedinte}/>
         </TabPanel>
       </TabContext>
       

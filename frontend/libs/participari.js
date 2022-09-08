@@ -18,6 +18,22 @@ export const getPrezenti = (participari) =>{
     return prez;
 }
 
+export const getUserPrezente = (user, sedinte) =>{
+    let sed = 0;
+    let prez = 0;
+    sedinte.forEach((s)=>{
+        if(new Date(s.data_ora) < new Date() && (s.departament === "TOATE" || s.departament === user.departament)){
+            sed++;
+        }
+    })
+    user.participari.forEach((p)=>{
+        if(p.prezent){
+            prez++;
+        }
+    });
+    return Math.round((prez/sed)*100);
+}
+
 export const participa = (nume, participari) =>{
     let partici = getParticipanti(participari);
     return partici.includes(nume);

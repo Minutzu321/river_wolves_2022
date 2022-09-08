@@ -1,24 +1,26 @@
+import { ALUMNI_PERM, BOARD_PERM, MEMBRU_PERM, MENTOR_PERM, PARTENER_PERM, SPONSOR_PERM, TEAM_LEADER_PERM, VOLUNTAR_PERM } from "./config";
+
 export function getPerm(grad, incredere){
     incredere = Math.min(incredere, 9)
     switch(grad){
         case "VOLUNTAR":
-          return 10+incredere;
+          return VOLUNTAR_PERM+incredere;
         case "SPONSOR":
-          return 20+incredere;
+          return SPONSOR_PERM+incredere;
         case "MEMBRU":
-          return 30+incredere;
+          return MEMBRU_PERM+incredere;
         case "PARTENER":
-          return 30+incredere;
+          return PARTENER_PERM+incredere;
         case "ALUMNI":
-          return 30+incredere;
+          return ALUMNI_PERM+incredere;
         case "MENTOR":
-          return 40+incredere;
+          return MENTOR_PERM+incredere;
         case "BOARD":
-          return 50+incredere;
+          return BOARD_PERM+incredere;
         case "TEAM_LEADER":
-          return 60+incredere;
+          return TEAM_LEADER_PERM+incredere;
         case "MINA":
-          return 100;
+          return 1000;
         default:
           return 0;
       }

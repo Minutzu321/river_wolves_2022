@@ -1,8 +1,8 @@
 import {useState} from 'react'
+import { intreDate } from '../../libs/data'
 
 
 const Aplica = () => {
-    const [suntRecrutari, setSuntRecrutari] = useState(false)
     return (
         <div className="section section-tabs">
           <div className="container">
@@ -62,7 +62,7 @@ const Aplica = () => {
                         <h3><b>Design 3D</b></h3>
                         <h4>Cei de la design se ocupă de proiectarea pieselor în format 3D, asamblarea în programe de vizualizare 3D a robotului și proiectarea acestuia, fiind în strânsă legătură cu cei de la mecanică.</h4>
                       </div>
-                      {suntRecrutari ? <AplicaDeschis/> : <AplicaInchis/>}
+                      {intreDate(new Date(2022, 8, 7), new Date(2022, 8, 17)) ? <AplicaDeschis/> : <AplicaInchis/>}
                     </div>
                   </div>
                 </div>
@@ -75,13 +75,13 @@ const Aplica = () => {
 }
 
 const AplicaInchis = () => (
-  <h4><b>Aplicatiile pentru rolurile de membru sunt dezactivate pana in luna Iulie</b></h4>
+  <h4><b>Formularul se va publica în Septembrie</b></h4>
 )
 
 const AplicaDeschis = () => (
   <div>
-    <h4><b>Apasă pe butonul de mai jos pentru a deveni un membru în cadrul echipei</b></h4>
-    <a href="register" className="btn btn-primary btn-icon btn-round btn-lg" type="button">
+    <h4><b>Apasă pe butonul de mai jos pentru a accesa formularul</b></h4>
+    <a href="https://docs.google.com/forms/d/1nPBTqG7KVVwv8WctDeKsF4hziKSFDarPAm3ymhxI60U/viewform?edit_requested=true#response=ACYDBNicrAsnUlYb1KrR36k0Z9jahAawIBarokCkKNYHQgQGSJfKr9PDUNA45P1XGQG9Hw0" className="btn btn-primary btn-icon btn-round btn-lg" type="button">
       <i className="now-ui-icons files_paper"></i>
     </a>
   </div>

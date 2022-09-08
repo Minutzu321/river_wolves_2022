@@ -11,7 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'axios';
 
-import { publish } from '../../libs/events';
+import { NUME_EVENT, publish } from '../../libs/events';
 
 var scrisNume = false;
 var scrisTel = false;
@@ -122,6 +122,9 @@ export default function DatePersonale() {
         const data = res.data
         if(!data.succes){
           alert("Numarul de telefon deja este folosit");
+        }else{
+          console.log("trimis event");
+          publish(NUME_EVENT.UPDATE_MEMBRI)
         }
         publish('doneInfos');
         

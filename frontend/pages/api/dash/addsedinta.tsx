@@ -32,7 +32,7 @@ export default async (req, res) => {
 
         let n = 7;
         
-        while(n <= 48 && dat.getMonth() !== 6){
+        while(n <= 336 && dat.getMonth() !== 6){
             dat = addZile(n, new Date(body.dataOra));
             
             seds.push({
