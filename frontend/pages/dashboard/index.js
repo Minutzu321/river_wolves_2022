@@ -3,7 +3,7 @@
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
-import { useEventListener } from 'usehooks-ts'
+import { useEventListener, useInterval } from 'usehooks-ts'
 import { useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from 'react';
 
@@ -99,6 +99,15 @@ export default function Dash({pageProps}) {
       fetchSedinte();
       fetchMembri();
     })
+
+    useInterval(
+      () => {
+        if(readyState === ReadyState.OPEN){
+          sendMessage("ping")
+        }
+      },
+      5000,
+    )
 
 
     //INITIALIZEAZA EVENT LISTENER
