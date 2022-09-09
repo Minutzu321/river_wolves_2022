@@ -153,10 +153,18 @@ export default function Dash({pageProps}) {
       })
   }
 
-  useEffect(() => {
+  const base_load = () =>{
     autorizeaza();
     fetchMembri();
     fetchSedinte();
+  }
+
+  useEffect(() => {
+    if(readyState === ReadyState.OPEN){
+      base_load();
+    }else{
+      setLoad(true);
+    }
   }, [readyState])
   
   if (!!pageProps.ses) {
