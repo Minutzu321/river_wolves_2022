@@ -84,7 +84,7 @@ export default function Dash({pageProps}) {
         return true;
       },
       
-      reconnectAttempts: 1000,
+      reconnectAttempts: Number.MAX_SAFE_INTEGER,
       reconnectInterval: 3000,
     }
     );
@@ -157,7 +157,7 @@ export default function Dash({pageProps}) {
     autorizeaza();
     fetchMembri();
     fetchSedinte();
-  }, [])
+  }, [readyState])
   
   if (!!pageProps.ses) {
   return (
