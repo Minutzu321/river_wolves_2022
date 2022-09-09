@@ -14,8 +14,10 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import GroupsIcon from '@mui/icons-material/Groups';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import { Typography } from '@mui/material';
+import { ADMIN_PERM } from '../../libs/config';
 
-export default function Rezumat({membri, sedinte, taskuri}) {
+export default function Rezumat({membri, sedinte, taskuri, perm}) {
 
     const [salut, setSalut] = useState("");
     const [dat, setDat] = useState("");
@@ -24,7 +26,15 @@ export default function Rezumat({membri, sedinte, taskuri}) {
     const [taskuriAzi, setTaskuriAzi] = useState(0);
     const [sedinteAzi, setSedinteAzi] = useState(0);
 
-    // useEffect
+    useEffect(()=>{
+      let aprobari = 0;
+      membri.forEach((m)=>{
+        if(m.grad === "NEAPROBAT"){
+          aprobari++;
+        }
+      });
+      setAproba(aprobari);
+    },[membri, sedinte, taskuri])
 
     
 
@@ -71,7 +81,8 @@ export default function Rezumat({membri, sedinte, taskuri}) {
         </div>
         <div className="card-body">
             <h4 className="card-title">Rezumatul zilei de azi</h4>
-            <p className="card-text">3 sedinte, 8 taskuri de indeplinit in total</p>
+            {(aproba > 0 && perm >= ADMIN_PERM) &&<Typography variant="p" color='error'>Membri care trebuie aprobati: <b>{aproba}</b></Typography>}
+            <p className="card-text">1 sedinte, 8 taskuri de indeplinit in total</p>
             <Box
               sx={{
                 display: 'flex',

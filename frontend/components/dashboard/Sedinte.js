@@ -144,7 +144,7 @@ function Sedinte({user, sedinte}) {
       });;
 
       setSedinteFin(s);
-  },[sedinte])
+  },[sedinte, dep])
   
 
   const open = Boolean(anchorEl);
@@ -360,7 +360,7 @@ function Sedinte({user, sedinte}) {
   
   return (
   <>
-    <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
+    <Snackbar open={openAlert} autoHideDuration={1000} onClose={handleCloseAlert}>
         <Alert onClose={handleCloseAlert} severity="success" sx={{ width: '100%' }}>
           {alertMsg}
         </Alert>

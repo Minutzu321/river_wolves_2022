@@ -10,7 +10,7 @@ import Loading from '../../components/dashboard/Loading';
 import Eroare from '../../components/dashboard/Eroare';
 import DatePersonale from './DatePersonale'
 
-export default function Matrita({load, infos, autorizat, comp, err, nume}) {
+export default function Matrita({load, infos, autorizat, comp, err, user}) {
   return (
     <div className="landing-page sidebar-collapse">
       <Head>
@@ -20,7 +20,7 @@ export default function Matrita({load, infos, autorizat, comp, err, nume}) {
       <div className="wrapper">
         <PageHeader titlu={"RiverBoard"}
           subtitlu={"Sistem de management al echipei"}
-          subsubtitlu={err?"Eroare la server..":load?"Se incarca..":infos?"Nu stim cine esti":autorizat?"Salut "+nume:"Cont neautorizat"}/>
+          subsubtitlu={err?"Eroare la server..":load?"Se incarca..":infos?"Nu stim cine esti":autorizat?"Salut "+user.nume:"Cont neautorizat"}/>
         <div className="main">
           <div className="container">
             <br/>

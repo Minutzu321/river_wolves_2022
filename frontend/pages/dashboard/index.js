@@ -158,15 +158,13 @@ export default function Dash({pageProps}) {
     fetchMembri();
     fetchSedinte();
   }, [])
-
-  
   
   if (!!pageProps.ses) {
   return (
-    <Matrita nume={user.nume} err={err} load={load} autorizat={autorizat} infos={infos} comp={<>
+    <Matrita user={user} err={err} load={load} autorizat={autorizat} infos={infos} comp={<>
       <Firmituri/>    
       <br/>
-      <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte}/>
+      <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte} perm={pageProps.perm}/>
       <br/>
       <FeedbackSedinta/>
 
@@ -220,6 +218,7 @@ export async function getServerSideProps(context) {
     props: {
       user: JSON.parse(JSON.stringify(user)),
       ses: ses,
+      perm: perm,
     },
   }
 }
