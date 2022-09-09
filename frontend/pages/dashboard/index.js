@@ -3,8 +3,8 @@
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
-import { useEffectOnce, useEventListener } from 'usehooks-ts'
-import { useSession, signIn, getSession} from "next-auth/react"
+import { useEventListener } from 'usehooks-ts'
+import { useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from 'react';
 
 import FeedbackSedinta from '../../components/dashboard/FeedbackSedinta';
@@ -29,6 +29,8 @@ export default function Dash({pageProps}) {
 
   // const documentRef = useRef<Document>(document)
 
+  const scrollTo = useRef(undefined);
+
   const {data: session} = useSession()
 
   const [load, setLoad] = useState(true)
@@ -44,10 +46,26 @@ export default function Dash({pageProps}) {
 
   const [tab, setTab] = useState('1');
 
+  const executeScroll = () => scrollTo.current.scrollIntoView() 
+
   const handleTab = (event, newValue) => {
     setTab(newValue);
   };
 
+  useEventListener("scrollSedinte", () => {
+    executeScroll();
+    setTab("1");
+  })
+
+  useEventListener("scrollTaskuri", () => {
+    executeScroll();
+    setTab("2");
+  })
+
+  useEventListener("scrollMembri", () => {
+    executeScroll();
+    setTab("4");
+  })
 
   useEventListener("doneInfos", () => {
     autorizeaza();
@@ -145,42 +163,43 @@ export default function Dash({pageProps}) {
   
   if (!!pageProps.ses) {
   return (
-    <Matrita err={err} load={load} autorizat={autorizat} infos={infos} comp={<>
+    <Matrita nume={user.nume} err={err} load={load} autorizat={autorizat} infos={infos} comp={<>
       <Firmituri/>    
       <br/>
-      <Rezumat/>
+      <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte}/>
       <br/>
       <FeedbackSedinta/>
 
-      <TabContext value={tab}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleTab}
-           textColor="secondary"
-           indicatorColor="secondary"
-           variant="scrollable"
-           allowScrollButtonsMobile
-           scrollButtons="auto"
-          aria-label="Alege categoria">
-            <Tab label="Sedinte" value="1" />
-            <Tab label="Taskuri" value="2" />
-            {/* <Tab label="Treasurehunt" value="3" /> */}
-            <Tab label="Membri" value="4" />
-          </TabList>
-        </Box>
-        <TabPanel value="1">
-          <Sedinte user={user} sedinte={sedinte}/>
-        </TabPanel>
-        <TabPanel value="2">
+      <div ref={scrollTo}>
+        <TabContext value={tab}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={handleTab}
+            textColor="secondary"
+            indicatorColor="secondary"
+            variant="scrollable"
+            allowScrollButtonsMobile
+            scrollButtons="auto"
+            aria-label="Alege categoria">
+              <Tab label="Sedinte" value="1" />
+              <Tab label="Taskuri" value="2" />
+              {/* <Tab label="Treasurehunt" value="3" /> */}
+              <Tab label="Membri" value="4" />
+            </TabList>
+          </Box>
+          <TabPanel value="1">
+            <Sedinte user={user} sedinte={sedinte}/>
+          </TabPanel>
+          <TabPanel value="2">
 
-        </TabPanel>
-        {/* <TabPanel value="3">
-          <p>Va urma</p>
-        </TabPanel> */}
-        <TabPanel value="4">
-          <Useri user={user} membri={membri} sedinte={sedinte}/>
-        </TabPanel>
-      </TabContext>
-      
+          </TabPanel>
+          {/* <TabPanel value="3">
+            <p>Va urma</p>
+          </TabPanel> */}
+          <TabPanel value="4">
+            <Useri user={user} membri={membri} sedinte={sedinte}/>
+          </TabPanel>
+        </TabContext>
+      </div>
 
       
     </>}/>

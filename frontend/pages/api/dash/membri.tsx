@@ -21,7 +21,9 @@ export default async (req, res) => {
             grad: true,
             departament: true,
 
-            participari: true
+            participari: true,
+
+            primaLogare: true,
         }
     });
     

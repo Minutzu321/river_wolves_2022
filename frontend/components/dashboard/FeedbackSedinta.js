@@ -170,6 +170,12 @@ function FeedbackSedinta() {
   
     const handleReset = () => {
       setActiveStep(0);
+      setFeeds({
+        0:3,
+        1:2,
+        2:1,
+        3:"",
+      });
     };
 
     function handleFeedback(inde, newVal) {

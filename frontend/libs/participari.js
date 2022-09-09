@@ -22,7 +22,7 @@ export const getUserPrezente = (user, sedinte) =>{
     let sed = 0;
     let prez = 0;
     sedinte.forEach((s)=>{
-        if(new Date(s.data_ora) < new Date() && (s.departament === "TOATE" || s.departament === user.departament)){
+        if((new Date(s.data_ora) < new Date()) && (new Date(s.data_ora) > new Date(user.primaLogare)) && (s.departament === "TOATE" || s.departament === user.departament)){
             sed++;
         }
     })
@@ -31,6 +31,9 @@ export const getUserPrezente = (user, sedinte) =>{
             prez++;
         }
     });
+    if(sed===0){
+        return 100;
+    }
     return Math.round((prez/sed)*100);
 }
 

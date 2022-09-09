@@ -35,8 +35,34 @@ export default function Useri({user, membri, sedinte}) {
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertMsg, setAlertMsg] = React.useState("");
 
+  const [perm, setPerm] = React.useState(0);
 
-  
+
+  const [membriFin, setMembriFin] = React.useState([]);
+
+  React.useEffect(()=>{
+    let p = getPerm(user.grad, user.incredere)
+    setPerm(p);
+  },[user])
+
+  React.useEffect(()=>{
+    let m = membri.sort(
+        function(a,b){
+          return getUserPrezente(b, sedinte)/(getPerm(b.grad, b.incredere)*100)-getUserPrezente(a, sedinte)/(getPerm(a.grad, a.incredere)*100)
+        }).map((mm) => {
+          return {
+              ...mm,
+              badgeColor: badgeColor(mm.departament),
+              badgeLabel: badgeLabel(mm.grad),
+              badgeImg: badgeImg(mm.departament),
+              mperm: getPerm(mm.grad, mm.incredere),
+              prezente: getUserPrezente(mm, sedinte),
+              nastere: zilunaan(new Date(mm.data_nasterii)),
+          }
+      });;
+
+    setMembriFin(m);
+  },[user,membri,sedinte])
 
 
   const alert = (msg) => {
@@ -112,7 +138,7 @@ export default function Useri({user, membri, sedinte}) {
     setAnchorEl(null);
   };
 
-  const perm = getPerm(user.grad, user.incredere)
+  
   return (
     <>
       <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
@@ -211,7 +237,7 @@ export default function Useri({user, membri, sedinte}) {
         <MenuItem onClick={()=>{handleClose(); handleStergeOpen();}}><DeleteForeverOutlinedIcon color="error"/>Sterge</MenuItem>
       </Menu>
       <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 2 , sm: 8, md: 12 }}>
-        {membri.sort(function(a,b){return getUserPrezente(b, sedinte)/(getPerm(b.grad, b.incredere)*100)-getUserPrezente(a, sedinte)/(getPerm(a.grad, a.incredere)*100)}).map((membru, index) => (
+        {membriFin.map((membru, index) => (
         <Grid item xs={2} sm={4} md={4} key={index}>
           <div className="card">
             <div className="card-header text-center">
@@ -221,10 +247,9 @@ export default function Useri({user, membri, sedinte}) {
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              sx={100}
             >
-              <Chip variant="outlined" color={badgeColor(membru.departament)} label={badgeLabel(membru.grad)} avatar={<Avatar src={badgeImg(membru.departament)} />} />
-              {((perm >= 45)&&(perm > getPerm(membru.grad, membru.incredere)))&&<IconButton
+              <Chip variant="outlined" color={membru.badgeColor} label={membru.badgeLabel} avatar={<Avatar src={membru.badgeImg} />} />
+              {((perm >= 45)&&(perm > membru.mperm))&&<IconButton
                   color="secondary"
                   aria-controls={open ? 'edit-menu' : undefined}
                   aria-haspopup="true"
@@ -238,10 +263,10 @@ export default function Useri({user, membri, sedinte}) {
             </div>
             <div className="card-body text-center">
                 <h5 className="card-title">{membru.nume}</h5>
-                <p className="card-title text-wrap">{zilunaan(new Date(membru.data_nasterii))}</p>
+                <p className="card-title text-wrap">{membru.nastere}</p>
                 <p className="card-title text-wrap">{membru.email}</p>
                 <p className="card-title text-wrap">{membru.telefon}</p>
-                <p className="card-title text-wrap">Prezenta: {getUserPrezente(membru, sedinte)}%</p>
+                <p className="card-title text-wrap">Prezenta: {membru.prezente}%</p>
             </div>
           </div>
         </Grid>

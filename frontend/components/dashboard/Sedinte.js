@@ -47,6 +47,7 @@ import { NUME_EVENT, publish } from '../../libs/events';
 import { ADMIN_PERM } from '../../libs/config';
 import Cancel from '@mui/icons-material/Cancel';
 import { getParticipanti, getPrezenti, participa, prezent } from '../../libs/participari';
+import { useInterval } from 'usehooks-ts';
 
 
 
@@ -89,6 +90,17 @@ function Sedinte({user, sedinte}) {
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertMsg, setAlertMsg] = React.useState("");
 
+  const [sedinteFin, setSedinteFin] = React.useState([]);
+  const [perm, setPerm] = React.useState(0);
+  const [acum, setAcum] = React.useState(new Date());
+
+  useInterval(
+    () => {
+      setAcum(new Date());
+    },
+    5000,
+  )
+
   React.useEffect(()=>{
     if(!!target){
       sedinte.forEach((s)=>{
@@ -100,11 +112,42 @@ function Sedinte({user, sedinte}) {
     }
   }, [sedinte])
 
+
+  React.useEffect(()=>{
+    let p = getPerm(user.grad, user.incredere)
+    setPerm(p);
+  },[user])
+
+
+  React.useEffect(()=>{
+    // const p = getPerm(user.grad, user.incredere)
+    // setPerm(p);
+
+    const s = sedinte
+      .filter(sed => sed.recurenta?new Date(sed.data_ora)<addZile(31, new Date()):true).filter(sed => dep === "TRECUTE"?addOre(sed.durata+1,new Date(sed.data_ora))<new Date():addOre(sed.durata+1,new Date(sed.data_ora))>=new Date())
+      .filter(sed => sed.departament === "TOATE"?true:(dep==="TOATE" || dep==="TRECUTE")?true:dep===sed.departament)
+      .sort(function(a,b){
+        return new Date(a.data_ora) - new Date(b.data_ora);
+    }).map((ss) => {
+          return {
+              ...ss,
+              badgeColor: badgeColor(ss.departament),
+              badgeImg: badgeImg(ss.departament),
+              data_sed: saptziluna(new Date(ss.data_ora)),
+              participanti: getParticipanti(ss.participari).length,
+              interval: new Date(ss.data_ora).toTimeString().substring(0, 5)+"-"+addOre(ss.durata,new Date(ss.data_ora)).toTimeString().substring(0, 5),
+              data_ora_data: new Date(ss.data_ora),
+              max_prez_data: addOre(ss.durata+1,new Date(ss.data_ora)),
+              prezent: prezent(user.nume, ss.participari),
+              participa: participa(user.nume, ss.participari),
+          }
+      });;
+
+      setSedinteFin(s);
+  },[sedinte])
   
 
   const open = Boolean(anchorEl);
-  const data = new Date();
-  const perm = getPerm(user.grad, user.incredere)
 
   //check recurent
   const handleCheck = (event) => {
@@ -330,7 +373,7 @@ function Sedinte({user, sedinte}) {
       aria-describedby="alert-dialog-slide-description"
     >
       
-      <DialogTitle>{"Lista participanti"}</DialogTitle>
+      <DialogTitle>{"Lista participanti/prezente"}</DialogTitle>
       <DialogContent>
         <h5>Participanti: {!!target && getParticipanti(target.participari).length}</h5>
           <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -573,9 +616,7 @@ function Sedinte({user, sedinte}) {
     <br/>
     
     <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 2 , sm: 8, md: 12 }}>
-    {sedinte.filter(sed => sed.recurenta?new Date(sed.data_ora)<addZile(31, new Date()):true).filter(sed => dep === "TRECUTE"?addOre(sed.durata+1,new Date(sed.data_ora))<new Date():addOre(sed.durata+1,new Date(sed.data_ora))>=new Date()).filter(sed => sed.departament === "TOATE"?true:(dep==="TOATE" || dep==="TRECUTE")?true:dep===sed.departament).sort(function(a,b){
-        return new Date(a.data_ora) - new Date(b.data_ora);
-      }).map((sedinta, index) => (
+    {sedinteFin.map((sedinta, index) => (
       <Grid item xs={2} sm={4} md={4} key={index}>
         <div className="card">
           <Box
@@ -586,8 +627,8 @@ function Sedinte({user, sedinte}) {
             alignItems="center"
             
           >
-            <Chip variant="outlined" color={badgeColor(sedinta.departament)} label={sedinta.departament} avatar={<Avatar src={badgeImg(sedinta.departament)} />} />
-            {(perm >= 45)&&<IconButton
+            <Chip variant="outlined" color={sedinta.badgeColor} label={sedinta.departament} avatar={<Avatar src={sedinta.badgeImg} />} />
+            {(perm >= ADMIN_PERM)&&<IconButton
                 color="secondary"
                 aria-controls={open ? 'edit-menu' : undefined}
                 aria-haspopup="true"
@@ -599,20 +640,20 @@ function Sedinte({user, sedinte}) {
           </Box>
             <div className="card-body text-center">
                 <h3 className="card-title text-wrap">{sedinta.titlu}</h3>
-                <p className="card-title text-wrap">{saptziluna(new Date(sedinta.data_ora))}</p>
+                <p className="card-title text-wrap">{sedinta.data_sed}</p>
                 
                 <p className="card-text text-wrap">{sedinta.desc}</p>
                 
                 <hr/>
                 <IconButton aria-label="participanti" onClick={()=>{setTarget(sedinta); setChecked(getPrezenti(sedinta.participari)); handleMembriOpen()}}>
-                  <StyledBadge badgeContent={getParticipanti(sedinta.participari).length} color="secondary">
+                  <StyledBadge badgeContent={sedinta.participanti} color="secondary">
                     <PersonIcon />
                   </StyledBadge>
                 </IconButton>
-                <Button variant="outlined" color="secondary" onClick={()=>{handlePrezenta(sedinta)}}>{intreDate(new Date(sedinta.data_ora), addOre(sedinta.durata+1,new Date(sedinta.data_ora)))?prezent(user.nume, sedinta.participari)?"Anuleaza":"Prezent":participa(user.nume, sedinta.participari)?"Anuleaza":"Participa"}</Button>
+                <Button variant="outlined" color="secondary" onClick={()=>{handlePrezenta(sedinta)}}>{intreDate(sedinta.data_ora_data, sedinta.max_prez_data, acum)?sedinta.prezent?"Anuleaza":"Prezent":sedinta.participa?"Anuleaza":"Participa"}</Button>
             </div>
             <div className="card-footer text-muted text-center">
-            {new Date(sedinta.data_ora).toTimeString().substring(0, 5)}-{addOre(sedinta.durata,new Date(sedinta.data_ora)).toTimeString().substring(0, 5)}
+              {sedinta.interval}
             </div>
         </div>
       </Grid>
