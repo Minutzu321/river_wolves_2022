@@ -37,12 +37,25 @@ export default function Useri({user, membri, sedinte}) {
 
   const [perm, setPerm] = React.useState(0);
 
+  const [userInfo, setUserInfo] = React.useState({});
+
 
   const [membriFin, setMembriFin] = React.useState([]);
 
   React.useEffect(()=>{
     let p = getPerm(user.grad, user.incredere)
     setPerm(p);
+
+    setUserInfo({
+      nume: user.nume,
+      email: user.email,
+      telefon: user.telefon,
+      badgeColor: badgeColor(user.departament),
+      badgeLabel: badgeLabel(user.grad),
+      badgeImg: badgeImg(user.departament),
+      prezente: getUserPrezente(user, sedinte),
+      nastere: zilunaan(new Date(user.data_nasterii))
+    })
   },[user])
 
   React.useEffect(()=>{
@@ -62,7 +75,7 @@ export default function Useri({user, membri, sedinte}) {
       });;
 
     setMembriFin(m);
-  },[user,membri,sedinte])
+  },[membri,sedinte])
 
 
   const alert = (msg) => {
@@ -236,6 +249,20 @@ export default function Useri({user, membri, sedinte}) {
         <MenuItem onClick={()=>{handleClose(); handleEditOpen();}}><EditOutlinedIcon color="info"/>Editeaza</MenuItem>
         <MenuItem onClick={()=>{handleClose(); handleStergeOpen();}}><DeleteForeverOutlinedIcon color="error"/>Sterge</MenuItem>
       </Menu>
+      {userInfo.nume&&<div className="card">
+        <div className="card-header text-center">
+          <br/>
+          <Chip variant="outlined" color={userInfo.badgeColor} label={userInfo.badgeLabel} avatar={<Avatar src={userInfo.badgeImg} />} />
+            
+        </div>
+        <div className="card-body text-center">
+          <h5 className="card-title">{userInfo.nume}</h5>
+          <p className="card-title text-wrap">{userInfo.nastere}</p>
+          <p className="card-title text-wrap">{userInfo.email}</p>
+          <p className="card-title text-wrap">{userInfo.telefon}</p>
+          <p className="card-title text-wrap">Prezenta: {userInfo.prezente}%</p>
+        </div>
+      </div>}
       <Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 2 , sm: 8, md: 12 }}>
         {membriFin.map((membru, index) => (
         <Grid item xs={2} sm={4} md={4} key={index}>

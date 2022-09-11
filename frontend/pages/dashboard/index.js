@@ -106,7 +106,7 @@ export default function Dash({pageProps}) {
           sendMessage("ping")
         }
       },
-      5000,
+      20000,
     )
 
 
@@ -181,7 +181,7 @@ export default function Dash({pageProps}) {
     <Matrita user={user} err={err} load={load} autorizat={autorizat} infos={infos} comp={<>
       <Firmituri/>    
       <br/>
-      <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte} perm={pageProps.perm}/>
+      {user && <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte} perm={pageProps.perm} dep={user.departament}/>}
       <br/>
       <FeedbackSedinta/>
 
