@@ -3,7 +3,7 @@
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
-import { useEventListener } from 'usehooks-ts'
+import { useEventListener, useInterval } from 'usehooks-ts'
 import { useSession } from "next-auth/react"
 import { useEffect, useRef, useState } from 'react';
 
@@ -100,6 +100,15 @@ export default function Dash({pageProps}) {
       fetchMembri();
     })
 
+    useInterval(
+      () => {
+        if(readyState === ReadyState.OPEN){
+          sendMessage("ping")
+        }
+      },
+      20000,
+    )
+
 
     //INITIALIZEAZA EVENT LISTENER
     useEffect(() => {
@@ -172,7 +181,7 @@ export default function Dash({pageProps}) {
     <Matrita user={user} err={err} load={load} autorizat={autorizat} infos={infos} comp={<>
       <Firmituri/>    
       <br/>
-      <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte} perm={pageProps.perm}/>
+      {user && <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte} perm={pageProps.perm} dep={user.departament}/>}
       <br/>
       <FeedbackSedinta/>
 

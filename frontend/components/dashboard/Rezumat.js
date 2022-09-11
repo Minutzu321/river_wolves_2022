@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useInterval } from 'usehooks-ts'
 
-import { saptziluna } from '../../libs/data';
+import { addOre, addZile, intreDate, saptziluna } from '../../libs/data';
 import { publish } from '../../libs/events';
 
 import Button from '@mui/material/Button';
@@ -17,7 +17,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Typography } from '@mui/material';
 import { ADMIN_PERM } from '../../libs/config';
 
-export default function Rezumat({membri, sedinte, taskuri, perm}) {
+export default function Rezumat({membri, sedinte, taskuri, perm, dep}) {
 
     const [salut, setSalut] = useState("");
     const [dat, setDat] = useState("");
@@ -28,12 +28,31 @@ export default function Rezumat({membri, sedinte, taskuri, perm}) {
 
     useEffect(()=>{
       let aprobari = 0;
+      let tasks = 0;
+      let sedi = 0;
+
       membri.forEach((m)=>{
         if(m.grad === "NEAPROBAT"){
           aprobari++;
         }
       });
       setAproba(aprobari);
+
+      taskuri.forEach((t)=>{
+        if(t.departament === dep){
+          tasks++;
+        }
+      });
+      setTaskuriAzi(tasks);
+
+      let acum = new Date();
+      sedinte.forEach((s)=>{
+        if((s.departament === dep || s.departament === "TOATE" || dep === "NEREPARTIZAT") && intreDate(acum, addZile(1, new Date()), addOre(1,new Date(s.data_ora)))){
+          
+          sedi++;
+        }
+      });
+      setSedinteAzi(sedi);
     },[membri, sedinte, taskuri])
 
     
@@ -81,8 +100,10 @@ export default function Rezumat({membri, sedinte, taskuri, perm}) {
         </div>
         <div className="card-body">
             <h4 className="card-title">Rezumatul zilei de azi</h4>
-            {(aproba > 0 && perm >= ADMIN_PERM) &&<Typography variant="p" color='error'>Membri care trebuie aprobati: <b>{aproba}</b></Typography>}
-            <p className="card-text">1 sedinte, 8 taskuri de indeplinit in total</p>
+            {(aproba > 0 && perm >= ADMIN_PERM) &&<Typography variant="p" color='error'>Membri care trebuie aprobați: <b>{aproba}</b></Typography>}
+            {(taskuriAzi > 0) &&<Typography variant="p" color='info'>Taskuri pentru departamentul tău: <b>{taskuriAzi}</b></Typography>}
+            {(sedinteAzi > 0) &&<Typography variant="p" color='info'>Ședințe care urmează azi: <b>{sedinteAzi}</b></Typography>}
+            {(aproba===0 && taskuriAzi===0 && sedinteAzi===0) &&<Typography variant="p" color='success'>Nimic de facut azi</Typography>}
             <Box
               sx={{
                 display: 'flex',

@@ -89,8 +89,8 @@ model Participare {
   sedinta   Sedinta? @relation(fields: [sedintaaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   sedintaaId Int?
 
-  user      User? @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  userId    Int?
+  user      User? @relation(fields: [userrId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userrId    Int?
 }
 
 model Task {

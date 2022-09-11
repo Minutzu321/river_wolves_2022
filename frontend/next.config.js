@@ -16,16 +16,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/v',
-        destination: '/halloween/voluntar',
-        permanent: true,
-      },
-      {
-        source: '/l',
-        destination: '/halloween/login',
-        permanent: true,
-      },
-      {
         source: '/',
         destination: '/acasa',
         permanent: true,
