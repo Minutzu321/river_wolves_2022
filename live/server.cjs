@@ -32,7 +32,7 @@ server.on('connection', function (socket, req) {
     let mesaj = new Buffer.from(message).toString();
     console.log(mesaj);
     if(mesaj==="ping"){
-      so.send("pong");
+      socket.send("pong");
       return;
     }
     sockets.filter(s => s !== socket)
