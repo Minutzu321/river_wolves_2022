@@ -34,6 +34,7 @@ export default async (req, res) => {
           feedbackEchipa: true,
           feedbackSedinte: true,
           participari: true,
+          primaLogare: true,
       }
     })
   }catch{
