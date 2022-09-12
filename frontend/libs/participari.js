@@ -18,6 +18,16 @@ export const getPrezenti = (participari) =>{
     return prez;
 }
 
+export const getPrezente = (user, sedinte) =>{
+    let prez = 0;
+    user.participari.forEach((p)=>{
+        if(p.prezent){
+            prez++;
+        }
+    });
+    return Math.round(prez);
+}
+
 export const getUserPrezente = (user, sedinte) =>{
     let sed = 0;
     let prez = 0;

@@ -17,7 +17,9 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
-import { TextareaAutosize, TextField } from '@mui/material';
+import {TextField } from '@mui/material';
+import { NUME_EVENT, publish } from '../../libs/events';
+import axios from 'axios';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -139,6 +141,10 @@ const steps = [
     description: 'Am lucrat in timpul sedintelor si nu am stat degeaba mai mult decat am lucrat.',
   },
   {
+    label: 'Am invatat',
+    description: 'Am invatat lucruri noi la sedinte.',
+  },
+  {
     label: 'M-am simtit bine',
     description: 'M-am simtit bine la sedintele departamentului din care fac parte.',
   },
@@ -154,14 +160,19 @@ const steps = [
 function FeedbackSedinta() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [feeds, setFeeds] = React.useState({
-      0:3,
-      1:2,
-      2:1,
-      3:"",
+      0:-1,
+      1:-1,
+      2:-1,
+      3:-1,
+      4:"",
     });
 
-    const handleNext = () => {
+    const handleNext = (index) => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+      if(index === steps.length - 1){
+        trimite();
+      }
     };
   
     const handleBack = () => {
@@ -171,15 +182,22 @@ function FeedbackSedinta() {
     const handleReset = () => {
       setActiveStep(0);
       setFeeds({
-        0:3,
-        1:2,
-        2:1,
-        3:"",
+        0:-1,
+        1:-1,
+        2:-1,
+        3:-1,
+        4:"",
       });
     };
 
+    function trimite(){
+      axios.post('api/dash/feedbacksedinta', feeds)
+        .then(res => {
+          publish(NUME_EVENT.UPDATE_MEMBRI)
+        })
+    }
+
     function handleFeedback(inde, newVal) {
-      console.log(inde,newVal);
       setFeeds({
         ...feeds,
         [inde]: newVal
@@ -237,11 +255,12 @@ function FeedbackSedinta() {
                   <div>
                     <Button
                       variant="contained"
-                      onClick={handleNext}
+                      onClick={()=>{handleNext(index)}}
                       sx={{ mt: 1, mr: 1 }}
                       color="secondary"
                     >
                       {index === steps.length - 1 ? 'Gata' : 'Continua'}
+                      
                     </Button>
                     <Button
                       disabled={index === 0}

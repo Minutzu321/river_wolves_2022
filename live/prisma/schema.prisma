@@ -124,8 +124,8 @@ model Feedback{
 model FeedbackSedinta{
   id      Int @id @default(autoincrement())
 
-  user    User @relation(fields: [userId], references: [id])
-  userId  Int @unique
+  user    User @relation(fields: [userIdd], references: [id])
+  userIdd  Int
 
   fAscult Int //ascultat
   fMuncit Int //muncit

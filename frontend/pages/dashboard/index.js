@@ -24,6 +24,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { getPrezente } from '../../libs/participari';
 
 export default function Dash({pageProps}) {
 
@@ -45,6 +46,8 @@ export default function Dash({pageProps}) {
   const [membri, setMembri] = useState([]);
 
   const [tab, setTab] = useState('1');
+
+  const [isFeedback, setIsFeedback] = useState(false);
 
   const executeScroll = () => scrollTo.current.scrollIntoView() 
 
@@ -127,12 +130,12 @@ export default function Dash({pageProps}) {
     
 
   function autorizeaza(){
-    console.log("auth");
     axios.post('api/dash/auth')
       .then(res => {
         const data = res.data
         setErr(data.err);
         if(!data.err){
+          
           setLoad(false);
           setInfos(data.inf)
           setAutorizat(data.aut)
@@ -175,6 +178,21 @@ export default function Dash({pageProps}) {
       setLoad(true);
     }
   }, [readyState])
+
+  useEffect(() => {
+    if(!!user.participari){
+      
+      let prezs = Math.floor(getPrezente(user, sedinte)/2);
+      let feeds = user.feedbackSedinte.length;
+      console.log(feeds, prezs);
+      if(prezs > feeds){
+        setIsFeedback(true)
+      }else{
+        setIsFeedback(false)
+      }
+    }
+
+  }, [user, sedinte])
   
   if (!!pageProps.ses) {
   return (
@@ -183,7 +201,7 @@ export default function Dash({pageProps}) {
       <br/>
       {user && <Rezumat membri={membri} taskuri={taskuri} sedinte={sedinte} perm={pageProps.perm} dep={user.departament}/>}
       <br/>
-      <FeedbackSedinta/>
+      {isFeedback&&<FeedbackSedinta/>}
 
       <div ref={scrollTo}>
         <TabContext value={tab}>

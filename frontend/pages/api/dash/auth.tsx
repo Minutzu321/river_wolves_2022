@@ -27,13 +27,25 @@ export default async (req, res) => {
           data_nasterii: true,
           grad: true,
           departament: true,
-          sid: true,
           poza: true,
           incredere: true,
-          feedback: true,
-          feedbackEchipa: true,
-          feedbackSedinte: true,
-          participari: true,
+          feedbackEchipa:  {
+            select:{
+              id: true,
+            }
+          },
+          feedbackSedinte: {
+            select:{
+              id: true,
+            }
+          },
+          participari: {
+            select:{
+              data_ora: true,
+              anulat: true,
+              prezent: true,
+            }
+          },
           primaLogare: true,
       }
     })
