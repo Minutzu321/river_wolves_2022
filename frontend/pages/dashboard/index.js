@@ -180,7 +180,7 @@ export default function Dash({pageProps}) {
   }, [readyState])
 
   useEffect(() => {
-    if(!!user.participari){
+    if(!!user && !!user.participari){
       
       let prezs = Math.floor(getPrezente(user, sedinte)/2);
       let feeds = user.feedbackSedinte.length;
