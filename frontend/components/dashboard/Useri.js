@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, Select, Slide, Snackbar, Typography } from '@mui/material';
+import {TextField, Alert, Avatar, Box, Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, Select, Slide, Snackbar, Typography } from '@mui/material';
 import React from 'react'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -23,6 +23,10 @@ import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
 import MoodIcon from '@mui/icons-material/Mood';
 import Mood from '@mui/icons-material/Mood';
 
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 
 
 export default function Useri({user, membri, sedinte}) {
@@ -46,8 +50,22 @@ export default function Useri({user, membri, sedinte}) {
 
   const [medie, setMedie] = React.useState(0);
 
+  const [nume, setNume] = React.useState("");
+  const [tel, setTel] = React.useState("");
+  const [dataNaterii, setDataNaterii] = React.useState(new Date());
+
 
   const [membriFin, setMembriFin] = React.useState([]);
+
+  function clean(d, trim=true){
+    if(trim){
+      d = d.trim();
+    }
+    while(d.includes("  ")){
+      d = d.replace("  ", " ");
+    }
+    return d
+  }
 
   React.useEffect(()=>{
     let p = getPerm(user.grad, user.incredere)
@@ -71,10 +89,10 @@ export default function Useri({user, membri, sedinte}) {
     let max = 0;
     let min = 100;
     let med = 0;
-    let m = membri.sort(
-        function(a,b){
-          return getUserPrezente(b, sedinte)/(getPerm(b.grad, b.incredere)*100)-getUserPrezente(a, sedinte)/(getPerm(a.grad, a.incredere)*100)
-        }).map((mm) => {
+    let m = membri.filter(me => me.grad !== "IGNORAT")
+                  .sort(function(a,b){
+                      return getUserPrezente(b, sedinte)/(getPerm(b.grad, b.incredere)*100)-getUserPrezente(a, sedinte)/(getPerm(a.grad, a.incredere)*100)
+                  }).map((mm) => {
           let prezentamembru = getUserPrezente(mm, sedinte);
           if(prezentamembru > max){
             max = prezentamembru
@@ -147,6 +165,9 @@ export default function Useri({user, membri, sedinte}) {
       target: target.email,
       grad: grad,
       dep: dep,
+      nume: nume,
+      tel: tel,
+      dat: dataNaterii,
     })
       .then(res => {
         alert("Salvat cu succes!")
@@ -232,6 +253,43 @@ export default function Useri({user, membri, sedinte}) {
                       <MenuItem value={"DESIGN"} component="span">DESIGN</MenuItem>
                       <MenuItem value={"MEDIA"} component="span">MEDIA</MenuItem>
                     </Select>
+                    {(perm >= TEAM_LEADER_PERM) &&<>
+                    <br/>
+                    <TextField
+                      color ="secondary"
+                      id="numele" 
+                      label="Nume" 
+                      variant="outlined"
+                      value={nume} 
+                      onChange={(event) => {
+                            setNume(clean(event.target.value, false));
+                          }}/>
+                          <br/>
+                    <TextField
+                      color="secondary"
+                      id="tel"
+                      label="Telefon"
+                      variant="outlined"
+                      value={tel}
+                      onChange={(event) => {
+                            setTel(event.target.value);
+                          }}/>
+                          <br/>
+                      <LocalizationProvider dateAdapter={AdapterLuxon} locale="ro">
+                        <DatePicker
+                          
+                          disableFuture
+                          label="Data nașterii"
+                          openTo="year"
+                          views={['year', 'month', 'day']}
+                          value={dataNaterii}
+                          onChange={(newValue) => {
+                            setDataNaterii(newValue);
+                          }}
+                          renderInput={(params) => <TextField variant="outlined" {...params} color="secondary"/>}
+                        />
+                    </LocalizationProvider>
+                    </>}
                   </FormControl>
                 </>}
             </DialogContent>
@@ -303,7 +361,7 @@ export default function Useri({user, membri, sedinte}) {
                   aria-controls={open ? 'edit-menu' : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
-                  onClick={(event)=>{setTarget(membru); setGrad(membru.grad); setDep(membru.departament); handleClick(event);}}
+                  onClick={(event)=>{setTarget(membru); setNume(membru.nume); setDataNaterii(new Date(membru.data_nasterii)); setTel(membru.telefon); setGrad(membru.grad); setDep(membru.departament); handleClick(event);}}
               >
                   <MoreVertIcon color="secondary"/>
               </IconButton>}

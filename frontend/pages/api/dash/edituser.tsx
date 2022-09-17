@@ -33,6 +33,9 @@ export default async (req, res) => {
             data:{
                 grad: body.grad,
                 departament: body.dep,
+                nume: body.nume,
+                telefon: body.tel,
+                data_nasterii: new Date(body.dat),
             }
         });
     }

@@ -38,7 +38,13 @@ model Locatie {
 model User {
   id              Int @id @default(autoincrement())
   email           String  @unique
+  
   sid             String @unique @default(cuid())
+  rid             String? @default(uuid())
+
+  key             String? @default("")
+  iv              String? @default("")
+
   nume            String?
   telefon         String? @unique
   data_nasterii   DateTime?
@@ -149,6 +155,7 @@ model FeedbackEchipa{
 
 
 enum Grad {
+  IGNORAT
   NEAPROBAT
   VOLUNTAR
   SPONSOR
