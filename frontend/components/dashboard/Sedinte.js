@@ -141,7 +141,7 @@ function Sedinte({user, sedinte}) {
               prezent: prezent(user.nume, ss.participari),
               participa: participa(user.nume, ss.participari),
           }
-      });;
+      });
 
       setSedinteFin(s);
   },[sedinte, dep])

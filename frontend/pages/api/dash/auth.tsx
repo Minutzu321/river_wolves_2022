@@ -13,6 +13,8 @@ export default async (req, res) => {
 
   const prisma = DBClient.instance
 
+  const body = req.body;
+
   let user;
   
   try {
@@ -22,6 +24,7 @@ export default async (req, res) => {
       },
       select: {
           email:true,
+          sid: true,
           nume: true,
           telefon: true,
           data_nasterii: true,
@@ -57,7 +60,7 @@ export default async (req, res) => {
   let infos = true, autorizat = false, taskuri = [];
 
   if(!!user){
-    if(user.grad !== "NEAPROBAT"){
+    if(user.grad !== "NEAPROBAT" && user.grad !== "IGNORAT" ){
       autorizat = true;
       if(!!user.nume && !!user.telefon && !!user.data_nasterii){
         infos = false;
@@ -84,15 +87,16 @@ export default async (req, res) => {
       data: {
         email: sesiune.user.email,
         nume: sesiune.user.name,
+        grad: !body.ign?"NEAPROBAT":"IGNORAT"
       }
     })
   }
-  
+
   res.status(200).json({
     err: false,
     inf: infos,
     aut: autorizat,
-    user: (infos || !autorizat) ? undefined : user,
+    user: (!body.ign && (infos || !autorizat)) ? undefined : user,
     taskuri: taskuri,
   })
 
