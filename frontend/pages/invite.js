@@ -137,6 +137,10 @@ export default function Invite({pageProps}) {
   }
 
   useEffect(() => {
+    fetchSedinte();
+  }, [user])
+
+  useEffect(() => {
     if(readyState === ReadyState.OPEN){
       base_load();
     }else{
