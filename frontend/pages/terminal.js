@@ -2,8 +2,7 @@ import React from 'react'
 import { useEffectOnce } from 'usehooks-ts';
 import {init, focus, typeIt, moveIt} from '../components/terminal/in'
 
-
-export default function Terminal() {
+export default function Terminal({pageProps}) {
 
     useEffectOnce(()=>{
         init();
@@ -30,3 +29,25 @@ export default function Terminal() {
     </div>
   )
 }
+
+export async function getServerSideProps(context) {
+    const [user, ses, perm] = await authProps(context);
+  
+    if(!!user){
+      return {
+        props: {
+          user: JSON.parse(JSON.stringify(user)),
+          ses: ses,
+          perm: perm,
+        },
+      }
+    }else{
+      return {
+        props: {
+          user: {},
+          ses: ses,
+          perm: perm,
+        },
+      }
+    }
+  }

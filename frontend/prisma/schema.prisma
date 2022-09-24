@@ -10,14 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model IP {
-  id       Int @id @default(autoincrement())
-  ip       String
-  ora_data DateTime
-  user     User?    @relation(fields: [userID], references: [id])
-  userID   Int?
-}
-
 model Locatie {
   id       Int @id @default(autoincrement())
   ip       String
@@ -33,6 +25,32 @@ model Locatie {
   thjucID  Int? 
   ind      THIndiciu?    @relation(fields: [indID], references: [id])
   indID    Int? @unique
+}
+
+model IP{
+  id        Int @id @default(autoincrement())
+  
+  ip        String @unique
+  data_ora  DateTime @default(now())
+
+  devices   Device[]
+}
+
+model Device{
+  id                  Int    @id @default(autoincrement())
+  userAgent           String?
+  hardwareConcurrency Int?
+  language            String?
+  maxTouchPoints      Int?
+  platform            String?
+  vendor              String?
+  ips                 IP[]
+  ultimaActiune       DateTime @default(now())
+  dataCreare          DateTime @default(now())
+  user                User?  @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId              Int?
+  jucator             THJucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  jucatorId           Int?
 }
 
 model User {
@@ -53,7 +71,6 @@ model User {
   grad            Grad @default(NEAPROBAT)
   departament     Departament @default(NEREPARTIZAT)
 
-  ips             IP[]
   locatii         Locatie[]
 
   incredere       Int @default(0)
@@ -64,6 +81,8 @@ model User {
 
   feedbackSedinte FeedbackSedinta[]
   feedbackEchipa  FeedbackEchipa[]
+
+  deviceuri       Device[]
 
 
   primaLogare     DateTime @default(now())
@@ -178,17 +197,6 @@ enum Departament {
 }
 
 //---TREASUREHUNT---
-
-model Device{
-  id            Int    @id @default(autoincrement())
-  userAgent     String?
-  ultimaActiune DateTime @default(now())
-  seIncarca     Boolean @default(false)
-  nivelBaterie  Int @default(-1)
-  online        Boolean @default(false)
-  jucator       THJucator?  @relation(fields: [jucatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  jucatorId     Int?
-}
 
 model THJucator{
   id         Int    @id @default(autoincrement())

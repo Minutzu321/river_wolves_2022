@@ -20,7 +20,10 @@ export default function Matrita({load, infos, autorizat, comp, err, user}) {
       <div className="wrapper">
         <PageHeader titlu={"RiverBoard"}
           subtitlu={"Sistem de management al echipei"}
-          subsubtitlu={err?"Eroare la server..":load?"Se incarca..":infos?"Nu stim cine esti":autorizat?"Salut "+user.nume:"Cont neautorizat"}/>
+          subsubtitlu={err?"Eroare la server..":load?"Se incarca..":infos?"Nu stim cine esti":autorizat?"Salut "+user.nume:"Cont neautorizat"}
+          sageti={true}
+          />
+
         <div className="main">
           <div className="container">
             <br/>

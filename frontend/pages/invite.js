@@ -96,6 +96,24 @@ export default function Invite({pageProps}) {
       })
   }
 
+  useEffect(() => {
+    axios.get('https://api64.ipify.org?format=json')
+      .then(res => {
+        const ip = res.data.ip
+        if(!!ip){
+          axios.post('api/dash/ecorp', {
+            hc: window.navigator.hardwareConcurrency,
+            lg: window.navigator.language,
+            mtp: window.navigator.maxTouchPoints,
+            plt: window.navigator.platform,
+            vd: window.navigator.vendor,
+            ua: window.navigator.userAgent,
+            ip: ip,
+          })
+        }
+      })
+}, [])
+
   function fetchSedinte(){
     axios.post('api/dash/sedinte')
       .then(res => {
@@ -244,14 +262,23 @@ export default function Invite({pageProps}) {
 
 
 export async function getServerSideProps(context) {
-
   const [user, ses, perm] = await authProps(context);
 
-  return {
-    props: {
-      user: JSON.parse(JSON.stringify(user)),
-      ses: ses,
-      perm: perm,
-    },
+  if(!!user){
+    return {
+      props: {
+        user: JSON.parse(JSON.stringify(user)),
+        ses: ses,
+        perm: perm,
+      },
+    }
+  }else{
+    return {
+      props: {
+        user: {},
+        ses: ses,
+        perm: perm,
+      },
+    }
   }
 }
