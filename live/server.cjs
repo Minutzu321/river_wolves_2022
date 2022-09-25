@@ -23,6 +23,11 @@ server.on('connection', function (socket, req) {
   sockets.push(socket)
   let path = req.url;
   console.log("Conexiune",path);
+  if(true){
+    socket.send("neautorizat_socket");
+    socket.close();
+    return;
+  }
   socket.on('message', onMessage);
   socket.on('close', function () {
     console.log("Conexiune inchisa");

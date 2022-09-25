@@ -26,7 +26,11 @@ import TabPanel from '@mui/lab/TabPanel';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { getPrezente } from '../../libs/participari';
 
+import { useRouter } from 'next/router'
+
 export default function Dash({pageProps}) {
+
+  const router = useRouter()
 
   // const documentRef = useRef<Document>(document)
 
@@ -120,9 +124,14 @@ export default function Dash({pageProps}) {
           case NUME_EVENT.UPDATE_MEMBRI:
             autorizeaza();
             fetchMembri();
+            break;
           case NUME_EVENT.UPDATE_SEDINTE:
             fetchSedinte();
             fetchMembri();
+            break;
+          case NUME_EVENT.NEAUTORIZAT_SOCKET:
+            router.reload(window.location.pathname);
+            break;
         }
       }
     }, [lastMessage]);
