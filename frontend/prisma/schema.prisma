@@ -57,9 +57,10 @@ model User {
   id              Int @id @default(autoincrement())
   email           String  @unique
   
-  sid             String @unique @default(cuid())
+  sid             String  @unique @default(cuid())
   rid             String? @default(uuid())
 
+  sauth           String? @default("")
   key             String? @default("")
   iv              String? @default("")
 
@@ -83,7 +84,6 @@ model User {
   feedbackEchipa  FeedbackEchipa[]
 
   deviceuri       Device[]
-
 
   primaLogare     DateTime @default(now())
   ultimaActiune   DateTime @default(now())

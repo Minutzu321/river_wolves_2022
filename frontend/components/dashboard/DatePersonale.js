@@ -96,8 +96,8 @@ export default function DatePersonale() {
     if(!scrisDat)
       return "";
     
-    if(varsta < 14){
-      return "Varsta minima e 14 ani"
+    if(varsta < 11){
+      return "Varsta minima e 11 ani"
     }
 
     if(varsta > 100){

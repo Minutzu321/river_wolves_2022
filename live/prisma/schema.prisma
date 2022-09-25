@@ -60,6 +60,7 @@ model User {
   sid             String @unique @default(cuid())
   rid             String? @default(uuid())
 
+  sauth           String? @default("")
   key             String? @default("")
   iv              String? @default("")
 

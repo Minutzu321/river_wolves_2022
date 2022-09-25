@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { getSession } from "next-auth/react"
 import { getPerm } from "./perm";
 import DBClient from "./prismadb";
@@ -64,7 +65,7 @@ export async function useAuth(req, res){
 }
   
 
-  export async function authProps(context){
+  export async function authProps(context, ignora=false){
     const prisma = DBClient.instance;
     const sesiune = await getSession(context)
 
@@ -74,11 +75,15 @@ export async function useAuth(req, res){
   
     //user,sesiune,acces
       
-      const user = await prisma.user.findUnique({
+      const user = await prisma.user.update({
         where: {
           email: sesiune.user.email
         },
+        data:{
+          sauth: randomUUID(),
+        },
         select: {
+            sauth: true,
             email: true,
             nume: true,
             telefon: true,
@@ -97,7 +102,30 @@ export async function useAuth(req, res){
       if(!!user){
         return [user, sesiune, getPerm(user.grad, user.incredere)] as const
       }else{
-        return [null, sesiune, 0] as const
+        const userc = await prisma.user.create({
+          data: {
+            sauth: randomUUID(),
+            email: sesiune.user.email,
+            nume: sesiune.user.name,
+            grad: ignora?"IGNORAT":"NEAPROBAT"
+          },
+          select: {
+              sauth: true,
+              email: true,
+              nume: true,
+              telefon: true,
+              data_nasterii: true,
+              grad: true,
+              departament: true,
+              sid: true,
+              poza: true,
+              incredere: true,
+              feedback: true,
+              feedbackEchipa: true,
+              feedbackSedinte: true,
+          }
+        })
+        return [userc, sesiune, 0] as const
       }
   
 }

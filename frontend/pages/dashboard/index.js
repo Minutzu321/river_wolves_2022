@@ -81,7 +81,7 @@ export default function Dash({pageProps}) {
   //INITIALIZEAZA SOCKET
   
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://live.ro049.com',
+    'wss://live.ro049.com/'+pageProps.user.sauth,
     {
       shouldReconnect: (closeEvent) => {
         return true;
