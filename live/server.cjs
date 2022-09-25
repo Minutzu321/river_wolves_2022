@@ -25,6 +25,7 @@ server.on('connection', function (socket, req) {
   console.log("Conexiune",path);
   socket.on('message', onMessage);
   socket.on('close', function () {
+    console.log("Conexiune inchisa");
     sockets.splice(sockets.indexOf(socket), 1)
   })
 

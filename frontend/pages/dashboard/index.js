@@ -190,6 +190,7 @@ export default function Dash({pageProps}) {
   }
 
   useEffect(() => {
+    console.log(readyState);
     if(readyState === ReadyState.OPEN){
       base_load();
     }else{
