@@ -153,7 +153,7 @@ export default function Dash({pageProps}) {
           setSedinte(data.sedinte);
         }
       })
-  }
+    }
 
   useEffect(() => {
       axios.get('https://api64.ipify.org?format=json')
@@ -203,7 +203,6 @@ export default function Dash({pageProps}) {
       
       let prezs = Math.floor(getPrezente(user, sedinte)/2);
       let feeds = user.feedbackSedinte.length;
-      console.log(feeds, prezs);
       if(prezs > feeds){
         setIsFeedback(true)
       }else{
