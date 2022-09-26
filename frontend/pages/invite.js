@@ -40,7 +40,7 @@ export default function Invite({pageProps}) {
   //INITIALIZEAZA SOCKET
   
   const { sendMessage, lastMessage, readyState } = useWebSocket(
-    'wss://live.ro049.com'+pageProps.user.sauth,
+    'wss://live.ro049.com/'+pageProps.user.sauth,
     {
       shouldReconnect: (closeEvent) => {
         return true;
