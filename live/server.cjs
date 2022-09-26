@@ -19,15 +19,22 @@ getUseri(prisma).then((rez)=>{
 
 const sockets = []
 
-server.on('connection', function (socket, req) {
+server.on('connection', async function (socket, req) {
   sockets.push(socket)
-  let path = req.url;
+  let path = req.url.substring(1);
+  const user = await prisma.user.findFirst({
+    where:{
+      sauth: path,
+    }
+  })
   console.log("Conexiune",path);
-  if(true){
+  if(!user){
     socket.send("neautorizat_socket");
     socket.close();
+    console.log("NEAUTORIZAT");
     return;
   }
+  console.log(user.nume,"e conectat");
   socket.on('message', onMessage);
   socket.on('close', function () {
     console.log("Conexiune inchisa");

@@ -75,7 +75,7 @@ const Aplica = () => {
 }
 
 const AplicaInchis = () => (
-  <h4><b>Formularul se va publica în Septembrie</b></h4>
+  <h4><b>Formularul se va publica în Septembrie, 2023</b></h4>
 )
 
 const AplicaDeschis = () => (

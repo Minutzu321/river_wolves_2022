@@ -5,12 +5,21 @@ const getUseri = async function(prisma) {
     return await prisma.user.findMany();
 }
 
-
-class Quiz {
-    constructor(live) {
-      this.cod = genId(5);
-      this.live = live;
+const getUserByAuthId = async function(prisma, authId) {
+  return await prisma.user.findFirst({
+    where:{
+      sauth: path,
     }
-  }
+  })
+}
 
-module.exports = { getUseri, Quiz }
+
+
+class RWUser {
+  constructor(user) {
+    this.nume = user.nume;
+    this.email = user.email;
+  }
+}
+
+module.exports = { getUseri, RWUser }
