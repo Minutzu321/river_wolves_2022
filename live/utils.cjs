@@ -3,7 +3,7 @@ function rInRange(min, max) {
 }
 
 function genId(l) {
-    var rez           = '';
+    var rez             = '';
     var caractere       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     var lungimeCaractere = caractere.length;
     for ( var i = 0; i < l; i++ ) {
