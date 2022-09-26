@@ -36,6 +36,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 import { Box, Chip, IconButton, Menu, MenuItem, FormControl, InputLabel, Select, Grid, Typography, Snackbar, Alert, FormControlLabel, FormHelperText } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -589,6 +590,10 @@ function Sedinte({user, sedinte}) {
     {(perm >= 45)&&<Box textAlign='center'>
       <Button variant="outlined" color="secondary" startIcon={<AddIcon />} onClick={handleAddOpen}>
         Adauga
+      </Button>
+      <br/>
+      <Button variant="outlined" color="secondary" startIcon={<QrCodeScannerIcon />} onClick={()=>window.open("https://ro049.com/valid", '_blank', 'noopener,noreferrer')}>
+        Scaneaza
       </Button>
     </Box>}
     
