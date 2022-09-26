@@ -59,7 +59,9 @@ export default async (req, res) => {
   
 
   let infos = true, autorizat = false, taskuri = [];
-
+  //
+  //  chiar vorbesc serios
+  //
   if(!!user){
     if(user.grad !== "NEAPROBAT" && user.grad !== "IGNORAT" ){
       autorizat = true;
