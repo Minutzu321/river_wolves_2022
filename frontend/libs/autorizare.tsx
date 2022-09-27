@@ -74,7 +74,7 @@ export async function useAuth(req, res){
     }
   
     //user,sesiune,acces
-      
+      try{
       const user = await prisma.user.update({
         where: {
           email: sesiune.user.email
@@ -98,34 +98,32 @@ export async function useAuth(req, res){
             feedbackSedinte: true,
         }
       })
-  
-      if(!!user){
-        return [user, sesiune, getPerm(user.grad, user.incredere)] as const
-      }else{
-        const userc = await prisma.user.create({
-          data: {
-            sauth: randomUUID(),
-            email: sesiune.user.email,
-            nume: sesiune.user.name,
-            grad: ignora?"IGNORAT":"NEAPROBAT"
-          },
-          select: {
-              sauth: true,
-              email: true,
-              nume: true,
-              telefon: true,
-              data_nasterii: true,
-              grad: true,
-              departament: true,
-              sid: true,
-              poza: true,
-              incredere: true,
-              feedback: true,
-              feedbackEchipa: true,
-              feedbackSedinte: true,
-          }
-        })
-        return [userc, sesiune, 0] as const
-      }
+      return [user, sesiune, getPerm(user.grad, user.incredere)] as const
+    }catch{
+      const userc = await prisma.user.create({
+        data: {
+          sauth: randomUUID(),
+          email: sesiune.user.email,
+          nume: sesiune.user.name,
+          grad: ignora?"IGNORAT":"NEAPROBAT"
+        },
+        select: {
+            sauth: true,
+            email: true,
+            nume: true,
+            telefon: true,
+            data_nasterii: true,
+            grad: true,
+            departament: true,
+            sid: true,
+            poza: true,
+            incredere: true,
+            feedback: true,
+            feedbackEchipa: true,
+            feedbackSedinte: true,
+        }
+      })
+      return [userc, sesiune, 0] as const
+    }
   
 }
