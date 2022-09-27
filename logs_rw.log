@@ -1,5 +1,0 @@
-yarn run v1.22.19
-$ next start
-ready - started server on 0.0.0.0:3000, url: http://localhost:3000
-info  - Loaded env from /home/pi/river_wolves_2022/frontend/.env.local
-info  - Loaded env from /home/pi/river_wolves_2022/frontend/.env
