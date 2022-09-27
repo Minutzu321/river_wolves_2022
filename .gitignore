@@ -1,2 +1,3 @@
 live/node_modules/
 live/.env
+*.log

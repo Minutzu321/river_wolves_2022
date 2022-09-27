@@ -11,12 +11,6 @@ console.log("Server pornit..")
 const prisma = new Prisma.PrismaClient()
 console.log("Conectat la baza de date..")
 
-getUseri(prisma).then((rez)=>{
-  console.log(rez);
-});
-
-
-
 const sockets = []
 
 server.on('connection', async function (socket, req) {
@@ -27,7 +21,6 @@ server.on('connection', async function (socket, req) {
       sauth: path,
     }
   })
-  console.log("Conexiune",path);
   if(!user){
     socket.send("neautorizat_socket");
     socket.close();
@@ -37,7 +30,6 @@ server.on('connection', async function (socket, req) {
   console.log(user.nume,"e conectat");
   socket.on('message', onMessage);
   socket.on('close', function () {
-    console.log("Conexiune inchisa");
     sockets.splice(sockets.indexOf(socket), 1)
   })
 
@@ -50,7 +42,6 @@ server.on('connection', async function (socket, req) {
     }
     sockets.filter(s => s !== socket)
       .forEach(so => {
-        console.log("se trimite", sockets.indexOf(so));
         so.send(mesaj);
       })
   }
