@@ -22,7 +22,9 @@ server.on('connection', async function (socket, req) {
     }
   })
   if(!user){
-    socket.send("neautorizat_socket");
+    if(path.length > 2){
+      socket.send("neautorizat_socket");
+    }
     socket.close();
     console.log("NEAUTORIZAT");
     return;

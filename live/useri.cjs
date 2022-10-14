@@ -22,4 +22,15 @@ class RWUser {
   }
 }
 
+class RWQuiz {
+  constructor(cod, quiz) {
+    this.cod = cod;
+    this.intrebari = genIntrebari();
+  }
+
+  get genIntrebari() {
+    return []
+  }
+}
+
 module.exports = { getUseri, RWUser }

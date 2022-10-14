@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react'
 
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled, useTheme } from '@mui/material/styles';
 import { pink } from '@mui/material/colors';
-import { TextField, Button, Typography, Box, keyframes, FormControl, FormGroup, FormControlLabel, Switch, InputAdornment, IconButton, OutlinedInput, InputLabel } from "@mui/material";
+
+import { Select, Button, Typography, Box, keyframes, FormControl, FormGroup, FormControlLabel, Switch, InputAdornment, IconButton, OutlinedInput, InputLabel, MenuItem } from "@mui/material";
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 const butonApasa = keyframes`
   0% {
@@ -79,7 +80,7 @@ const tremuraFrames = `
 }
 `
 
-const Holder = styled(Box)(() => ({
+const Holder = styled(Box)(({theme}) => ({
     maxWidth: "300px",
     height: 'auto',
     background: 'white',
@@ -91,7 +92,7 @@ const Holder = styled(Box)(() => ({
     padding: 30,
   }));
 
-  const TrimiteButton = styled(Button)(() => ({
+  const TrimiteButton = styled(Button)(({theme}) => ({
     background: '#363636',
     color: 'white',
     animation: `${butonApasa} 0.3s cubic-bezier(0.470, 0.000, 0.745, 0.715) both`,
@@ -100,35 +101,59 @@ const Holder = styled(Box)(() => ({
     }
   }));
 
-  const Titlu = styled(Typography)(() => ({
+  const Titlu = styled(Typography)(({theme}) => ({
     color: "#eee",
   }));
 
-  const Cod = styled(OutlinedInput)(({ agita }) => ({
+  const FormControlAnimat = styled(FormControl)(({ agita }) => ({
     animation: agita && `${agitaFrames} 0.3s cubic-bezier(0.455, 0.030, 0.515, 0.955) both`
   }));
 
 
-export default function GenCod() {
+  const GreenSwitch = styled(Switch)(({ theme }) => ({
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      color: pink[600],
+      '&:hover': {
+        backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
+      },
+    },
+    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+      backgroundColor: pink[600],
+    },
+  }));
 
+export default function GenCod() {
+    const theme = useTheme();
     const htmlElRef = useRef(null)
+    const htmlElRef2 = useRef(null)
 
     const [cod, setCod] = useState("");
-    const [agita, setAgita] = useState(false);
+    const [tip, setTip] = useState(undefined);
+    const [agita, setAgita] = useState(0);
+    const [agitaTip, setAgitaTip] = useState(0);
     const [live, setLive] = useState(true);
+    const [qpublic, setQpublic] = useState(false);
 
     const setFocus = () => {htmlElRef.current &&  htmlElRef.current.focus()}
+    const setFocus2 = () => {htmlElRef2.current &&  htmlElRef2.current.focus()}
 
     const eroare = () =>{
       setFocus();
-      setAgita(true);
+      setAgita(1);
       setTimeout(() => {
-        setAgita(false);
+        setAgita(0);
+      }, 300);
+    }
+    const eroare2 = () =>{
+      setFocus2();
+      setAgitaTip(1);
+      setTimeout(() => {
+        setAgitaTip(0);
       }, 300);
     }
 
     const handleCod = (event) =>{
-        let aranjat = event.target.value.toUpperCase();
+        let aranjat = event.target.value.toUpperCase().replace(/[^A-Za-z0-9]/g, "");
         if(aranjat.length > 11){
             aranjat = aranjat.substring(0,11);
             eroare();
@@ -138,6 +163,12 @@ export default function GenCod() {
 
     const handleLive = (event) => {
       setLive(event.target.checked);
+    };
+    const handlePublic = (event) => {
+      setQpublic(event.target.checked);
+    };
+    const handleTip = (event) => {
+      setTip(event.target.value);
     };
 
     function genId(l) {
@@ -154,30 +185,25 @@ export default function GenCod() {
       setCod(genId(6));
     }
 
-    const handleButon = (event) =>{
-      eroare();
+    const handleButon = () =>{
+      if(cod.length<6 || cod.toLowerCase() === "creaza"){
+        eroare();
+        return;
+      }
+      if(!tip){
+        eroare2();
+        return;
+      }
     }
-
-  const GreenSwitch = styled(Switch)(({ theme }) => ({
-    '& .MuiSwitch-switchBase.Mui-checked': {
-      color: pink[600],
-      '&:hover': {
-        backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
-      },
-    },
-    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-      backgroundColor: pink[600],
-    },
-  }));
 
   return (
     <>
-        <Titlu variant='h2'>RiverQuiz</Titlu>
-        <Holder>
-            <FormGroup>
-            <FormControl variant="outlined">
+      <Titlu variant='h2'>RiverQuiz</Titlu>
+      <Holder theme={theme}>
+        <FormGroup>
+            <FormControlAnimat agita={agita} variant="outlined">
               <InputLabel htmlFor="codid">Cod</InputLabel>
-              <Cod inputRef={htmlElRef} agita={agita} label={"Cod"} autoComplete='off' id="codid"
+              <OutlinedInput inputRef={htmlElRef} label={"Cod"} autoComplete='off' id="codid"
                value={cod} onChange={handleCod} color={agita?"error":"primary"}
                 endAdornment={
                   <InputAdornment position="end">
@@ -190,15 +216,32 @@ export default function GenCod() {
                     </IconButton>
                   </InputAdornment>
                 }/>
-              <br/>
-              </FormControl>
-              <FormControlLabel control={<GreenSwitch checked={live} onChange={handleLive} />} label={<Typography sx={{
-                fontFamily: 'Kanit',
-              }}  color="secondary" variant="p">Live</Typography>} />
-              <br/>
-              <TrimiteButton onClick={handleButon} variant="contained">GENEREAZA</TrimiteButton>
-            </FormGroup>
-        </Holder>
+            </FormControlAnimat>
+            <br/>
+            <FormControlAnimat agita={agitaTip} fullWidth>
+              <InputLabel id="tip-quiz">Tip de quiz</InputLabel>
+              <Select
+                color={agitaTip?"error":"primary"}
+                inputRef={htmlElRef2}
+                labelId="tip-quiz"
+                id="tip-quiz-sel"
+                value={tip}
+                label="Tip de quiz"
+                onChange={handleTip}
+              >
+                <MenuItem value={undefined}>Selecteaza</MenuItem>
+              </Select>
+            </FormControlAnimat>
+            <FormControlLabel control={<GreenSwitch checked={live} onChange={handleLive} />} label={<Typography sx={{
+              fontFamily: 'Kanit',
+            }}  color="secondary" variant="p">Live</Typography>} />
+            <FormControlLabel control={<GreenSwitch checked={qpublic} onChange={handlePublic} />} label={<Typography sx={{
+              fontFamily: 'Kanit',
+            }}  color="secondary" variant="p">Public</Typography>} />
+            <br/>
+            <TrimiteButton onClick={handleButon} variant="contained">GENEREAZA</TrimiteButton>
+        </FormGroup>
+      </Holder>
     </>
   )
 }
