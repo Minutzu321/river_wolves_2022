@@ -57,7 +57,7 @@ model User {
   id              Int @id @default(autoincrement())
   email           String  @unique
   
-  sid             String @unique @default(cuid())
+  sid             String  @unique @default(cuid())
   rid             String? @default(uuid())
 
   sauth           String? @default("")
@@ -85,6 +85,9 @@ model User {
 
   deviceuri       Device[]
 
+  pastes          Paste[]
+  shorts          Short[]
+  taskuri         Task[]
 
   primaLogare     DateTime @default(now())
   ultimaActiune   DateTime @default(now())
@@ -125,12 +128,11 @@ model Task {
   titlu       String
   desc        String?
 
-  rezolvatDe  String?
-  rezolvat    Boolean @default(false)
+  rezolvator      User? @relation(fields: [rezolvatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  rezolvatorId    Int?
 
   departament Departament
 }
-
 
 model Feedback{
   id      Int @id @default(autoincrement())
@@ -171,6 +173,35 @@ model FeedbackEchipa{
   fActivit  Int //activitati constante(nu numai sedinte de departament)
   fComunit  Int //imi place comunitatea
   fAltele   String? //altele
+}
+
+
+model Paste{
+  id      Int @id @default(autoincrement())
+
+  creator      User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  creatorId    Int?
+
+  content String
+  editor   String
+
+  data_ora DateTime @default(now())
+
+  public Boolean @default(true)
+}
+
+model Short{
+  id      Int @id @default(autoincrement())
+
+  creator      User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  creatorId    Int?
+
+  link String
+  editor   String
+
+  data_ora DateTime @default(now())
+
+  public Boolean @default(true)
 }
 
 

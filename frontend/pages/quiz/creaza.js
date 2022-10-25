@@ -114,6 +114,7 @@ export default function MiniDrawer() {
 
   const [titlu, setTitlu] = React.useState("");
   const [desc, setDesc] = React.useState("");
+  const [tip, setTip] = React.useState(undefined);
 
   const [intrebare, setIntrebare] = React.useState("");
 
@@ -148,8 +149,12 @@ export default function MiniDrawer() {
 
 
   const handleIntrebare = (event) =>{
-    setTitlu(event.target.value);
+    setIntrebare(event.target.value);
   }
+
+  const handleTip = (event) => {
+    setTip(event.target.value);
+  };
 
   const actionsQuiz = [
     { icon: <SaveIcon />, name: 'Salveaza', callback: handleNew},
@@ -250,8 +255,26 @@ export default function MiniDrawer() {
                     <Holder>
                       <FormGroup>
                         <FormControl>
-                          <InputLabel htmlFor="titid">Titlu</InputLabel>
-                          <OutlinedInput value={titlu} onChange={handleTitlu} label={"Titlu"} autoComplete='off' id="titid" color={"primary"}/>
+                          <InputLabel htmlFor="titid">Intrebare</InputLabel>
+                          <OutlinedInput value={intrebare} onChange={handleIntrebare} label={"Intrebare"} autoComplete='off' id="titid" color={"primary"}/>
+                        </FormControl>
+                        <br/>
+                        <FormControl fullWidth>
+                          <InputLabel id="tip-quiz">Tip de quiz</InputLabel>
+                          <Select
+                            color="primary"
+                            labelId="tip-intreb"
+                            id="tip-intreb-sel"
+                            value={tip}
+                            label="Tipul intrebarii"
+                            onChange={handleTip}
+                          >
+                            <MenuItem value={undefined}>Selecteaza</MenuItem>
+                            <MenuItem value={0}>4 variante</MenuItem>
+                            <MenuItem value={1}>2 variante</MenuItem>
+                            <MenuItem value={2}>raspuns text</MenuItem>
+                            <MenuItem value={3}>brainstorm</MenuItem>
+                          </Select>
                         </FormControl>
                         <br/>
                         <FormControl>
