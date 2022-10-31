@@ -179,6 +179,8 @@ model FeedbackEchipa{
 model Paste{
   id      Int @id @default(autoincrement())
 
+  cod String @unique
+
   creator      User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   creatorId    Int?
 
@@ -192,6 +194,8 @@ model Paste{
 
 model Short{
   id      Int @id @default(autoincrement())
+
+  cod String @unique
 
   creator      User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   creatorId    Int?
