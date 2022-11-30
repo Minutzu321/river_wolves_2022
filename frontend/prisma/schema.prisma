@@ -177,35 +177,35 @@ model FeedbackEchipa{
 
 
 model Paste{
-  id      Int @id @default(autoincrement())
+  id        Int @id @default(autoincrement())
 
-  cod String @unique
+  cod       String @unique
 
-  creator      User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  creatorId    Int?
+  creator   User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  creatorId Int?
 
-  content String
-  editor   String
+  content   String
+  editor    String
 
-  data_ora DateTime @default(now())
+  data_ora  DateTime @default(now())
 
-  public Boolean @default(true)
+  public    Boolean @default(true)
 }
 
 model Short{
-  id      Int @id @default(autoincrement())
+  id        Int @id @default(autoincrement())
 
-  cod String @unique
+  cod       String @unique
 
-  creator      User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  creatorId    Int?
+  creator   User? @relation(fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  creatorId Int?
 
-  link String
-  editor   String
+  link      String
+  editor    String
 
-  data_ora DateTime @default(now())
+  data_ora  DateTime @default(now())
 
-  public Boolean @default(true)
+  public    Boolean @default(true)
 }
 
 

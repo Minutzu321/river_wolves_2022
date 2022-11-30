@@ -2,8 +2,9 @@ import React, { useRef, useState } from 'react'
 
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { pink } from '@mui/material/colors';
+import axios from 'axios';
 
-import { Select, Button, Typography, Box, keyframes, FormControl, FormGroup, FormControlLabel, Switch, InputAdornment, IconButton, OutlinedInput, InputLabel, MenuItem, TextField } from "@mui/material";
+import { Select, Button, Typography, Box, keyframes, FormControl, FormGroup, FormControlLabel, Switch, InputAdornment, IconButton, OutlinedInput, InputLabel, MenuItem, TextField, Snackbar, Alert } from "@mui/material";
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 const butonApasa = keyframes`
   0% {
@@ -106,8 +107,29 @@ export default function CreazaShort() {
     const [agitaLink, setAgitaLink] = useState(0);
     const [qpublic, setQpublic] = useState(false);
 
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [alertMsg, setAlertMsg] = React.useState("");
+
     const setFocus = () => {htmlElRef.current &&  htmlElRef.current.focus()}
     const setFocus2 = () => {htmlElRef2.current &&  htmlElRef2.current.focus()}
+
+    //alerta
+    const alert = (msg) => {
+      setAlertMsg(msg);
+      handleClickAlert();
+    }
+
+    const handleClickAlert = () => {
+      setOpenAlert(true);
+    };
+
+    const handleCloseAlert = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+
+      setOpenAlert(false);
+    };
 
     const eroare = () =>{
       setFocus();
@@ -125,15 +147,15 @@ export default function CreazaShort() {
       }, 300);
     }
 
-    const isValidUrl = urlString=> {
-	  	var urlPattern = new RegExp('^(https?:\\/\\/)?'+
-	    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
-	    '((\\d{1,3}\\.){3}\\d{1,3}))'+
-	    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+
-	    '(\\?[;&a-z\\d%_.~+=-]*)?'+
-	    '(\\#[-a-z\\d_]*)?$','i');
-      return !!urlPattern.test(urlString);
-	  }
+    function isValidUrl(string) {
+      let url;
+      try {
+        url = new URL(string);
+      } catch (_) {
+        return false;
+      }
+      return url.protocol === "http:" || url.protocol === "https:";
+    }
 
     const handleCod = (event) =>{
         let aranjat = event.target.value.toUpperCase().replace(/[^A-Za-z0-9]/g, "");
@@ -167,18 +189,43 @@ export default function CreazaShort() {
     }
 
     const handleButon = () =>{
-      if(cod.length<6 || cod.toLowerCase() === "creaza"){
+      if(cod.length<6){
         eroare();
+        alert("Codul trebuie sa fie de minim 6 caractere");
         return;
       }
       if(!isValidUrl(link)){
+        alert("Linkul nu este valid");
         eroare2();
         return;
       }
+
+      handleGata();
+    }
+
+    function handleGata(){
+      axios.post('api/short/add', {
+        cod: cod,
+        link: link,
+        public: qpublic,
+      })
+        .then(res => {
+          const data = res.data
+          if(!data.succes){
+            alert("Codul deja exista");
+          }else{
+            alert("ADAUGAT");
+          }
+        })
     }
 
   return (
     <>
+      <Snackbar open={openAlert} autoHideDuration={1000} onClose={handleCloseAlert}>
+          <Alert onClose={handleCloseAlert} severity="error" sx={{ width: '100%' }}>
+            {alertMsg}
+          </Alert>
+      </Snackbar>
       <Titlu variant='h2'>RiverShorts</Titlu>
       <Holder theme={theme}>
         <FormGroup>

@@ -32,10 +32,8 @@ const Navbar = ({butoane, laMembru}) => {
             <p>Delogheaza-te</p>
         </button>
       ) : (
-        <Link href="/dashboard">
-            <a className="nav-link btn btn-neutral">
+        <Link href="/dashboard" className="nav-link btn btn-neutral">
                 <p>Dashboard</p>
-            </a>
         </Link>
       )}
     </li>

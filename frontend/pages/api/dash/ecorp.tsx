@@ -1,6 +1,4 @@
-import { useId } from "react";
 import { useAuth } from "../../../libs/autorizare";
-import { VOLUNTAR_PERM } from "../../../libs/config";
 
 export default async (req, res) => {
     const [user, ses, prisma, perm] = await useAuth(req, res)
