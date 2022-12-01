@@ -6,7 +6,8 @@ function publish(eventName, data) {
 const NUME_EVENT = {
     UPDATE_MEMBRI: 'update_membri',
     UPDATE_SEDINTE: 'update_sedinte',
-    NEAUTORIZAT_SOCKET: 'neautorizat_socket'
+    NEAUTORIZAT_SOCKET: 'neautorizat_socket',
+    LOGHEAZA_TE: 'socket_log'
   };
 
 export { publish, NUME_EVENT};

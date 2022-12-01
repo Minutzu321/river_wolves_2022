@@ -15,6 +15,9 @@ const sockets = []
 
 server.on('connection', async function (socket, req) {
   sockets.push(socket)
+  socket.on('close', function () {
+    sockets.splice(sockets.indexOf(socket), 1)
+  })
   let path = req.url.substring(1);
   const user = await prisma.user.findFirst({
     where:{
@@ -22,18 +25,15 @@ server.on('connection', async function (socket, req) {
     }
   })
   if(!user){
-    if(path.length > 2){
+    if(path !== "undefined"){
       socket.send("neautorizat_socket");
+      socket.close();
     }
-    socket.close();
     console.log("NEAUTORIZAT");
     return;
   }
   console.log(user.nume,"e conectat");
   socket.on('message', onMessage);
-  socket.on('close', function () {
-    sockets.splice(sockets.indexOf(socket), 1)
-  })
 
   function onMessage (message) {
     let mesaj = new Buffer.from(message).toString();

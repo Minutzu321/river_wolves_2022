@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
+const cookiePrefix = "riverwolves_secure"
+
 const options = {
   theme: {
     colorScheme: "dark",
@@ -8,7 +10,7 @@ const options = {
   },
   cookies: {
     sessionToken: {
-      name: `__riverwolves.sistem-de-siguranta-unu`,
+      name: `__Secure-next-auth.session-token`,
       options: {
         httpOnly: true,
         sameSite: 'lax',
@@ -17,7 +19,7 @@ const options = {
       }
     },
     callbackUrl: {
-      name: `__riverwolves.sistem-de-siguranta-doi`,
+      name: `__Secure-next-auth.callback-url`,
       options: {
         sameSite: 'lax',
         path: '/',
@@ -25,7 +27,7 @@ const options = {
       }
     },
     csrfToken: {
-      name: `__riverwolves.sistem-de-siguranta-trei`,
+      name: `__Host-next-auth.csrf-token`,
       options: {
         httpOnly: true,
         sameSite: 'lax',
@@ -34,7 +36,7 @@ const options = {
       }
     },
     pkceCodeVerifier: {
-      name: `riverwolves-cod-de-securitate`,
+      name: `${cookiePrefix}next-auth.pkce.code_verifier`,
       options: {
         httpOnly: true,
         sameSite: 'lax',
@@ -43,7 +45,16 @@ const options = {
       }
     },
     state: {
-      name: `riverwolves.status`,
+      name: `${cookiePrefix}next-auth.state`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+      },
+    },
+    nonce: {
+      name: `${cookiePrefix}next-auth.nonce`,
       options: {
         httpOnly: true,
         sameSite: "lax",

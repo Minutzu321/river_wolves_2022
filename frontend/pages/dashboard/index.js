@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
 import { useEventListener, useInterval } from 'usehooks-ts'
-import { useSession } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 import { useEffect, useRef, useState } from 'react';
 
 import FeedbackSedinta from '../../components/dashboard/FeedbackSedinta';
@@ -13,7 +13,7 @@ import Login from '../../components/dashboard/Login';
 import Rezumat from '../../components/dashboard/Rezumat';
 import Matrita from '../../components/dashboard/Matrita';
 import { subscribe, unsubscribe, publish, NUME_EVENT } from '../../libs/events';
-import {authProps } from '../../libs/autorizare';
+import {authProps} from '../../libs/autorizare';
 import Useri from '../../components/dashboard/Useri';
 import Sedinte from '../../components/dashboard/Sedinte';
 
@@ -28,8 +28,19 @@ import { getPrezente } from '../../libs/participari';
 
 import { useRouter } from 'next/router'
 
-export default function Dash({pageProps}) {
+import dynamic from 'next/dynamic'
 
+import Head from 'next/head'
+import Navbar from '../../components/Navbar'
+import PageFooter  from '../../components/PageFooter'
+import Link from 'next/link';
+
+const Parti = dynamic(
+  () => import('../../components/Particule'),
+  { ssr: false }
+)
+
+export default function Dash({pageProps}) {
   const router = useRouter()
 
   // const documentRef = useRef<Document>(document)
@@ -265,9 +276,8 @@ export default function Dash({pageProps}) {
     </>}/>
   )
   }else{
-    return (
-      <Login/>
-    )
+    window.location.replace("/dashboard")
+    return <div>Te redirectionam..</div>
   }
 }
 
