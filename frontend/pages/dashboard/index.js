@@ -276,7 +276,11 @@ export default function Dash({pageProps}) {
     </>}/>
   )
   }else{
-    window.location.replace("/dashboard")
+    useEffect(() => {
+      window.location.replace("/login")
+    }, [])
+    
+    
     return <div>Te redirectionam..</div>
   }
 }
