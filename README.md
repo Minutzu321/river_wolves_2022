@@ -52,7 +52,7 @@ Membrii sunt ierarhizati pe roluri. Userii cu gradul mai mare pot modifica useri
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m01.png?raw=true" width="600">
 
 Membrii au si o sectiune de sedinte unde pot vedea ce persoane vin la sedinte.\
-Cu ajutorul sedintelor se calculeaza procentul de prezenta ale membrilor.\
+Cu ajutorul sedintelor se calculeaza procentul de prezenta ale membrilor.
 
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m1.png?raw=true" width="600">
 
