@@ -36,3 +36,14 @@ Voluntarii responsabili cu verificarea traseului aveau acces la vizualizarea pro
 In final era afisata o pagina care cuprindea rankingul participantilor.
 
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t0.png?raw=true" width="600">
+
+# Link shorter
+Userii pot sa scurteze orice link. Programul adauga o noua optiune de accesare a site-ului de forma www.site.com/[cod] unde [cod] este codul generat sau introdus de utilizator.
+
+![](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/short.gif?raw=true)
+
+# Team management system
+Membrii sunt ierarhizati pe roluri. Userii cu gradul mai mare pot modifica userii cu gradele mai mici.
+
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m0.png?raw=true" width="600">
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m01.png?raw=true" width="600">
