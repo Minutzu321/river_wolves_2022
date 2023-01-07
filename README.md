@@ -43,7 +43,19 @@ Userii pot sa scurteze orice link. Programul adauga o noua optiune de accesare a
 ![](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/short.gif?raw=true)
 
 # Team management system
+
+### Sistemul este live. Prin intermediul websocketurilor, fiecare schimbare facuta de un user se trimite la toti userii conectati.
+
 Membrii sunt ierarhizati pe roluri. Userii cu gradul mai mare pot modifica userii cu gradele mai mici.
 
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m0.png?raw=true" width="600">
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m01.png?raw=true" width="600">
+
+Membrii au si o sectiune de sedinte unde pot vedea ce persoane vin la sedinte.\
+Cu ajutorul sedintelor se calculeaza procentul de prezenta ale membrilor.\
+
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m1.png?raw=true" width="600">
+
+Dupa ce un membru participa la 5 sau mai multe sedinte, va aparea o zona de feedback.
+
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m2.png?raw=true" width="600">
