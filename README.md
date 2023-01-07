@@ -26,7 +26,7 @@ Fiecare voluntar putea sa isi vada indiciile adaugate care constau in intrebarea
 
 Administratorii aveau acces la stergerea, vizualizarea, modificarea sau inlocuirea oricarui indiciu.
 
-<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t6.png?raw=true" width="600">
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t6.png?raw=true" width="300">
 
 Voluntarii responsabili cu verificarea traseului aveau acces la vizualizarea progresului oricarui jucator
 (casutele rosii insemnau ca indiciile nu erau rezolvate, portocalii ca erau in curs de rezolvare iar cele verzi erau rezolvate)
