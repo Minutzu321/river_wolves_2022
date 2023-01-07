@@ -1,6 +1,5 @@
 
 
-import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
 import { useEventListener, useInterval } from 'usehooks-ts'
@@ -9,7 +8,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import FeedbackSedinta from '../../components/dashboard/FeedbackSedinta';
 import Firmituri from '../../components/dashboard/Firmituri';
-import Login from '../../components/dashboard/Login';
 import Rezumat from '../../components/dashboard/Rezumat';
 import Matrita from '../../components/dashboard/Matrita';
 import { subscribe, unsubscribe, publish, NUME_EVENT } from '../../libs/events';
@@ -28,17 +26,6 @@ import { getPrezente } from '../../libs/participari';
 
 import { useRouter } from 'next/router'
 
-import dynamic from 'next/dynamic'
-
-import Head from 'next/head'
-import Navbar from '../../components/Navbar'
-import PageFooter  from '../../components/PageFooter'
-import Link from 'next/link';
-
-const Parti = dynamic(
-  () => import('../../components/Particule'),
-  { ssr: false }
-)
 
 export default function Dash({pageProps}) {
   const router = useRouter()
@@ -48,6 +35,12 @@ export default function Dash({pageProps}) {
   const scrollTo = useRef(undefined);
 
   const {data: session} = useSession()
+
+  useEffect(() => {
+    if(!session){
+      window.location.replace("/login")
+    }
+  }, [session])
 
   const [load, setLoad] = useState(true)
 
@@ -275,12 +268,7 @@ export default function Dash({pageProps}) {
       
     </>}/>
   )
-  }else{
-    useEffect(() => {
-      window.location.replace("/login")
-    }, [])
-    
-    
+  }else{    
     return <div>Te redirectionam..</div>
   }
 }
