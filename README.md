@@ -60,4 +60,4 @@ Dupa ce un membru participa la 5 sau mai multe sedinte, va aparea o zona de feed
 
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/m2.png?raw=true" width="600">
 
-Tehnologii folosite: Reaxt, Nextjs, Mapbox API, Nodejs(partea de server pentru websocketuri), Prisma
+Tehnologii folosite: Reaxt, Nextjs, Mapbox API, Nodejs(partea de server pentru websocketuri), Prisma, Nginx
