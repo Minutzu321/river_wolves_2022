@@ -11,10 +11,10 @@ Persoanele veneau la standurile amenajate la intrare si pentru o donatie de 5 le
 
 Acestea isi introduceau datele personale si porneau in cautarea indiciilor.
 
-![imagine 1](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t4.png?raw=true)
+![imagine 1](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t4.jpg?raw=true)
 
 Dupa ce terminau toate indiciile dintr-un muzeu, aveau de ales care va fi urmatoarea locatie:
-![imagine 2](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t5.png?raw=true)
+![imagine 2](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t5.jpg?raw=true)
 
 De asemenea, platforma avea si partea de management unde voluntarii echipei administrau evenimentul.
 
