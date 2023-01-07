@@ -21,13 +21,18 @@ De asemenea, platforma avea si partea de management unde voluntarii echipei admi
 
 ### Administrare
 Fiecare voluntar putea sa isi vada indiciile adaugate care constau in intrebarea indiciului, raspunsul, coordonatele GPS, poza cu indiciul si 2 optiuni: daca se se afiseze forma raspunsului pentru a ajuta jucatorii sau/si daca sa se afiseze imaginea cu indiciul.
-<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t2.png?raw=true" width="500">
+
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t2.png?raw=true" width="600">
+
 Administratorii aveau acces la stergerea, vizualizarea, modificarea sau inlocuirea oricarui indiciu.
-![imagine 4](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t6.png?raw=true)
+
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t6.png?raw=true" width="600">
 
 Voluntarii responsabili cu verificarea traseului aveau acces la vizualizarea progresului oricarui jucator
 (casutele rosii insemnau ca indiciile nu erau rezolvate, portocalii ca erau in curs de rezolvare iar cele verzi erau rezolvate)
-![imagine 5](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t3.png?raw=true)
+
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t3.png?raw=true" width="600">
 
 In final era afisata o pagina care cuprindea rankingul participantilor.
-![imagine 6](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t0.png?raw=true)
+
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t0.png?raw=true" width="600">
