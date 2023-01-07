@@ -14,15 +14,14 @@ Acestea isi introduceau datele personale si porneau in cautarea indiciilor.
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t4.jpg?raw=true" width="300">
 
 Dupa ce terminau toate indiciile dintr-un muzeu, aveau de ales care va fi urmatoarea locatie:
-![imagine 2]()
+
 <img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t5.jpg?raw=true" width="300">
 
 De asemenea, platforma avea si partea de management unde voluntarii echipei administrau evenimentul.
 
 ### Administrare
 Fiecare voluntar putea sa isi vada indiciile adaugate care constau in intrebarea indiciului, raspunsul, coordonatele GPS, poza cu indiciul si 2 optiuni: daca se se afiseze forma raspunsului pentru a ajuta jucatorii sau/si daca sa se afiseze imaginea cu indiciul.
-![imagine 3](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t2.png?raw=true)
-
+<img src="https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t2.png?raw=true" width="500">
 Administratorii aveau acces la stergerea, vizualizarea, modificarea sau inlocuirea oricarui indiciu.
 ![imagine 4](https://github.com/Minutzu321/river_wolves_2022/blob/master/imagini/t6.png?raw=true)
 
